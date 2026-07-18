@@ -1,0 +1,152 @@
+---
+// Genbrugelig "bestillings-/tilbuds-mail". Genererer en færdig e-mail og
+// åbner den i brugerens eget mailprogram via mailto. Understøtter cc til
+// flere modtagere (konkurrenceudsættelse) og et valgfrit mængde-felt.
+interface Props {
+  emne: string;
+  tekst: string; // brødtekst med __NAVN__ og evt. __MAENGDE__
+  tilPlaceholder?: string;
+  ccPlaceholder?: string;
+  sendLabel?: string;
+  maengde?: { label: string; placeholder?: string; hjaelp?: string };
+}
+
+const {
+  emne,
+  tekst,
+  tilPlaceholder = 'salg@leverandoer.dk',
+  ccPlaceholder = 'tilbud@leverandoer2.dk, salg@leverandoer3.dk',
+  sendLabel = '📧 Åbn e-mail med listen',
+  maengde,
+} = Astro.props;
+
+const config = JSON.stringify({ emne, tekst, harMaengde: Boolean(maengde) });
+const inputKlasse =
+  'w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none';
+---
+
+<div class="bestillings-mail mt-6">
+  <script type="application/json" class="bm-config" set:html={config} />
+
+  <form class="bm-form grid gap-4" novalidate>
+    <label class="block">
+      <span class="mb-1 block text-sm font-semibold text-ler-800">Til (e-mail)</span>
+      <input class={`bm-til ${inputKlasse}`} type="email" inputmode="email" placeholder={tilPlaceholder} />
+    </label>
+
+    <label class="block">
+      <span class="mb-1 block text-sm font-semibold text-ler-800">
+        Cc – flere modtagere (kommasepareret)
+      </span>
+      <input class={`bm-cc ${inputKlasse}`} type="text" placeholder={ccPlaceholder} />
+      <span class="mt-1 block text-xs text-ler-500">
+        Sæt konkurrenterne i cc – så ved de, at du henter tilbud flere steder.
+      </span>
+    </label>
+
+    {
+      maengde && (
+        <label class="block">
+          <span class="mb-1 block text-sm font-semibold text-ler-800">{maengde.label}</span>
+          <input class={`bm-maengde ${inputKlasse}`} type="text" placeholder={maengde.placeholder ?? ''} />
+          {maengde.hjaelp && <span class="mt-1 block text-xs text-ler-500">{maengde.hjaelp}</span>}
+        </label>
+      )
+    }
+
+    <label class="block">
+      <span class="mb-1 block text-sm font-semibold text-ler-800">Dit navn (til underskrift)</span>
+      <input class={`bm-navn ${inputKlasse}`} type="text" placeholder="Fx Martin Jensen" />
+    </label>
+
+    <div class="flex flex-wrap gap-3">
+      <button
+        class="bm-send rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+        type="submit"
+      >
+        {sendLabel}
+      </button>
+      <button
+        class="bm-kopier rounded-lg border border-ler-300 bg-ler-50 px-5 py-3 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
+        type="button"
+      >
+        📋 Kopiér e-mailtekst
+      </button>
+    </div>
+    <p class="bm-status text-sm text-ler-600" role="status" aria-live="polite"></p>
+  </form>
+
+  <p class="mt-4 text-xs text-ler-500">
+    E-mailen åbnes i dit eget mailprogram med emne, modtagere og hele teksten udfyldt – du
+    sender den selv, så du har fuld kontrol. Intet sendes fra siden.
+  </p>
+</div>
+
+<script>
+  interface BmConfig {
+    emne: string;
+    tekst: string;
+    harMaengde: boolean;
+  }
+
+  function initBestillingsMail(): void {
+    document.querySelectorAll<HTMLElement>('.bestillings-mail').forEach((root) => {
+      const cfgEl = root.querySelector('.bm-config');
+      const form = root.querySelector<HTMLFormElement>('.bm-form');
+      if (!cfgEl || !form) return;
+
+      const cfg: BmConfig = JSON.parse(cfgEl.textContent || '{}');
+      const tilInput = root.querySelector<HTMLInputElement>('.bm-til');
+      const ccInput = root.querySelector<HTMLInputElement>('.bm-cc');
+      const navnInput = root.querySelector<HTMLInputElement>('.bm-navn');
+      const maengdeInput = root.querySelector<HTMLInputElement>('.bm-maengde');
+      const kopierKnap = root.querySelector<HTMLButtonElement>('.bm-kopier');
+      const status = root.querySelector<HTMLElement>('.bm-status');
+
+      const saetStatus = (besked: string): void => {
+        if (status) status.textContent = besked;
+      };
+
+      const byggTekst = (): string => {
+        let t = cfg.tekst.replace('__NAVN__', navnInput?.value.trim() || '[dit navn]');
+        if (cfg.harMaengde) {
+          t = t.replace('__MAENGDE__', maengdeInput?.value.trim() || '____');
+        }
+        return t;
+      };
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const til = tilInput?.value.trim() ?? '';
+        const cc = ccInput?.value.trim() ?? '';
+
+        if (!til && !cc) {
+          saetStatus('Udfyld mindst én e-mail i Til eller Cc.');
+          tilInput?.focus();
+          return;
+        }
+
+        const dele: string[] = [`subject=${encodeURIComponent(cfg.emne)}`];
+        if (cc) dele.push(`cc=${encodeURIComponent(cc)}`);
+        dele.push(`body=${encodeURIComponent(byggTekst())}`);
+
+        window.location.href = `mailto:${encodeURIComponent(til)}?${dele.join('&')}`;
+        saetStatus('E-mailen åbnes nu i dit mailprogram. Tjek modtagere, og send den selv.');
+      });
+
+      kopierKnap?.addEventListener('click', async () => {
+        const org = kopierKnap.textContent;
+        try {
+          await navigator.clipboard.writeText(byggTekst());
+          kopierKnap.textContent = '✅ Kopieret!';
+          saetStatus('E-mailteksten er kopieret – indsæt den i din mail.');
+          setTimeout(() => (kopierKnap.textContent = org), 2000);
+        } catch {
+          saetStatus('Kunne ikke kopiere automatisk – markér og kopiér teksten manuelt.');
+        }
+      });
+    });
+  }
+
+  initBestillingsMail();
+</script>

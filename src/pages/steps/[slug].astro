@@ -5,6 +5,8 @@ import MaterialTabel from '../../components/MaterialTabel.astro';
 import VaerktojsListe from '../../components/VaerktojsListe.astro';
 import Galleri from '../../components/Galleri.astro';
 import StepNav from '../../components/StepNav.astro';
+import BestillingsMail from '../../components/BestillingsMail.astro';
+import materialelister from '../../data/materialelister.json';
 import { href } from '../../lib/url';
 
 export async function getStaticPaths() {
@@ -46,6 +48,53 @@ const naboFor = forrige
 const naboNaeste = naeste
   ? { titel: naeste.data.titel, slug: naeste.id, order: naeste.data.order }
   : undefined;
+
+// Bestillings-mail til savværk – kun på yderbeklædning. Yderbeklædning
+// (typisk Douglasgran) kan bestilles direkte hos savværket og skære et
+// mellemled væk. Mængderne er vejledende template-tal fra estimatet – ikke
+// rigtige tal fra et konkret byg.
+const erYderbeklaedning = entry.id === 'yderbeklaedning';
+let savvaerkEmail: { emne: string; tekst: string } | null = null;
+let templateMaal = '';
+if (erYderbeklaedning) {
+  const maal = [...materialelister.praedefineredeMaal].sort(
+    (a, b) => b.laengde_cm * b.bredde_cm - a.laengde_cm * a.bredde_cm,
+  )[0];
+  templateMaal = `${maal.laengde_cm / 100} × ${maal.bredde_cm / 100} m`.replace(/\./g, ',');
+  const talFmt = new Intl.NumberFormat('da-DK', { maximumFractionDigits: 2 });
+  const varer = ((maal.materialerPrStep as Record<string, Array<{ materiale: string; maengde: number; enhed: string; note?: string }>>).yderbeklaedning ?? []).map(
+    (m) => `- ${m.materiale}: ${talFmt.format(m.maengde)} ${m.enhed}${m.note ? ` (${m.note})` : ''}`,
+  );
+  const linjer = [
+    'Hej',
+    '',
+    'Jeg skal bruge yderbeklædning til et tiny house og vil gerne bestille / bede om tilbud direkte hos jer som savværk – så jeg skærer et mellemled væk.',
+    '',
+    'Jeg tænker Douglasgran, ubehandlet (gerne kernetræ), som facadebeklædning.',
+    '',
+    `VEJLEDENDE MÆNGDER (template-tal for et hus på ${templateMaal} – se OBS nedenfor):`,
+    ...varer,
+    '',
+    'Ønsker:',
+    '- Profil: [fx 1-på-2, klink/faldende eller profilhøvlet]',
+    '- Dimension: [fx 25×150 mm]',
+    '- Tørhed: [lufttørret / ovntørret]',
+    '- Længder: gerne faste længder, der passer til facaden',
+    '',
+    'OBS: Mængderne ovenfor er vejledende template-tal – ikke rigtige tal fra et konkret byg. Tilpas til dit eget hus.',
+    '',
+    'Giv gerne jeres pris pr. m² (og pr. lbm) direkte fra savværk, samt leveringstid og fragt. Jeg indhenter tilbud fra flere savværker (se cc), så jeg kan sammenligne.',
+    '',
+    'På forhånd tak.',
+    '',
+    'Med venlig hilsen',
+    '__NAVN__',
+  ];
+  savvaerkEmail = {
+    emne: 'Tilbud/bestilling – Douglasgran yderbeklædning (savværk)',
+    tekst: linjer.join('\n'),
+  };
+}
 ---
 
 <BaseLayout titel={entry.data.titel} beskrivelse={entry.data.resume}>
@@ -86,6 +135,46 @@ const naboNaeste = naeste
         og vælg en færdig størrelse.
       </p>
     </section>
+
+    {
+      erYderbeklaedning && savvaerkEmail && (
+        <section class="mt-12 rounded-2xl border border-skov-600/20 bg-skov-600/5 p-6 sm:p-8">
+          <h2 class="flex items-center gap-2 text-2xl font-bold text-ler-900">
+            <span aria-hidden="true">🪵</span> Bestil direkte hos savværk
+          </h2>
+          <p class="mt-3 text-ler-700">
+            Yderbeklædning kan du med fordel bestille <strong>direkte hos et savværk</strong> og
+            skære et mellemled væk – det giver ofte en bedre pris. Typisk vælges{' '}
+            <strong>Douglasgran</strong>: holdbart kernetræ, der kan stå ubehandlet og patinere
+            smukt gråt.
+          </p>
+
+          <div class="mt-5 rounded-xl border border-ler-200 bg-ler-50/70 p-4 text-sm text-ler-700">
+            <p class="font-semibold text-ler-900">Sådan bestiller du smart 🪚</p>
+            <ul class="mt-2 list-disc space-y-1 pl-5">
+              <li>Bestil <strong>direkte hos savværket</strong> – uden mellemled.</li>
+              <li>Angiv <strong>profil, dimension, tørhed</strong> og gerne faste længder.</li>
+              <li>Send til <strong>flere savværker</strong> og sæt dem i cc, så de ved, der er konkurrence.</li>
+              <li>Spørg til <strong>kernetræ</strong> for bedre holdbarhed på ubehandlet facade.</li>
+            </ul>
+          </div>
+
+          <p class="mt-4 rounded-lg border border-ler-300 bg-ler-100 px-4 py-3 text-sm text-ler-700">
+            ⚠️ Mængderne i e-mailen er <strong>vejledende template-tal</strong> (fra estimatet for
+            et hus på {templateMaal}) – <strong>ikke rigtige tal</strong> fra et konkret byg.
+            Tilpas altid til dit eget hus.
+          </p>
+
+          <BestillingsMail
+            emne={savvaerkEmail.emne}
+            tekst={savvaerkEmail.tekst}
+            tilPlaceholder="salg@savvaerk.dk"
+            ccPlaceholder="info@savvaerk2.dk, kontakt@savvaerk3.dk"
+            sendLabel="📧 Åbn bestillings-e-mail"
+          />
+        </section>
+      )
+    }
 
     <section class="mt-12">
       <h2 class="mb-4 text-2xl font-bold text-ler-900">🔧 Værktøj</h2>

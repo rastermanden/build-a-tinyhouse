@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { href } from '../lib/url';
+import BestillingsMail from '../components/BestillingsMail.astro';
 import data from '../data/faktisk-materialeliste.json';
 import skrueaeskerHylde from '../assets/faktisk-materialeliste/nkt-skrueaesker-paa-hylde.jpg';
 import skrueaeskerTopkon from '../assets/faktisk-materialeliste/nkt-skrueaesker-topkon-og-basic.jpg';
@@ -41,7 +42,6 @@ emailLinjer.push(
   '__NAVN__',
 );
 const emailConfig = { emne: emailEmne, tekst: emailLinjer.join('\n') };
-const emailConfigJson = JSON.stringify(emailConfig);
 
 const billeder = [
   {
@@ -140,64 +140,13 @@ const billeder = [
         </ul>
       </div>
 
-      <form id="tilbud-form" class="mt-6 grid gap-4" novalidate>
-        <label class="block">
-          <span class="mb-1 block text-sm font-semibold text-ler-800">Til (leverandørens e-mail)</span>
-          <input
-            id="tilbud-til"
-            type="email"
-            inputmode="email"
-            placeholder="salg@leverandoer.dk"
-            class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
-          />
-        </label>
-        <label class="block">
-          <span class="mb-1 block text-sm font-semibold text-ler-800">
-            Cc – flere leverandører (kommasepareret)
-          </span>
-          <input
-            id="tilbud-cc"
-            type="text"
-            placeholder="tilbud@leverandoer2.dk, salg@leverandoer3.dk"
-            class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
-          />
-          <span class="mt-1 block text-xs text-ler-500">
-            Sæt konkurrenterne i cc – så ved de, at du henter tilbud flere steder.
-          </span>
-        </label>
-        <label class="block">
-          <span class="mb-1 block text-sm font-semibold text-ler-800">Dit navn (til underskrift)</span>
-          <input
-            id="tilbud-navn"
-            type="text"
-            placeholder="Fx Martin Jensen"
-            class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
-          />
-        </label>
-
-        <div class="flex flex-wrap gap-3">
-          <button
-            id="tilbud-send"
-            type="submit"
-            class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
-          >
-            📧 Åbn e-mail med listen
-          </button>
-          <button
-            id="tilbud-kopier"
-            type="button"
-            class="rounded-lg border border-ler-300 bg-ler-50 px-5 py-3 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
-          >
-            📋 Kopiér e-mailtekst
-          </button>
-        </div>
-        <p id="tilbud-status" class="text-sm text-ler-600" role="status" aria-live="polite"></p>
-      </form>
-
-      <p class="mt-4 text-xs text-ler-500">
-        E-mailen åbnes i dit eget mailprogram med emne, modtagere og hele listen udfyldt – du
-        sender den selv, så du har fuld kontrol. Intet sendes fra siden.
-      </p>
+      <BestillingsMail
+        emne={emailConfig.emne}
+        tekst={emailConfig.tekst}
+        tilPlaceholder="salg@leverandoer.dk"
+        ccPlaceholder="tilbud@leverandoer2.dk, salg@leverandoer3.dk"
+        sendLabel="📧 Åbn e-mail med listen"
+      />
     </section>
 
     <section class="mt-12">
@@ -242,67 +191,4 @@ const billeder = [
       >
     </div>
   </div>
-
-  <script type="application/json" id="tilbud-email-config" set:html={emailConfigJson} />
-
-  <script>
-    interface EmailConfig {
-      emne: string;
-      tekst: string;
-    }
-
-    const cfg: EmailConfig = JSON.parse(
-      document.getElementById('tilbud-email-config')!.textContent!,
-    );
-
-    const form = document.getElementById('tilbud-form') as HTMLFormElement | null;
-    if (form) {
-      const tilInput = document.getElementById('tilbud-til') as HTMLInputElement;
-      const ccInput = document.getElementById('tilbud-cc') as HTMLInputElement;
-      const navnInput = document.getElementById('tilbud-navn') as HTMLInputElement;
-      const kopierKnap = document.getElementById('tilbud-kopier') as HTMLButtonElement;
-      const status = document.getElementById('tilbud-status')!;
-
-      function byggTekst(): string {
-        const navn = navnInput.value.trim() || '[dit navn]';
-        return cfg.tekst.replace('__NAVN__', navn);
-      }
-
-      function saetStatus(besked: string): void {
-        status.textContent = besked;
-      }
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const til = tilInput.value.trim();
-        const cc = ccInput.value.trim();
-
-        if (!til && !cc) {
-          saetStatus('Udfyld mindst én leverandør-e-mail i Til eller Cc.');
-          tilInput.focus();
-          return;
-        }
-
-        const dele: string[] = [`subject=${encodeURIComponent(cfg.emne)}`];
-        if (cc) dele.push(`cc=${encodeURIComponent(cc)}`);
-        dele.push(`body=${encodeURIComponent(byggTekst())}`);
-
-        const mailto = `mailto:${encodeURIComponent(til)}?${dele.join('&')}`;
-        window.location.href = mailto;
-        saetStatus('E-mailen åbnes nu i dit mailprogram. Tjek modtagere, og send den selv.');
-      });
-
-      kopierKnap.addEventListener('click', async () => {
-        const org = kopierKnap.textContent;
-        try {
-          await navigator.clipboard.writeText(byggTekst());
-          kopierKnap.textContent = '✅ Kopieret!';
-          saetStatus('E-mailteksten er kopieret – indsæt den i din mail til leverandørerne.');
-          setTimeout(() => (kopierKnap.textContent = org), 2000);
-        } catch {
-          saetStatus('Kunne ikke kopiere automatisk – markér og kopiér teksten manuelt.');
-        }
-      });
-    }
-  </script>
 </BaseLayout>
