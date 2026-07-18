@@ -13,6 +13,36 @@ const talFormat = new Intl.NumberFormat('da-DK', { maximumFractionDigits: 2 });
 const husMaal = `${info.husLaengde_cm / 100} × ${info.husBredde_cm / 100} m`.replace(/\./g, ',');
 const husAreal = talFormat.format(info.husAreal_m2);
 
+// Byg en færdig tilbuds-e-mail med hele materialelisten, som klient-scriptet
+// kan sende via brugerens eget mailprogram (mailto). __NAVN__ udskiftes i browseren.
+const emailEmne = `Tilbud ønskes – byggematerialer til tiny house (${husMaal})`;
+const emailLinjer: string[] = [
+  'Hej',
+  '',
+  `Jeg skal bruge materialer til at bygge et tiny house på ca. ${husMaal} (${husAreal} m²) og vil gerne bede om et tilbud på materialelisten nedenfor.`,
+  '',
+  'Jeg indhenter tilbud fra flere leverandører (se cc), så jeg kan sammenligne. Giv derfor gerne jeres skarpeste pris – både samlet og gerne pr. linje – samt leveringstid og fragt. Foreslå meget gerne tilsvarende lagerførte alternativer, hvis det er billigere.',
+  '',
+  'MATERIALELISTE',
+];
+for (const g of grupper) {
+  emailLinjer.push('', `== ${g.navn} ==`);
+  for (const v of g.varer) {
+    emailLinjer.push(`- ${v.tekst}: ${talFormat.format(v.maengde)} ${v.enhed}`);
+  }
+}
+emailLinjer.push(
+  '',
+  'Mængderne er vejledende og kan tilpasses. Sig endelig til, hvis I mangler oplysninger for at give et tilbud.',
+  '',
+  'På forhånd tak.',
+  '',
+  'Med venlig hilsen',
+  '__NAVN__',
+);
+const emailConfig = { emne: emailEmne, tekst: emailLinjer.join('\n') };
+const emailConfigJson = JSON.stringify(emailConfig);
+
 const billeder = [
   {
     billede: skrueaeskerHylde,
@@ -88,6 +118,88 @@ const billeder = [
       ))
     }
 
+    <!-- Indhent tilbud fra leverandører -->
+    <section class="mt-14 rounded-2xl border border-skov-600/20 bg-skov-600/5 p-6 sm:p-8">
+      <h2 class="flex items-center gap-2 text-2xl font-bold text-ler-900">
+        <span aria-hidden="true">📧</span> Send listen til leverandører – og få tilbud
+      </h2>
+      <p class="mt-3 text-ler-700">
+        Byggematerialer har sjældent en fast pris. Prisen afhænger af leverandør, mængde og
+        dagsform – så der er tit <strong>rabat at hente ved at konkurrenceudsætte</strong> din
+        ordre. Herunder kan du sende hele materialelisten som en færdig tilbudsforespørgsel til
+        flere leverandører på én gang.
+      </p>
+
+      <div class="mt-5 rounded-xl border border-ler-200 bg-ler-50/70 p-4 text-sm text-ler-700">
+        <p class="font-semibold text-ler-900">Sådan får du den bedste pris 💰</p>
+        <ul class="mt-2 list-disc space-y-1 pl-5">
+          <li>Send <strong>samme liste til 3–5 leverandører</strong> og sæt dem alle i <strong>cc</strong>, så de kan se, at du indhenter konkurrerende tilbud.</li>
+          <li>Bed om pris <strong>pr. linje og samlet</strong>, samt leveringstid og fragt – så kan du sammenligne æbler med æbler.</li>
+          <li>Bed om <strong>lagerførte alternativer</strong> – tit findes en tilsvarende vare billigere.</li>
+          <li>Følg op: brug det <strong>skarpeste tilbud til at forhandle</strong> de øvrige ned. Større ordrer giver bedre rabat.</li>
+        </ul>
+      </div>
+
+      <form id="tilbud-form" class="mt-6 grid gap-4" novalidate>
+        <label class="block">
+          <span class="mb-1 block text-sm font-semibold text-ler-800">Til (leverandørens e-mail)</span>
+          <input
+            id="tilbud-til"
+            type="email"
+            inputmode="email"
+            placeholder="salg@leverandoer.dk"
+            class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
+          />
+        </label>
+        <label class="block">
+          <span class="mb-1 block text-sm font-semibold text-ler-800">
+            Cc – flere leverandører (kommasepareret)
+          </span>
+          <input
+            id="tilbud-cc"
+            type="text"
+            placeholder="tilbud@leverandoer2.dk, salg@leverandoer3.dk"
+            class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
+          />
+          <span class="mt-1 block text-xs text-ler-500">
+            Sæt konkurrenterne i cc – så ved de, at du henter tilbud flere steder.
+          </span>
+        </label>
+        <label class="block">
+          <span class="mb-1 block text-sm font-semibold text-ler-800">Dit navn (til underskrift)</span>
+          <input
+            id="tilbud-navn"
+            type="text"
+            placeholder="Fx Martin Jensen"
+            class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
+          />
+        </label>
+
+        <div class="flex flex-wrap gap-3">
+          <button
+            id="tilbud-send"
+            type="submit"
+            class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+          >
+            📧 Åbn e-mail med listen
+          </button>
+          <button
+            id="tilbud-kopier"
+            type="button"
+            class="rounded-lg border border-ler-300 bg-ler-50 px-5 py-3 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
+          >
+            📋 Kopiér e-mailtekst
+          </button>
+        </div>
+        <p id="tilbud-status" class="text-sm text-ler-600" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="mt-4 text-xs text-ler-500">
+        E-mailen åbnes i dit eget mailprogram med emne, modtagere og hele listen udfyldt – du
+        sender den selv, så du har fuld kontrol. Intet sendes fra siden.
+      </p>
+    </section>
+
     <section class="mt-12">
       <h2 class="mb-2 flex items-center gap-2 text-2xl font-bold text-ler-900">
         <span aria-hidden="true">📷</span> Skrueæskerne
@@ -130,4 +242,67 @@ const billeder = [
       >
     </div>
   </div>
+
+  <script type="application/json" id="tilbud-email-config" set:html={emailConfigJson} />
+
+  <script>
+    interface EmailConfig {
+      emne: string;
+      tekst: string;
+    }
+
+    const cfg: EmailConfig = JSON.parse(
+      document.getElementById('tilbud-email-config')!.textContent!,
+    );
+
+    const form = document.getElementById('tilbud-form') as HTMLFormElement | null;
+    if (form) {
+      const tilInput = document.getElementById('tilbud-til') as HTMLInputElement;
+      const ccInput = document.getElementById('tilbud-cc') as HTMLInputElement;
+      const navnInput = document.getElementById('tilbud-navn') as HTMLInputElement;
+      const kopierKnap = document.getElementById('tilbud-kopier') as HTMLButtonElement;
+      const status = document.getElementById('tilbud-status')!;
+
+      function byggTekst(): string {
+        const navn = navnInput.value.trim() || '[dit navn]';
+        return cfg.tekst.replace('__NAVN__', navn);
+      }
+
+      function saetStatus(besked: string): void {
+        status.textContent = besked;
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const til = tilInput.value.trim();
+        const cc = ccInput.value.trim();
+
+        if (!til && !cc) {
+          saetStatus('Udfyld mindst én leverandør-e-mail i Til eller Cc.');
+          tilInput.focus();
+          return;
+        }
+
+        const dele: string[] = [`subject=${encodeURIComponent(cfg.emne)}`];
+        if (cc) dele.push(`cc=${encodeURIComponent(cc)}`);
+        dele.push(`body=${encodeURIComponent(byggTekst())}`);
+
+        const mailto = `mailto:${encodeURIComponent(til)}?${dele.join('&')}`;
+        window.location.href = mailto;
+        saetStatus('E-mailen åbnes nu i dit mailprogram. Tjek modtagere, og send den selv.');
+      });
+
+      kopierKnap.addEventListener('click', async () => {
+        const org = kopierKnap.textContent;
+        try {
+          await navigator.clipboard.writeText(byggTekst());
+          kopierKnap.textContent = '✅ Kopieret!';
+          saetStatus('E-mailteksten er kopieret – indsæt den i din mail til leverandørerne.');
+          setTimeout(() => (kopierKnap.textContent = org), 2000);
+        } catch {
+          saetStatus('Kunne ikke kopiere automatisk – markér og kopiér teksten manuelt.');
+        }
+      });
+    }
+  </script>
 </BaseLayout>
