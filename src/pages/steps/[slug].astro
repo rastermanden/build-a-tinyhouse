@@ -7,6 +7,7 @@ import Galleri from '../../components/Galleri.astro';
 import StepNav from '../../components/StepNav.astro';
 import BestillingsMail from '../../components/BestillingsMail.astro';
 import materialelister from '../../data/materialelister.json';
+import { lister, STORAGE_KEY } from '../../lib/lister';
 import { href } from '../../lib/url';
 
 export async function getStaticPaths() {
@@ -23,6 +24,20 @@ export async function getStaticPaths() {
 
 const { entry, forrige, naeste } = Astro.props;
 const { Content } = await render(entry);
+
+// Data til "materialer fra din valgte liste": for hver liste kun dette trins
+// varer. Klient-scriptet vælger ud fra localStorage.
+const valgtListeConfig = {
+  storageKey: STORAGE_KEY,
+  materialelisteUrl: href('faktisk-materialeliste'),
+  lister: lister.map((l) => ({
+    id: l.id,
+    navn: l.navn,
+    maal: l.maal,
+    varer: l.materialerPrTrin[entry.id] ?? [],
+  })),
+};
+const valgtListeJson = JSON.stringify(valgtListeConfig);
 
 // Saml billeder for dette step ud fra mappen src/assets/steps/<slug>/.
 const alleBilleder = import.meta.glob<{ default: ImageMetadata }>(
@@ -136,6 +151,13 @@ if (erYderbeklaedning) {
       </p>
     </section>
 
+    <section class="mt-12">
+      <h2 class="mb-4 flex items-center gap-2 text-2xl font-bold text-ler-900">
+        <span aria-hidden="true">📋</span> Materialer fra din valgte liste
+      </h2>
+      <div id="valgt-liste-materialer"></div>
+    </section>
+
     {
       erYderbeklaedning && savvaerkEmail && (
         <section id="bestil-savvaerk" class="mt-12 scroll-mt-20 rounded-2xl border border-skov-600/20 bg-skov-600/5 p-6 sm:p-8">
@@ -188,4 +210,100 @@ if (erYderbeklaedning) {
 
     <StepNav forrige={naboFor} naeste={naboNaeste} />
   </article>
+
+  <script type="application/json" id="valgt-liste-data" set:html={valgtListeJson} />
+
+  <script>
+    interface TrinVare {
+      tekst: string;
+      maengde: number;
+      enhed: string;
+      note?: string;
+    }
+    interface ListeData {
+      id: string;
+      navn: string;
+      maal: string;
+      varer: TrinVare[];
+    }
+    interface Config {
+      storageKey: string;
+      materialelisteUrl: string;
+      lister: ListeData[];
+    }
+
+    const el = document.getElementById('valgt-liste-materialer');
+    const cfgEl = document.getElementById('valgt-liste-data');
+    if (el && cfgEl) {
+      const cfg: Config = JSON.parse(cfgEl.textContent || '{}');
+
+      const talFmt = (n: number): string => n.toLocaleString('da-DK');
+      const esc = (s: string): string => {
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+      };
+
+      const render = (): void => {
+        const valgtId = localStorage.getItem(cfg.storageKey);
+        const liste = cfg.lister.find((l) => l.id === valgtId);
+
+        if (!liste) {
+          el.innerHTML = `
+            <div class="rounded-2xl border border-dashed border-ler-300 bg-ler-100/60 p-6 text-center">
+              <p class="text-2xl" aria-hidden="true">📋</p>
+              <p class="mt-2 font-semibold text-ler-900">Du har ikke valgt en materialeliste endnu.</p>
+              <p class="mt-1 text-sm text-ler-700">Vælg en liste, så du ser dette trins materialer med konkrete mængder her.</p>
+              <a href="${cfg.materialelisteUrl}" class="mt-3 inline-block font-semibold text-skov-600 underline">Vælg materialeliste →</a>
+            </div>`;
+          return;
+        }
+
+        const banner = `
+          <div class="flex flex-wrap items-center gap-2 rounded-xl border border-skov-600/30 bg-skov-600/10 px-4 py-3 text-sm">
+            <span class="font-semibold text-ler-900">Valgt liste:</span>
+            <span class="text-ler-800">${esc(liste.navn)}</span>
+            <span class="text-ler-500">(${esc(liste.maal)})</span>
+            <a href="${cfg.materialelisteUrl}" class="ml-auto font-medium text-skov-600 underline">Skift liste</a>
+          </div>`;
+
+        if (!liste.varer.length) {
+          el.innerHTML =
+            banner +
+            `<p class="mt-3 rounded-xl border border-ler-200 bg-ler-50 px-4 py-4 text-sm text-ler-600">Den valgte liste har ingen varer specifikt til dette trin.</p>`;
+          return;
+        }
+
+        const rows = liste.varer
+          .map(
+            (v) => `
+            <tr class="border-t border-ler-200 align-top">
+              <td class="px-4 py-3 font-medium text-ler-900">${esc(v.tekst)}${
+                v.note ? `<span class="mt-0.5 block text-xs font-normal text-ler-500">${esc(v.note)}</span>` : ''
+              }</td>
+              <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">${talFmt(v.maengde)} ${esc(v.enhed)}</td>
+            </tr>`,
+          )
+          .join('');
+
+        el.innerHTML =
+          banner +
+          `<div class="mt-3 overflow-x-auto rounded-xl border border-ler-200">
+            <table class="w-full border-collapse text-left text-sm">
+              <thead class="bg-ler-100 text-ler-800">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Vare</th>
+                  <th class="whitespace-nowrap px-4 py-3 text-right font-semibold">Antal</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>`;
+      };
+
+      // Opdater hvis valget ændres i en anden fane.
+      window.addEventListener('storage', render);
+      render();
+    }
+  </script>
 </BaseLayout>

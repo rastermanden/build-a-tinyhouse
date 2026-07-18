@@ -69,10 +69,15 @@ objekt under `praedefineredeMaal` i `src/data/materialelister.json` med `laengde
 
 Ud over de vejledende estimater findes en side med den **rigtige indkøbsliste** fra et
 konkret byg: `src/pages/faktisk-materialeliste.astro`, der læser
-`src/data/faktisk-materialeliste.json`. Varerne er grupperet i kategorier (konstruktionstræ,
-gulv, loft, tag, isolering & tætning, skruer & befæstelse, lim/sand/øvrigt) med tekst og
-mængde afskrevet fra fakturaen. Billeder til siden (fx skrueæsker) lægges i
-`src/assets/faktisk-materialeliste/`.
+`src/data/faktisk-materialeliste.json`. Fakturaens varer er delt op **pr. byggetrin** i
+`materialerPrTrin` (samme trin-nøgler som estimatet), plus en `oevrigt`-liste til varer, der
+ikke er trinspecifikke (bits, tape, afgift m.m.). Hver vare har `tekst`, `maengde`, `enhed` og
+en `kategori`. Billeder til siden (fx skrueæsker) lægges i `src/assets/faktisk-materialeliste/`.
+
+**Valgt liste på byggetrinnene:** `src/lib/lister.ts` samler de tilgængelige lister ét sted.
+Man vælger en liste på Materialeliste-siden (gemmes i `localStorage` under nøglen
+`valgtMaterialeliste`), og hvert byggetrin viser derefter et banner med den valgte liste og
+netop det trins materialer. Nye størrelser tilføjes ved at udvide `lister` i `lister.ts`.
 
 ## Sådan redigerer du et byggetrin
 

@@ -4,18 +4,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { href } from '../lib/url';
 import BestillingsMail from '../components/BestillingsMail.astro';
 import data from '../data/faktisk-materialeliste.json';
+import { STORAGE_KEY } from '../lib/lister';
 import skrueaeskerHylde from '../assets/faktisk-materialeliste/nkt-skrueaesker-paa-hylde.jpg';
 import skrueaeskerTopkon from '../assets/faktisk-materialeliste/nkt-skrueaesker-topkon-og-basic.jpg';
 
-const { info, grupper } = data;
+const { info, materialerPrTrin, oevrigt, stepRaekkefolge, stepTitler } = data;
+const trinMaterialer = materialerPrTrin as Record<
+  string,
+  Array<{ tekst: string; maengde: number; enhed: string; note?: string; kategori?: string }>
+>;
 
 const talFormat = new Intl.NumberFormat('da-DK', { maximumFractionDigits: 2 });
 
 const husMaal = `${info.husLaengde_cm / 100} × ${info.husBredde_cm / 100} m`.replace(/\./g, ',');
 const husAreal = talFormat.format(info.husAreal_m2);
 
-// Byg en færdig tilbuds-e-mail med hele materialelisten, som klient-scriptet
-// kan sende via brugerens eget mailprogram (mailto). __NAVN__ udskiftes i browseren.
+// Underlister pr. byggetrin (i rækkefølge) + en øvrigt-gruppe til det, der
+// ikke er trinspecifikt.
+const trinGrupper = stepRaekkefolge
+  .map((slug) => ({ slug, titel: stepTitler[slug] ?? slug, varer: trinMaterialer[slug] ?? [] }))
+  .filter((g) => g.varer.length > 0);
+
+// Byg en færdig tilbuds-e-mail med hele materialelisten, opdelt pr. byggetrin.
 const emailEmne = `Tilbud ønskes – byggematerialer til tiny house (${husMaal})`;
 const emailLinjer: string[] = [
   'Hej',
@@ -24,11 +34,17 @@ const emailLinjer: string[] = [
   '',
   'Jeg indhenter tilbud fra flere leverandører (se cc), så jeg kan sammenligne. Giv derfor gerne jeres skarpeste pris – både samlet og gerne pr. linje – samt leveringstid og fragt. Foreslå meget gerne tilsvarende lagerførte alternativer, hvis det er billigere.',
   '',
-  'MATERIALELISTE',
+  'MATERIALELISTE (pr. byggetrin)',
 ];
-for (const g of grupper) {
-  emailLinjer.push('', `== ${g.navn} ==`);
+for (const g of trinGrupper) {
+  emailLinjer.push('', `== ${g.titel} ==`);
   for (const v of g.varer) {
+    emailLinjer.push(`- ${v.tekst}: ${talFormat.format(v.maengde)} ${v.enhed}`);
+  }
+}
+if (oevrigt.length > 0) {
+  emailLinjer.push('', '== Øvrigt (ikke trinspecifikt) ==');
+  for (const v of oevrigt) {
     emailLinjer.push(`- ${v.tekst}: ${talFormat.format(v.maengde)} ${v.enhed}`);
   }
 }
@@ -80,20 +96,33 @@ const billeder = [
 
     <div class="mt-6 rounded-xl border border-ler-200 bg-ler-100 p-4 text-sm text-ler-700">
       ⚠️ Det her er <strong>mine konkrete indkøb</strong>, ikke et vejledende estimat. Mængderne
-      passer til netop mit hus – dit forbrug bliver anderledes. Vil du se listen pr. byggetrin?
-      Se <a href={href('beregner')} class="font-medium text-skov-600 underline">materialelisterne</a>.
+      passer til netop mit hus – dit forbrug bliver anderledes. Listen er delt op
+      <strong>pr. byggetrin</strong> nedenfor.
+    </div>
+
+    <!-- Vælg denne liste (huskes på byggetrinnene) -->
+    <div class="mt-6 flex flex-wrap items-center gap-3">
+      <button
+        id="vaelg-liste-knap"
+        type="button"
+        data-liste-id={info.id}
+        data-liste-navn={info.navn}
+        class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+      >
+        ✓ Brug denne liste på byggetrinnene
+      </button>
+      <span id="vaelg-liste-status" class="text-sm text-ler-600" role="status" aria-live="polite"></span>
     </div>
 
     {
-      grupper.map((gruppe) => (
+      trinGrupper.map((gruppe, i) => (
         <section class="mt-10">
           <h2 class="flex items-center gap-2 text-2xl font-bold text-ler-900">
-            <span aria-hidden="true">{gruppe.ikon}</span>
-            {gruppe.navn}
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-skov-600 text-sm font-bold text-ler-50">
+              {i + 1}
+            </span>
+            {gruppe.titel}
           </h2>
-          {gruppe.beskrivelse && (
-            <p class="mt-1 text-sm text-ler-600">{gruppe.beskrivelse}</p>
-          )}
           <div class="mt-4 overflow-x-auto rounded-xl border border-ler-200">
             <table class="w-full border-collapse text-left text-sm">
               <thead class="bg-ler-100 text-ler-800">
@@ -105,7 +134,10 @@ const billeder = [
               <tbody>
                 {gruppe.varer.map((v) => (
                   <tr class="border-t border-ler-200 align-top">
-                    <td class="px-4 py-3 font-medium text-ler-900">{v.tekst}</td>
+                    <td class="px-4 py-3 font-medium text-ler-900">
+                      {v.tekst}
+                      {v.note && <span class="mt-0.5 block text-xs font-normal text-ler-500">{v.note}</span>}
+                    </td>
                     <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">
                       {talFormat.format(v.maengde)} {v.enhed}
                     </td>
@@ -116,6 +148,39 @@ const billeder = [
           </div>
         </section>
       ))
+    }
+
+    {
+      oevrigt.length > 0 && (
+        <section class="mt-10">
+          <h2 class="flex items-center gap-2 text-2xl font-bold text-ler-900">
+            <span aria-hidden="true">📦</span> Øvrigt (ikke trinspecifikt)
+          </h2>
+          <p class="mt-1 text-sm text-ler-600">
+            Bits, tape, palle og afgift, der bruges på tværs af – eller uden for – byggetrinnene.
+          </p>
+          <div class="mt-4 overflow-x-auto rounded-xl border border-ler-200">
+            <table class="w-full border-collapse text-left text-sm">
+              <thead class="bg-ler-100 text-ler-800">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Vare</th>
+                  <th class="whitespace-nowrap px-4 py-3 text-right font-semibold">Antal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {oevrigt.map((v) => (
+                  <tr class="border-t border-ler-200 align-top">
+                    <td class="px-4 py-3 font-medium text-ler-900">{v.tekst}</td>
+                    <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">
+                      {talFormat.format(v.maengde)} {v.enhed}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )
     }
 
     <!-- Indhent tilbud fra leverandører -->
@@ -194,9 +259,9 @@ const billeder = [
 
     <div class="mt-10 flex flex-wrap gap-3">
       <a
-        href={href('beregner')}
+        href={href('#byggesteps')}
         class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
-        >Se materialelisterne</a
+        >Se byggeguiden</a
       >
       <a
         href={href('planlaegning')}
@@ -205,4 +270,34 @@ const billeder = [
       >
     </div>
   </div>
+
+  <script define:vars={{ storageKey: STORAGE_KEY }}>
+    const knap = document.getElementById('vaelg-liste-knap');
+    const status = document.getElementById('vaelg-liste-status');
+    if (knap) {
+      const id = knap.dataset.listeId ?? '';
+      const navn = knap.dataset.listeNavn ?? 'listen';
+
+      const opdater = () => {
+        const valgt = localStorage.getItem(storageKey) === id;
+        knap.textContent = valgt ? '✓ Valgt til byggetrinnene' : '✓ Brug denne liste på byggetrinnene';
+        knap.classList.toggle('bg-skov-600', !valgt);
+        knap.classList.toggle('hover:bg-skov-700', !valgt);
+        knap.classList.toggle('bg-skov-700', valgt);
+        if (status)
+          status.textContent = valgt
+            ? 'Denne liste vises nu på de enkelte byggetrin.'
+            : 'Vælg listen, så hvert byggetrin viser dets materialer herfra.';
+      };
+
+      knap.addEventListener('click', () => {
+        const valgt = localStorage.getItem(storageKey) === id;
+        if (valgt) localStorage.removeItem(storageKey);
+        else localStorage.setItem(storageKey, id);
+        opdater();
+      });
+
+      opdater();
+    }
+  </script>
 </BaseLayout>
