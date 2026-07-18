@@ -187,14 +187,29 @@ const faktiskJson = JSON.stringify(faktiskInfo);
         aktivMaal = null;
         handlinger.classList.add('hidden');
         handlinger.classList.remove('sm:flex');
+
+        // Har vi en faktisk indkøbsliste for præcis dette mål, så vis den positivt
+        // i stedet for "ingen færdig liste".
+        if (l === faktisk.laengde_cm && b === faktisk.bredde_cm) {
+          resultat.innerHTML = `
+            <a href="${faktisk.url}" class="flex items-start gap-4 rounded-2xl border border-skov-600/30 bg-skov-600/5 p-6 no-underline transition-colors hover:bg-skov-600/10">
+              <span class="text-3xl" aria-hidden="true">🧾</span>
+              <span>
+                <span class="block text-lg font-bold text-ler-900">Faktisk indkøbsliste for ${(l / 100).toLocaleString('da-DK')} × ${(b / 100).toLocaleString('da-DK')} m</span>
+                <span class="mt-1 block text-ler-700">Jeg har bygget et hus i præcis dette mål. I stedet for et estimat kan du se de konkrete varer og mængder fra fakturaen – med billeder af skrueæskerne.</span>
+                <span class="mt-3 inline-block font-semibold text-skov-700">Se den faktiske liste →</span>
+              </span>
+            </a>`;
+          return;
+        }
+
         resultat.innerHTML = `
           <div class="rounded-2xl border border-dashed border-ler-300 bg-ler-100/60 p-8 text-center">
             <p class="text-3xl">📐</p>
             <p class="mt-3 font-semibold text-ler-900">Ingen færdig materialeliste for ${(l / 100).toLocaleString('da-DK')} × ${(b / 100).toLocaleString('da-DK')} m endnu.</p>
             <p class="mt-2 text-sm text-ler-700">Vælg et af de tilgængelige mål (${esc(tilgaengelige)}),
             eller tilføj målet i <code class="rounded bg-ler-200 px-1">src/data/materialelister.json</code>.</p>
-          </div>
-          ${faktiskKaldud(l, b)}`;
+          </div>`;
         return;
       }
 
