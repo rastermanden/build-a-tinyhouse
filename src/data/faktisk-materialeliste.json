@@ -3,8 +3,11 @@
     "titel": "Min faktiske indkøbsliste",
     "leverandoer": "Lokalt byggecenter / tømmerhandel (minigrusgrav, vognmandskørsel med kran og grab, brænde og træpiller)",
     "leveringsdato": "02.07.26",
-    "beskrivelse": "Det her er de materialer, jeg faktisk købte hjem til mit tiny house – renskrevet fra fakturaen. Det er ikke et vejledende estimat, men de konkrete varer og mængder, der blev leveret. Brug det som virkelighedstjek ved siden af beregneren.",
-    "bemaerkning": "Mængder og varenumre er afskrevet fra fakturaen. De passer til netop mit hus og mine mål – dit forbrug bliver anderledes. Varenumre er leverandørens egne og kan ændre sig."
+    "husLaengde_cm": 600,
+    "husBredde_cm": 360,
+    "husAreal_m2": 21.6,
+    "beskrivelse": "Det her er de materialer, jeg faktisk købte hjem til mit tiny house – renskrevet fra fakturaen. Huset er 600 × 360 cm (21,6 m²), altså den største størrelse i beregneren. Det er ikke et vejledende estimat, men de konkrete varer og mængder, der blev leveret. Brug det som virkelighedstjek ved siden af beregneren.",
+    "bemaerkning": "Mængder og varenumre er afskrevet fra fakturaen. De passer til netop mit hus på 600 × 360 cm – dit forbrug bliver anderledes, hvis du bygger i andre mål. Varenumre er leverandørens egne og kan ændre sig."
   },
   "grupper": [
     {

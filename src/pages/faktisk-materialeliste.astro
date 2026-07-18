@@ -12,6 +12,9 @@ const talFormat = new Intl.NumberFormat('da-DK', { maximumFractionDigits: 2 });
 
 const antalVarer = grupper.reduce((sum, g) => sum + g.varer.length, 0);
 
+const husMaal = `${info.husLaengde_cm / 100} × ${info.husBredde_cm / 100} m`.replace(/\./g, ',');
+const husAreal = talFormat.format(info.husAreal_m2);
+
 const billeder = [
   {
     billede: skrueaeskerHylde,
@@ -35,9 +38,16 @@ const billeder = [
     >
 
     <h1 class="mt-4 text-3xl font-bold text-ler-900 sm:text-4xl">Faktisk materialeliste</h1>
+    <p class="mt-2 inline-flex items-center gap-2 rounded-full bg-skov-600/10 px-3 py-1 text-sm font-semibold text-skov-700">
+      🏠 Hus på {husMaal} ({husAreal} m²)
+    </p>
     <p class="mt-3 text-lg text-ler-700">{info.beskrivelse}</p>
 
-    <dl class="mt-6 grid gap-3 sm:grid-cols-3">
+    <dl class="mt-6 grid gap-3 sm:grid-cols-4">
+      <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
+        <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Husmål</dt>
+        <dd class="mt-1 font-bold text-ler-900">{husMaal}</dd>
+      </div>
       <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
         <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Leveret</dt>
         <dd class="mt-1 font-bold text-ler-900">{info.leveringsdato}</dd>
