@@ -1,0 +1,141 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { href } from '../lib/url';
+import data from '../data/faktisk-materialeliste.json';
+import skrueaeskerHylde from '../assets/faktisk-materialeliste/nkt-skrueaesker-paa-hylde.jpg';
+import skrueaeskerTopkon from '../assets/faktisk-materialeliste/nkt-skrueaesker-topkon-og-basic.jpg';
+
+const { info, grupper } = data;
+
+const talFormat = new Intl.NumberFormat('da-DK', { maximumFractionDigits: 2 });
+
+const antalVarer = grupper.reduce((sum, g) => sum + g.varer.length, 0);
+
+const billeder = [
+  {
+    billede: skrueaeskerHylde,
+    alt: 'NKT-skrueæsker stablet på hylden – Spun+ climate, Topkon CK outdoor og Basic i flere længder',
+  },
+  {
+    billede: skrueaeskerTopkon,
+    alt: 'NKT-skrueæsker med Topkon RSS og Basic-skruer i 5,0 og 6,0 mm samt Topkon CK outdoor',
+  },
+];
+---
+
+<BaseLayout
+  titel="Faktisk materialeliste"
+  beskrivelse="Den rigtige indkøbsliste fra mit tiny house-byg – renskrevet fra fakturaen, med billeder af skrueæskerne."
+>
+  <div class="mx-auto max-w-3xl px-4 py-10">
+    <a
+      href={href('planlaegning')}
+      class="text-sm font-medium text-skov-600 hover:text-skov-700">← Planlægning &amp; indkøb</a
+    >
+
+    <h1 class="mt-4 text-3xl font-bold text-ler-900 sm:text-4xl">Faktisk materialeliste</h1>
+    <p class="mt-3 text-lg text-ler-700">{info.beskrivelse}</p>
+
+    <dl class="mt-6 grid gap-3 sm:grid-cols-3">
+      <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
+        <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Leveret</dt>
+        <dd class="mt-1 font-bold text-ler-900">{info.leveringsdato}</dd>
+      </div>
+      <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
+        <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Varelinjer</dt>
+        <dd class="mt-1 font-bold text-ler-900">{antalVarer}</dd>
+      </div>
+      <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
+        <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Kategorier</dt>
+        <dd class="mt-1 font-bold text-ler-900">{grupper.length}</dd>
+      </div>
+    </dl>
+
+    <div class="mt-6 rounded-xl border border-ler-200 bg-ler-100 p-4 text-sm text-ler-700">
+      ⚠️ Det her er <strong>mine konkrete indkøb</strong>, ikke et vejledende estimat. Mængderne
+      passer til netop mit hus – dit forbrug bliver anderledes. Vil du regne på dine egne mål?
+      Brug <a href={href('beregner')} class="font-medium text-skov-600 underline">materialeberegneren</a>.
+    </div>
+
+    {
+      grupper.map((gruppe) => (
+        <section class="mt-10">
+          <h2 class="flex items-center gap-2 text-2xl font-bold text-ler-900">
+            <span aria-hidden="true">{gruppe.ikon}</span>
+            {gruppe.navn}
+          </h2>
+          {gruppe.beskrivelse && (
+            <p class="mt-1 text-sm text-ler-600">{gruppe.beskrivelse}</p>
+          )}
+          <div class="mt-4 overflow-x-auto rounded-xl border border-ler-200">
+            <table class="w-full border-collapse text-left text-sm">
+              <thead class="bg-ler-100 text-ler-800">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Vare</th>
+                  <th class="px-4 py-3 font-semibold">Varenr.</th>
+                  <th class="whitespace-nowrap px-4 py-3 text-right font-semibold">Antal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {gruppe.varer.map((v) => (
+                  <tr class="border-t border-ler-200 align-top">
+                    <td class="px-4 py-3 font-medium text-ler-900">{v.tekst}</td>
+                    <td class="whitespace-nowrap px-4 py-3 font-mono text-xs text-ler-500">
+                      {v.varenr || '—'}
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">
+                      {talFormat.format(v.maengde)} {v.enhed}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ))
+    }
+
+    <section class="mt-12">
+      <h2 class="mb-2 flex items-center gap-2 text-2xl font-bold text-ler-900">
+        <span aria-hidden="true">📷</span> Skrueæskerne
+      </h2>
+      <p class="mb-4 text-sm text-ler-600">
+        Sådan så bunken af NKT-skruer ud, da de var kommet hjem. Topkon CK/RSS outdoor til det
+        udvendige, Basic-skruer til skelettet og Spun+ climate til de lange samlinger.
+      </p>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {
+          billeder.map(({ billede, alt }) => (
+            <figure class="overflow-hidden rounded-xl border border-ler-200 bg-ler-100">
+              <Image
+                src={billede}
+                alt={alt}
+                widths={[320, 640, 960]}
+                sizes="(min-width: 640px) 45vw, 90vw"
+                class="h-56 w-full object-cover transition-transform duration-300 hover:scale-105"
+              />
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <p class="mt-8 rounded-xl border border-dashed border-ler-300 bg-ler-100/60 px-4 py-4 text-sm text-ler-600">
+      {info.bemaerkning}
+    </p>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a
+        href={href('beregner')}
+        class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+        >Åbn materialeberegneren</a
+      >
+      <a
+        href={href('planlaegning')}
+        class="rounded-lg border border-ler-300 bg-ler-50 px-5 py-3 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
+        >Planlægning &amp; indkøb</a
+      >
+    </div>
+  </div>
+</BaseLayout>

@@ -27,10 +27,12 @@ npm run preview  # forhåndsvis produktions-build lokalt
 ```
 src/
   content/steps/        # ét byggetrin = én markdown-fil (rækkefølge via "order")
-  data/materialelister.json   # prædefinerede mål → fuld materialeliste pr. trin
+  data/materialelister.json          # prædefinerede mål → fuld materialeliste pr. trin
+  data/faktisk-materialeliste.json   # den rigtige indkøbsliste fra fakturaen (konkrete varer)
   assets/steps/<slug>/  # billeder for hvert byggetrin (organiseret i mapper)
+  assets/faktisk-materialeliste/  # billeder til den faktiske materialeliste (fx skrueæsker)
   components/           # Header, Footer, Galleri, MaterialTabel, m.fl.
-  pages/                # forside, planlægning, beregner, om-og-credits, steps/[slug]
+  pages/                # forside, planlægning, beregner, faktisk-materialeliste, om-og-credits, steps/[slug]
 public/                 # favicon m.m.
 ```
 
@@ -58,6 +60,15 @@ Materialeberegneren slår op i `src/data/materialelister.json`. Tilføj et nyt o
 9 trin. Mål skal gå op i **60 cm** (længde max 600, bredde max 360).
 
 > Mængderne i JSON-filen er **vejledende estimater** til planlægning – tjek altid selv efter.
+
+## Faktisk materialeliste (fakturaen)
+
+Ud over de vejledende estimater findes en side med den **rigtige indkøbsliste** fra et
+konkret byg: `src/pages/faktisk-materialeliste.astro`, der læser
+`src/data/faktisk-materialeliste.json`. Varerne er grupperet i kategorier (konstruktionstræ,
+gulv, loft, tag, isolering & tætning, skruer & befæstelse, lim/sand/øvrigt) med varenummer og
+mængde afskrevet fra fakturaen. Billeder til siden (fx skrueæsker) lægges i
+`src/assets/faktisk-materialeliste/`.
 
 ## Sådan redigerer du et byggetrin
 
