@@ -1,32 +1,46 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { href } from '../lib/url';
 import data from '../data/materialelister.json';
+import faktisk from '../data/faktisk-materialeliste.json';
 
 const MODUL = data.info.modul_cm; // 60
-const MAX_LAENGDE = 600;
-const MAX_BREDDE = 360;
 
-const laengder = Array.from({ length: MAX_LAENGDE / MODUL }, (_, i) => (i + 1) * MODUL);
-const bredder = Array.from({ length: MAX_BREDDE / MODUL }, (_, i) => (i + 1) * MODUL);
+// Der er p.t. kun én færdig, statisk materialeliste: mit faktiske byg på
+// 600 × 360 cm. Vælgerne indeholder derfor kun det mål. Kommer der flere
+// størrelser til senere, kan de tilføjes her.
+const laengder = [faktisk.info.husLaengde_cm];
+const bredder = [faktisk.info.husBredde_cm];
 
 // Sæt de tilgængelige mål ind i data-attributter, så klient-scriptet kan slå op.
 const dataJson = JSON.stringify(data);
+
+// Info om den faktiske indkøbsliste, så siden kan henvise til den,
+// når man vælger det mål, listen dækker.
+const faktiskInfo = {
+  laengde_cm: faktisk.info.husLaengde_cm,
+  bredde_cm: faktisk.info.husBredde_cm,
+  url: href('faktisk-materialeliste'),
+};
+const faktiskJson = JSON.stringify(faktiskInfo);
 ---
 
 <BaseLayout
-  titel="Materialeberegner"
-  beskrivelse="Vælg længde og bredde på dit tiny house og få den fulde materialeliste."
+  titel="Materialelister"
+  beskrivelse="Færdige, statiske materialelister til tiny house – vælg en størrelse og se hele listen."
 >
   <div class="mx-auto max-w-3xl px-4 py-10">
-    <h1 class="text-3xl font-bold text-ler-900 sm:text-4xl">Materialeberegner</h1>
+    <h1 class="text-3xl font-bold text-ler-900 sm:text-4xl">Materialelister</h1>
     <p class="mt-3 text-lg text-ler-700">
-      Vælg længde og bredde på dit hus, så viser vi den fulde, prædefinerede materialeliste –
-      trin for trin. Alle mål går op i {MODUL} cm-modulet.
+      Det her er ikke en live-beregner, men <strong>færdige, statiske lister</strong>. Vælg en
+      størrelse, så viser vi hele materialelisten for lige netop det hus. Alle mål bygger på
+      {MODUL} cm-modulet.
     </p>
 
     <div class="mt-6 rounded-xl border border-ler-200 bg-ler-100 p-4 text-sm text-ler-700">
-      ⚠️ Mængderne er <strong>vejledende estimater</strong> til planlægning. Tjek altid selv
-      efter og tilpas til dit projekt. Metoden er inspireret af
+      📋 Lige nu er der <strong>én færdig liste</strong>: mit faktiske byg på 6,0 × 3,6 m
+      (21,6 m²). Der kommer flere størrelser til, efterhånden som jeg bygger dem. Metoden er
+      inspireret af
       <a href="https://smaabyg.nu/" target="_blank" rel="noopener" class="font-medium text-skov-600 underline">småBYG</a>.
     </div>
 
@@ -38,8 +52,7 @@ const dataJson = JSON.stringify(data);
           id="vaelg-laengde"
           class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
         >
-          <option value="">Vælg længde …</option>
-          {laengder.map((l) => <option value={l}>{(l / 100).toLocaleString('da-DK')} m ({l} cm)</option>)}
+          {laengder.map((l) => <option value={l} selected>{(l / 100).toLocaleString('da-DK')} m ({l} cm)</option>)}
         </select>
       </label>
 
@@ -49,14 +62,12 @@ const dataJson = JSON.stringify(data);
           id="vaelg-bredde"
           class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
         >
-          <option value="">Vælg bredde …</option>
-          {bredder.map((b) => <option value={b}>{(b / 100).toLocaleString('da-DK')} m ({b} cm)</option>)}
+          {bredder.map((b) => <option value={b} selected>{(b / 100).toLocaleString('da-DK')} m ({b} cm)</option>)}
         </select>
       </label>
     </form>
 
     <p class="mt-3 text-sm text-ler-600">
-      Længde max {MAX_LAENGDE} cm · bredde max {MAX_BREDDE} cm · alt i {MODUL} cm-trin.
       <span id="tilgaengelige-hint"></span>
     </p>
 
@@ -82,6 +93,7 @@ const dataJson = JSON.stringify(data);
   </div>
 
   <script type="application/json" id="beregner-data" set:html={dataJson} />
+  <script type="application/json" id="faktisk-info" set:html={faktiskJson} />
 
   <script>
     interface Materiale {
@@ -105,7 +117,30 @@ const dataJson = JSON.stringify(data);
       praedefineredeMaal: Maal[];
     }
 
+    interface FaktiskInfo {
+      laengde_cm: number;
+      bredde_cm: number;
+      url: string;
+    }
+
     const data: Data = JSON.parse(document.getElementById('beregner-data')!.textContent!);
+    const faktisk: FaktiskInfo = JSON.parse(
+      document.getElementById('faktisk-info')!.textContent!,
+    );
+
+    // Kald-ud til den faktiske indkøbsliste, når det valgte mål matcher det,
+    // listen dækker (fx 600 × 360 cm).
+    function faktiskKaldud(l: number, b: number): string {
+      if (l !== faktisk.laengde_cm || b !== faktisk.bredde_cm) return '';
+      return `
+        <a href="${faktisk.url}" class="mt-4 flex items-start gap-3 rounded-2xl border border-skov-600/30 bg-skov-600/10 p-4 no-underline transition-colors hover:bg-skov-600/20">
+          <span class="text-2xl" aria-hidden="true">🧾</span>
+          <span>
+            <span class="block font-semibold text-ler-900">Se den faktiske indkøbsliste for dette mål</span>
+            <span class="mt-0.5 block text-sm text-ler-700">Jeg har bygget et hus på præcis ${(l / 100).toLocaleString('da-DK')} × ${(b / 100).toLocaleString('da-DK')} m – se de konkrete varer og mængder fra fakturaen.</span>
+          </span>
+        </a>`;
+    }
 
     const laengdeSel = document.getElementById('vaelg-laengde') as HTMLSelectElement;
     const breddeSel = document.getElementById('vaelg-bredde') as HTMLSelectElement;
@@ -113,11 +148,9 @@ const dataJson = JSON.stringify(data);
     const handlinger = document.getElementById('handlinger')!;
     const hint = document.getElementById('tilgaengelige-hint')!;
 
-    // Vis hvilke mål der har en færdig liste.
-    const tilgaengelige = data.praedefineredeMaal
-      .map((m) => `${(m.laengde_cm / 100).toLocaleString('da-DK')}×${(m.bredde_cm / 100).toLocaleString('da-DK')} m`)
-      .join(', ');
-    hint.textContent = ` Færdige lister: ${tilgaengelige}.`;
+    // Vis hvilket mål der har en færdig liste (p.t. kun den faktiske liste).
+    const tilgaengelige = `${(faktisk.laengde_cm / 100).toLocaleString('da-DK')} × ${(faktisk.bredde_cm / 100).toLocaleString('da-DK')} m`;
+    hint.textContent = `Færdig liste lige nu: ${tilgaengelige}.`;
 
     let aktivMaal: Maal | null = null;
 
@@ -152,6 +185,22 @@ const dataJson = JSON.stringify(data);
         aktivMaal = null;
         handlinger.classList.add('hidden');
         handlinger.classList.remove('sm:flex');
+
+        // Har vi en faktisk indkøbsliste for præcis dette mål, så vis den positivt
+        // i stedet for "ingen færdig liste".
+        if (l === faktisk.laengde_cm && b === faktisk.bredde_cm) {
+          resultat.innerHTML = `
+            <a href="${faktisk.url}" class="flex items-start gap-4 rounded-2xl border border-skov-600/30 bg-skov-600/5 p-6 no-underline transition-colors hover:bg-skov-600/10">
+              <span class="text-3xl" aria-hidden="true">🧾</span>
+              <span>
+                <span class="block text-lg font-bold text-ler-900">Faktisk indkøbsliste for ${(l / 100).toLocaleString('da-DK')} × ${(b / 100).toLocaleString('da-DK')} m</span>
+                <span class="mt-1 block text-ler-700">Jeg har bygget et hus i præcis dette mål. I stedet for et estimat kan du se de konkrete varer og mængder fra fakturaen – med billeder af skrueæskerne.</span>
+                <span class="mt-3 inline-block font-semibold text-skov-700">Se den faktiske liste →</span>
+              </span>
+            </a>`;
+          return;
+        }
+
         resultat.innerHTML = `
           <div class="rounded-2xl border border-dashed border-ler-300 bg-ler-100/60 p-8 text-center">
             <p class="text-3xl">📐</p>
@@ -209,6 +258,7 @@ const dataJson = JSON.stringify(data);
           <p class="mt-1 text-ler-700">${esc(maal.beskrivelse)}</p>
           <p class="mt-2 text-sm text-ler-600">Væghøjde brugt i beregningen: ${data.info.vaeghojde_cm} cm.</p>
         </div>
+        ${faktiskKaldud(l, b)}
         ${sektioner}`;
     }
 
@@ -231,6 +281,9 @@ const dataJson = JSON.stringify(data);
 
     laengdeSel.addEventListener('change', render);
     breddeSel.addEventListener('change', render);
+
+    // Vis listen for det forvalgte mål med det samme.
+    render();
 
     document.getElementById('print-knap')!.addEventListener('click', () => window.print());
 

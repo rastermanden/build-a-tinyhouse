@@ -1,100 +1,95 @@
 {
   "info": {
+    "id": "faktisk-600x360",
+    "navn": "Faktisk liste – 6,0 × 3,6 m",
     "titel": "Min faktiske indkøbsliste",
     "leverandoer": "Lokalt byggecenter / tømmerhandel (minigrusgrav, vognmandskørsel med kran og grab, brænde og træpiller)",
     "leveringsdato": "02.07.26",
     "husLaengde_cm": 600,
     "husBredde_cm": 360,
     "husAreal_m2": 21.6,
-    "beskrivelse": "Det her er de materialer, jeg faktisk købte hjem til mit tiny house – renskrevet fra fakturaen. Huset er 600 × 360 cm (21,6 m²), altså den største størrelse i beregneren. Det er ikke et vejledende estimat, men de konkrete varer og mængder, der blev leveret. Brug det som virkelighedstjek ved siden af beregneren.",
-    "bemaerkning": "Mængder og varenumre er afskrevet fra fakturaen. De passer til netop mit hus på 600 × 360 cm – dit forbrug bliver anderledes, hvis du bygger i andre mål. Varenumre er leverandørens egne og kan ændre sig."
+    "beskrivelse": "Det her er de materialer, jeg faktisk købte hjem til mit tiny house – renskrevet fra fakturaen. Huset er 600 × 360 cm (21,6 m²). Det er ikke et vejledende estimat, men de konkrete varer og mængder, der blev leveret. Listen er delt op pr. byggetrin, så du kan følge den trin for trin.",
+    "bemaerkning": "Mængder og varenumre er afskrevet fra fakturaen. De passer til netop mit hus på 600 × 360 cm – dit forbrug bliver anderledes, hvis du bygger i andre mål. Fordelingen på byggetrin er min bedste faglige opdeling; nogle varer (fx skruer og tape) bruges på flere trin. Varenumre er leverandørens egne og kan ændre sig."
   },
-  "grupper": [
-    {
-      "navn": "Konstruktionstræ",
-      "ikon": "🪵",
-      "beskrivelse": "Bærende træ i C24 til spær, planker og regler.",
-      "varer": [
-        { "varenr": "1600047201", "tekst": "45×195 mm C24, fra 5,7 m og længere", "maengde": 24, "enhed": "m" },
-        { "varenr": "1600047200", "tekst": "45×195 mm C24 spærplanke, t.o.m. 5,4 m", "maengde": 86.4, "enhed": "m" },
-        { "varenr": "1600047150", "tekst": "45×145 mm C24 spærplanke, t.o.m. 5,40 m", "maengde": 172.8, "enhed": "m" },
-        { "varenr": "1030047050", "tekst": "45×45 mm reglar (2,4 – 3,0 – 3,6 m)", "maengde": 14.4, "enhed": "m" }
-      ]
-    },
-    {
-      "navn": "Gulv",
-      "ikon": "🧱",
-      "beskrivelse": "Massivt trægulv og gulvpap.",
-      "varer": [
-        { "varenr": "1909578", "tekst": "Stigma massivt gulv 32×180 mm, B-sort. fyr ubeh. med fas", "maengde": 20.47, "enhed": "m²" },
-        { "varenr": "8383929", "tekst": "Storm gulvpap 500 gr/m² grå, 1×30 m", "maengde": 1, "enhed": "rl" }
-      ]
-    },
-    {
-      "navn": "Loft",
-      "ikon": "🔲",
-      "beskrivelse": "Rustik loftbeklædning med endenot.",
-      "varer": [
-        { "varenr": "191001595", "tekst": "15×95 granrustik loft, ubeh. m. endenot (3,6 & 4,2 m), 8/pk", "maengde": 235.2, "enhed": "lbm" }
-      ]
-    },
-    {
-      "navn": "Tag",
-      "ikon": "🏠",
-      "beskrivelse": "Trapezplader, tagbrædder, lægter og forskalling.",
-      "varer": [
-        { "varenr": "", "tekst": "Da TP 30-119 trapezplade tag, poly. std. farve, 1,03×4,00 m", "maengde": 6, "enhed": "pla" },
-        { "varenr": "101022125", "tekst": "23×121 mm tagbrædder, ru fors. høvl. bag + endenot", "maengde": 218, "enhed": "m" },
-        { "varenr": "1620038073", "tekst": "38×73 mm T1 taglægter (3,6 & 4,2 & 5,1 m)", "maengde": 71.4, "enhed": "m" },
-        { "varenr": "1030022100", "tekst": "22×100 mm forskalling, høvlet (2,4 – 5,1 m)", "maengde": 92.4, "enhed": "m" }
-      ]
-    },
-    {
-      "navn": "Isolering & tætning",
-      "ikon": "🧣",
-      "beskrivelse": "Træfiberisolering, dampbremse og tapes.",
-      "varer": [
-        { "varenr": "", "tekst": "Npl Steico 36 træfiberisolering 145×565×1320 mm, 2,757 m²/pk", "maengde": 6, "enhed": "pak" },
-        { "varenr": "", "tekst": "Npl Steico Universal TG-4 c-c 600 mm, 22×2230×600 mm", "maengde": 94, "enhed": "pl" },
-        { "varenr": "", "tekst": "Steico engangspalle", "maengde": 1, "enhed": "stk" },
-        { "varenr": "", "tekst": "Øko natur papirdampbremse 75 m²/rl, brun/hvid, 1,5×50 m", "maengde": 1, "enhed": "rl" },
-        { "varenr": "", "tekst": "Npl Steico multi tape f, 100 mm, 25 m/rl", "maengde": 1, "enhed": "rl" },
-        { "varenr": "", "tekst": "Dafa neutral UV-tape sort, 60 mm×25 m", "maengde": 1, "enhed": "rl" },
-        { "varenr": "", "tekst": "Gaffatape – sort basic, 50 mm×48 m", "maengde": 2, "enhed": "rl" }
-      ]
-    },
-    {
-      "navn": "Skruer & befæstelse",
-      "ikon": "🔩",
-      "beskrivelse": "NKT-skruer i flere længder, karm-anker og bits. Se billederne af skrueæskerne nedenfor.",
-      "varer": [
-        { "varenr": "1655659", "tekst": "NKT Spun+ skrue UH TX30, 6,0×180/60 mm, climate-G3, 100 st", "maengde": 2, "enhed": "pak" },
-        { "varenr": "2402877", "tekst": "NKT Topkon CK outdoor, 6×160 mm, 100 st", "maengde": 2, "enhed": "pak" },
-        { "varenr": "2510902", "tekst": "NKT Topkon CK outdoor, 5×150 mm, 100 st", "maengde": 10, "enhed": "pak" },
-        { "varenr": "1673220", "tekst": "NKT Basic skrue UH TX20, 5,0×120/60 mm, Ruspert1000, 200 st", "maengde": 4, "enhed": "pak" },
-        { "varenr": "1673218", "tekst": "NKT Basic skrue UH TX20, 5,0×100/55 mm, Ruspert1000, 200 st", "maengde": 1, "enhed": "pak" },
-        { "varenr": "1673216", "tekst": "NKT Basic skrue UH TX20, 5,0×80/45 mm, Ruspert1000, 250 st", "maengde": 4, "enhed": "pak" },
-        { "varenr": "1721341", "tekst": "NKT Basic skrue UH TX20, 5,0×60 mm, Ruspert1000, 200 st", "maengde": 1, "enhed": "pak" },
-        { "varenr": "2382756", "tekst": "NKT Topkon RSS outdoor, 6×63 mm, 150 st", "maengde": 11, "enhed": "pak" },
-        { "varenr": "2052007", "tekst": "NKT Farm+ skrue til stålplade, 6-kant sort, 4,8×35 mm, 200 st", "maengde": 3, "enhed": "pak" },
-        { "varenr": "2051992", "tekst": "NKT Farm+ skrue til stålplade, 6-kant sort, 4,8×20 mm, 200 st", "maengde": 1, "enhed": "pak" },
-        { "varenr": "5262489", "tekst": "NKT Monta flex UH SP TX20, gulkromat, 4,2×75 mm", "maengde": 2, "enhed": "pak" },
-        { "varenr": "1443956", "tekst": "Spit FS-C karm-anker u/hoved, 7,5×112 mm, elforzinket, TX30", "maengde": 1, "enhed": "pak" },
-        { "varenr": "", "tekst": "Milwaukee bits Shockwave TX20×50 mm, p10", "maengde": 3, "enhed": "pak" },
-        { "varenr": "", "tekst": "Milwaukee bits Shockwave display TX25×50 mm, p10", "maengde": 2, "enhed": "pak" },
-        { "varenr": "", "tekst": "Milwaukee bits Shockwave TX30×50 mm, cd10p", "maengde": 1, "enhed": "pak" }
-      ]
-    },
-    {
-      "navn": "Lim, sand & øvrigt",
-      "ikon": "🪣",
-      "beskrivelse": "Trælim, sand til lerpuds/underlag og leveringsafgift.",
-      "varer": [
-        { "varenr": "4847380", "tekst": "Dana trælim D3 ude 430, 750 ml", "maengde": 24, "enhed": "fl" },
-        { "varenr": "9000129", "tekst": "Big bag bakkesand, 1,0 m³", "maengde": 1, "enhed": "stk" },
-        { "varenr": "9000133", "tekst": "Big bag Sdr. Omme sand, 1500 kg", "maengde": 1, "enhed": "stk" },
-        { "varenr": "9113", "tekst": "CO2/diesel-afgift pr. leverance", "maengde": 1, "enhed": "stk" }
-      ]
-    }
+  "stepRaekkefolge": [
+    "bundrem",
+    "spaer-og-regler",
+    "gulv",
+    "loft",
+    "vaegge-og-isolering",
+    "vinduer-og-doere",
+    "tag",
+    "yderbeklaedning",
+    "lerpuds-af-vaegge"
+  ],
+  "stepTitler": {
+    "bundrem": "Bundrem",
+    "spaer-og-regler": "Spær og regler",
+    "gulv": "Gulv",
+    "loft": "Loft",
+    "vaegge-og-isolering": "Vægge og isolering",
+    "vinduer-og-doere": "Vinduer og døre",
+    "tag": "Tag",
+    "yderbeklaedning": "Yderbeklædning",
+    "lerpuds-af-vaegge": "Lerpuds af vægge"
+  },
+  "materialerPrTrin": {
+    "bundrem": [
+      { "tekst": "45×195 mm C24, fra 5,7 m og længere", "maengde": 24, "enhed": "m", "kategori": "Konstruktionstræ" },
+      { "tekst": "Big bag bakkesand, 1,0 m³", "maengde": 1, "enhed": "stk", "kategori": "Sand", "note": "Til afretning/fundament" }
+    ],
+    "spaer-og-regler": [
+      { "tekst": "45×195 mm C24 spærplanke, t.o.m. 5,4 m", "maengde": 86.4, "enhed": "m", "kategori": "Konstruktionstræ" },
+      { "tekst": "45×145 mm C24 spærplanke, t.o.m. 5,40 m", "maengde": 172.8, "enhed": "m", "kategori": "Konstruktionstræ" },
+      { "tekst": "45×45 mm reglar (2,4 – 3,0 – 3,6 m)", "maengde": 14.4, "enhed": "m", "kategori": "Konstruktionstræ" },
+      { "tekst": "NKT Spun+ skrue UH TX30, 6,0×180/60 mm, climate-G3, 100 st", "maengde": 2, "enhed": "pak", "kategori": "Skruer & befæstelse" },
+      { "tekst": "NKT Topkon CK outdoor, 6×160 mm, 100 st", "maengde": 2, "enhed": "pak", "kategori": "Skruer & befæstelse" },
+      { "tekst": "NKT Basic skrue UH TX20, 5,0×120/60 mm, Ruspert1000, 200 st", "maengde": 4, "enhed": "pak", "kategori": "Skruer & befæstelse" },
+      { "tekst": "NKT Basic skrue UH TX20, 5,0×100/55 mm, Ruspert1000, 200 st", "maengde": 1, "enhed": "pak", "kategori": "Skruer & befæstelse" }
+    ],
+    "gulv": [
+      { "tekst": "Stigma massivt gulv 32×180 mm, B-sort. fyr ubeh. med fas", "maengde": 20.47, "enhed": "m²", "kategori": "Gulv" },
+      { "tekst": "Storm gulvpap 500 gr/m² grå, 1×30 m", "maengde": 1, "enhed": "rl", "kategori": "Gulv" },
+      { "tekst": "NKT Basic skrue UH TX20, 5,0×80/45 mm, Ruspert1000, 250 st", "maengde": 4, "enhed": "pak", "kategori": "Skruer & befæstelse" },
+      { "tekst": "Dana trælim D3 ude 430, 750 ml", "maengde": 24, "enhed": "fl", "kategori": "Lim" }
+    ],
+    "loft": [
+      { "tekst": "15×95 granrustik loft, ubeh. m. endenot (3,6 & 4,2 m), 8/pk", "maengde": 235.2, "enhed": "lbm", "kategori": "Loft" },
+      { "tekst": "NKT Basic skrue UH TX20, 5,0×60 mm, Ruspert1000, 200 st", "maengde": 1, "enhed": "pak", "kategori": "Skruer & befæstelse" }
+    ],
+    "vaegge-og-isolering": [
+      { "tekst": "Npl Steico 36 træfiberisolering 145×565×1320 mm, 2,757 m²/pk", "maengde": 6, "enhed": "pak", "kategori": "Isolering & tætning" },
+      { "tekst": "Npl Steico Universal TG-4 c-c 600 mm, 22×2230×600 mm", "maengde": 94, "enhed": "pl", "kategori": "Isolering & tætning" },
+      { "tekst": "Øko natur papirdampbremse 75 m²/rl, brun/hvid, 1,5×50 m", "maengde": 1, "enhed": "rl", "kategori": "Isolering & tætning" },
+      { "tekst": "Npl Steico multi tape f, 100 mm, 25 m/rl", "maengde": 1, "enhed": "rl", "kategori": "Isolering & tætning" }
+    ],
+    "vinduer-og-doere": [
+      { "tekst": "Spit FS-C karm-anker u/hoved, 7,5×112 mm, elforzinket, TX30", "maengde": 1, "enhed": "pak", "kategori": "Skruer & befæstelse" },
+      { "tekst": "NKT Monta flex UH SP TX20, gulkromat, 4,2×75 mm", "maengde": 2, "enhed": "pak", "kategori": "Skruer & befæstelse" }
+    ],
+    "tag": [
+      { "tekst": "Da TP 30-119 trapezplade tag, poly. std. farve, 1,03×4,00 m", "maengde": 6, "enhed": "pla", "kategori": "Tag" },
+      { "tekst": "23×121 mm tagbrædder, ru fors. høvl. bag + endenot", "maengde": 218, "enhed": "m", "kategori": "Tag" },
+      { "tekst": "38×73 mm T1 taglægter (3,6 & 4,2 & 5,1 m)", "maengde": 71.4, "enhed": "m", "kategori": "Tag" },
+      { "tekst": "22×100 mm forskalling, høvlet (2,4 – 5,1 m)", "maengde": 92.4, "enhed": "m", "kategori": "Tag" },
+      { "tekst": "Dafa neutral UV-tape sort, 60 mm×25 m", "maengde": 1, "enhed": "rl", "kategori": "Isolering & tætning" },
+      { "tekst": "NKT Topkon RSS outdoor, 6×63 mm, 150 st", "maengde": 11, "enhed": "pak", "kategori": "Skruer & befæstelse" },
+      { "tekst": "NKT Farm+ skrue til stålplade, 6-kant sort, 4,8×35 mm, 200 st", "maengde": 3, "enhed": "pak", "kategori": "Skruer & befæstelse" },
+      { "tekst": "NKT Farm+ skrue til stålplade, 6-kant sort, 4,8×20 mm, 200 st", "maengde": 1, "enhed": "pak", "kategori": "Skruer & befæstelse" }
+    ],
+    "yderbeklaedning": [
+      { "tekst": "NKT Topkon CK outdoor, 5×150 mm, 100 st", "maengde": 10, "enhed": "pak", "kategori": "Skruer & befæstelse", "note": "Yderbeklædning bestilles typisk direkte hos savværk – se det trin" }
+    ],
+    "lerpuds-af-vaegge": [
+      { "tekst": "Big bag Sdr. Omme sand 1500 kg", "maengde": 1, "enhed": "stk", "kategori": "Sand", "note": "Sand til lerpuds" }
+    ]
+  },
+  "oevrigt": [
+    { "tekst": "Steico engangspalle", "maengde": 1, "enhed": "stk", "kategori": "Isolering & tætning" },
+    { "tekst": "Gaffatape – sort basic, 50 mm×48 m", "maengde": 2, "enhed": "rl", "kategori": "Isolering & tætning" },
+    { "tekst": "Milwaukee bits Shockwave TX20×50 mm, p10", "maengde": 3, "enhed": "pak", "kategori": "Værktøj/bits" },
+    { "tekst": "Milwaukee bits Shockwave display TX25×50 mm, p10", "maengde": 2, "enhed": "pak", "kategori": "Værktøj/bits" },
+    { "tekst": "Milwaukee bits Shockwave TX30×50 mm, cd10p", "maengde": 1, "enhed": "pak", "kategori": "Værktøj/bits" },
+    { "tekst": "CO2/diesel-afgift pr. leverance", "maengde": 1, "enhed": "stk", "kategori": "Øvrigt" }
   ]
 }

@@ -2,18 +2,62 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { href } from '../lib/url';
+import BestillingsMail from '../components/BestillingsMail.astro';
 import data from '../data/faktisk-materialeliste.json';
+import { STORAGE_KEY } from '../lib/lister';
 import skrueaeskerHylde from '../assets/faktisk-materialeliste/nkt-skrueaesker-paa-hylde.jpg';
 import skrueaeskerTopkon from '../assets/faktisk-materialeliste/nkt-skrueaesker-topkon-og-basic.jpg';
 
-const { info, grupper } = data;
+const { info, materialerPrTrin, oevrigt, stepRaekkefolge, stepTitler } = data;
+const trinMaterialer = materialerPrTrin as Record<
+  string,
+  Array<{ tekst: string; maengde: number; enhed: string; note?: string; kategori?: string }>
+>;
 
 const talFormat = new Intl.NumberFormat('da-DK', { maximumFractionDigits: 2 });
 
-const antalVarer = grupper.reduce((sum, g) => sum + g.varer.length, 0);
-
 const husMaal = `${info.husLaengde_cm / 100} × ${info.husBredde_cm / 100} m`.replace(/\./g, ',');
 const husAreal = talFormat.format(info.husAreal_m2);
+
+// Underlister pr. byggetrin (i rækkefølge) + en øvrigt-gruppe til det, der
+// ikke er trinspecifikt.
+const trinGrupper = stepRaekkefolge
+  .map((slug) => ({ slug, titel: stepTitler[slug] ?? slug, varer: trinMaterialer[slug] ?? [] }))
+  .filter((g) => g.varer.length > 0);
+
+// Byg en færdig tilbuds-e-mail med hele materialelisten, opdelt pr. byggetrin.
+const emailEmne = `Tilbud ønskes – byggematerialer til tiny house (${husMaal})`;
+const emailLinjer: string[] = [
+  'Hej',
+  '',
+  `Jeg skal bruge materialer til at bygge et tiny house på ca. ${husMaal} (${husAreal} m²) og vil gerne bede om et tilbud på materialelisten nedenfor.`,
+  '',
+  'Jeg indhenter tilbud fra flere leverandører (se cc), så jeg kan sammenligne. Giv derfor gerne jeres skarpeste pris – både samlet og gerne pr. linje – samt leveringstid og fragt. Foreslå meget gerne tilsvarende lagerførte alternativer, hvis det er billigere.',
+  '',
+  'MATERIALELISTE (pr. byggetrin)',
+];
+for (const g of trinGrupper) {
+  emailLinjer.push('', `== ${g.titel} ==`);
+  for (const v of g.varer) {
+    emailLinjer.push(`- ${v.tekst}: ${talFormat.format(v.maengde)} ${v.enhed}`);
+  }
+}
+if (oevrigt.length > 0) {
+  emailLinjer.push('', '== Øvrigt (ikke trinspecifikt) ==');
+  for (const v of oevrigt) {
+    emailLinjer.push(`- ${v.tekst}: ${talFormat.format(v.maengde)} ${v.enhed}`);
+  }
+}
+emailLinjer.push(
+  '',
+  'Mængderne er vejledende og kan tilpasses. Sig endelig til, hvis I mangler oplysninger for at give et tilbud.',
+  '',
+  'På forhånd tak.',
+  '',
+  'Med venlig hilsen',
+  '__NAVN__',
+);
+const emailConfig = { emne: emailEmne, tekst: emailLinjer.join('\n') };
 
 const billeder = [
   {
@@ -43,56 +87,56 @@ const billeder = [
     </p>
     <p class="mt-3 text-lg text-ler-700">{info.beskrivelse}</p>
 
-    <dl class="mt-6 grid gap-3 sm:grid-cols-4">
-      <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
+    <dl class="mt-6">
+      <div class="inline-block rounded-xl border border-ler-200 bg-ler-50 p-4">
         <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Husmål</dt>
-        <dd class="mt-1 font-bold text-ler-900">{husMaal}</dd>
-      </div>
-      <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
-        <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Leveret</dt>
-        <dd class="mt-1 font-bold text-ler-900">{info.leveringsdato}</dd>
-      </div>
-      <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
-        <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Varelinjer</dt>
-        <dd class="mt-1 font-bold text-ler-900">{antalVarer}</dd>
-      </div>
-      <div class="rounded-xl border border-ler-200 bg-ler-50 p-4">
-        <dt class="text-xs font-semibold uppercase tracking-wide text-ler-500">Kategorier</dt>
-        <dd class="mt-1 font-bold text-ler-900">{grupper.length}</dd>
+        <dd class="mt-1 font-bold text-ler-900">{husMaal} ({husAreal} m²)</dd>
       </div>
     </dl>
 
     <div class="mt-6 rounded-xl border border-ler-200 bg-ler-100 p-4 text-sm text-ler-700">
       ⚠️ Det her er <strong>mine konkrete indkøb</strong>, ikke et vejledende estimat. Mængderne
-      passer til netop mit hus – dit forbrug bliver anderledes. Vil du regne på dine egne mål?
-      Brug <a href={href('beregner')} class="font-medium text-skov-600 underline">materialeberegneren</a>.
+      passer til netop mit hus – dit forbrug bliver anderledes. Listen er delt op
+      <strong>pr. byggetrin</strong> nedenfor.
+    </div>
+
+    <!-- Vælg denne liste (huskes på byggetrinnene) -->
+    <div class="mt-6 flex flex-wrap items-center gap-3">
+      <button
+        id="vaelg-liste-knap"
+        type="button"
+        data-liste-id={info.id}
+        data-liste-navn={info.navn}
+        class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+      >
+        ✓ Brug denne liste på byggetrinnene
+      </button>
+      <span id="vaelg-liste-status" class="text-sm text-ler-600" role="status" aria-live="polite"></span>
     </div>
 
     {
-      grupper.map((gruppe) => (
+      trinGrupper.map((gruppe, i) => (
         <section class="mt-10">
           <h2 class="flex items-center gap-2 text-2xl font-bold text-ler-900">
-            <span aria-hidden="true">{gruppe.ikon}</span>
-            {gruppe.navn}
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-skov-600 text-sm font-bold text-ler-50">
+              {i + 1}
+            </span>
+            {gruppe.titel}
           </h2>
-          {gruppe.beskrivelse && (
-            <p class="mt-1 text-sm text-ler-600">{gruppe.beskrivelse}</p>
-          )}
           <div class="mt-4 overflow-x-auto rounded-xl border border-ler-200">
             <table class="w-full border-collapse text-left text-sm">
               <thead class="bg-ler-100 text-ler-800">
                 <tr>
                   <th class="px-4 py-3 font-semibold">Vare</th>
-                  <th class="px-4 py-3 font-semibold">Varenr.</th>
                   <th class="whitespace-nowrap px-4 py-3 text-right font-semibold">Antal</th>
                 </tr>
               </thead>
               <tbody>
                 {gruppe.varer.map((v) => (
                   <tr class="border-t border-ler-200 align-top">
-                    <td class="px-4 py-3 font-medium text-ler-900">{v.tekst}</td>
-                    <td class="whitespace-nowrap px-4 py-3 font-mono text-xs text-ler-500">
-                      {v.varenr || '—'}
+                    <td class="px-4 py-3 font-medium text-ler-900">
+                      {v.tekst}
+                      {v.note && <span class="mt-0.5 block text-xs font-normal text-ler-500">{v.note}</span>}
                     </td>
                     <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">
                       {talFormat.format(v.maengde)} {v.enhed}
@@ -105,6 +149,84 @@ const billeder = [
         </section>
       ))
     }
+
+    {
+      oevrigt.length > 0 && (
+        <section class="mt-10">
+          <h2 class="flex items-center gap-2 text-2xl font-bold text-ler-900">
+            <span aria-hidden="true">📦</span> Øvrigt (ikke trinspecifikt)
+          </h2>
+          <p class="mt-1 text-sm text-ler-600">
+            Bits, tape, palle og afgift, der bruges på tværs af – eller uden for – byggetrinnene.
+          </p>
+          <div class="mt-4 overflow-x-auto rounded-xl border border-ler-200">
+            <table class="w-full border-collapse text-left text-sm">
+              <thead class="bg-ler-100 text-ler-800">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Vare</th>
+                  <th class="whitespace-nowrap px-4 py-3 text-right font-semibold">Antal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {oevrigt.map((v) => (
+                  <tr class="border-t border-ler-200 align-top">
+                    <td class="px-4 py-3 font-medium text-ler-900">{v.tekst}</td>
+                    <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">
+                      {talFormat.format(v.maengde)} {v.enhed}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Indhent tilbud fra leverandører -->
+    <section class="mt-14 rounded-2xl border border-skov-600/20 bg-skov-600/5 p-6 sm:p-8">
+      <h2 class="flex items-center gap-2 text-2xl font-bold text-ler-900">
+        <span aria-hidden="true">📧</span> Send listen til leverandører – og få tilbud
+      </h2>
+      <p class="mt-3 text-ler-700">
+        Byggematerialer har sjældent en fast pris. Prisen afhænger af leverandør, mængde og
+        dagsform – så der er tit <strong>rabat at hente ved at konkurrenceudsætte</strong> din
+        ordre. Herunder kan du sende hele materialelisten som en færdig tilbudsforespørgsel til
+        flere leverandører på én gang.
+      </p>
+
+      <div class="mt-5 rounded-xl border border-ler-200 bg-ler-50/70 p-4 text-sm text-ler-700">
+        <p class="font-semibold text-ler-900">Sådan får du den bedste pris 💰</p>
+        <ul class="mt-2 list-disc space-y-1 pl-5">
+          <li>Send <strong>samme liste til 3–5 leverandører</strong> og sæt dem alle i <strong>cc</strong>, så de kan se, at du indhenter konkurrerende tilbud.</li>
+          <li>Bed om pris <strong>pr. linje og samlet</strong>, samt leveringstid og fragt – så kan du sammenligne æbler med æbler.</li>
+          <li>Bed om <strong>lagerførte alternativer</strong> – tit findes en tilsvarende vare billigere.</li>
+          <li>Følg op: brug det <strong>skarpeste tilbud til at forhandle</strong> de øvrige ned. Større ordrer giver bedre rabat.</li>
+        </ul>
+      </div>
+
+      <BestillingsMail
+        emne={emailConfig.emne}
+        tekst={emailConfig.tekst}
+        tilPlaceholder="salg@leverandoer.dk"
+        ccPlaceholder="tilbud@leverandoer2.dk, salg@leverandoer3.dk"
+        sendLabel="📧 Åbn e-mail med listen"
+      />
+
+      <a
+        href={`${href('steps/yderbeklaedning')}/#bestil-savvaerk`}
+        class="mt-6 flex items-start gap-3 rounded-xl border border-ler-200 bg-ler-50 p-4 no-underline transition-colors hover:bg-ler-100"
+      >
+        <span class="text-2xl" aria-hidden="true">🪵</span>
+        <span>
+          <span class="block font-semibold text-ler-900">Yderbeklædning? Bestil direkte hos et savværk</span>
+          <span class="mt-0.5 block text-sm text-ler-700">
+            Douglasgran til facaden købes tit billigst direkte hos savværket – uden mellemled.
+            Der er en klar-til-brug bestillingsmail på yderbeklædning-trinnet.
+          </span>
+        </span>
+      </a>
+    </section>
 
     <section class="mt-12">
       <h2 class="mb-2 flex items-center gap-2 text-2xl font-bold text-ler-900">
@@ -137,9 +259,9 @@ const billeder = [
 
     <div class="mt-10 flex flex-wrap gap-3">
       <a
-        href={href('beregner')}
+        href={href('#byggesteps')}
         class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
-        >Åbn materialeberegneren</a
+        >Se byggeguiden</a
       >
       <a
         href={href('planlaegning')}
@@ -148,4 +270,34 @@ const billeder = [
       >
     </div>
   </div>
+
+  <script define:vars={{ storageKey: STORAGE_KEY }}>
+    const knap = document.getElementById('vaelg-liste-knap');
+    const status = document.getElementById('vaelg-liste-status');
+    if (knap) {
+      const id = knap.dataset.listeId ?? '';
+      const navn = knap.dataset.listeNavn ?? 'listen';
+
+      const opdater = () => {
+        const valgt = localStorage.getItem(storageKey) === id;
+        knap.textContent = valgt ? '✓ Valgt til byggetrinnene' : '✓ Brug denne liste på byggetrinnene';
+        knap.classList.toggle('bg-skov-600', !valgt);
+        knap.classList.toggle('hover:bg-skov-700', !valgt);
+        knap.classList.toggle('bg-skov-700', valgt);
+        if (status)
+          status.textContent = valgt
+            ? 'Denne liste vises nu på de enkelte byggetrin.'
+            : 'Vælg listen, så hvert byggetrin viser dets materialer herfra.';
+      };
+
+      knap.addEventListener('click', () => {
+        const valgt = localStorage.getItem(storageKey) === id;
+        if (valgt) localStorage.removeItem(storageKey);
+        else localStorage.setItem(storageKey, id);
+        opdater();
+      });
+
+      opdater();
+    }
+  </script>
 </BaseLayout>
