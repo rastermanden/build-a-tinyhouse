@@ -53,13 +53,17 @@ Understøttede formater: `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`. Billederne v
 automatisk i galleriet på trinnets side, optimeres ved build, og filnavnet bruges som
 alt-tekst. Ingen kodeændring nødvendig.
 
-## Sådan tilføjer du et mål til beregneren
+## Materialelister (statiske lister)
 
-Materialeberegneren slår op i `src/data/materialelister.json`. Tilføj et nyt objekt under
-`praedefineredeMaal` med `laengde_cm`, `bredde_cm` og en `materialerPrStep` for hvert af de
-9 trin. Mål skal gå op i **60 cm** (længde max 600, bredde max 360).
+Siden `src/pages/beregner.astro` (rute `/beregner`, vist som **Materialelister**) er ikke en
+live-beregner, men viser færdige, statiske lister. Længde/bredde-vælgeren indeholder p.t. kun
+den ene færdige størrelse, **600 × 360 cm** (mit faktiske byg), som henviser til den faktiske
+liste. Vil du tilføje en ny størrelse, så udvid `laengder`/`bredder` i frontmatter og læg et
+objekt under `praedefineredeMaal` i `src/data/materialelister.json` med `laengde_cm`,
+`bredde_cm` og en `materialerPrStep` for hvert af de 9 trin (mål i **60 cm**-trin).
 
-> Mængderne i JSON-filen er **vejledende estimater** til planlægning – tjek altid selv efter.
+> Mængderne i `materialelister.json` er **vejledende estimater** – den faktiske liste
+> (600 × 360 cm) er derimod konkrete indkøb fra fakturaen.
 
 ## Faktisk materialeliste (fakturaen)
 
