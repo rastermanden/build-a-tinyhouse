@@ -66,7 +66,7 @@ Materialeberegneren slår op i `src/data/materialelister.json`. Tilføj et nyt o
 Ud over de vejledende estimater findes en side med den **rigtige indkøbsliste** fra et
 konkret byg: `src/pages/faktisk-materialeliste.astro`, der læser
 `src/data/faktisk-materialeliste.json`. Varerne er grupperet i kategorier (konstruktionstræ,
-gulv, loft, tag, isolering & tætning, skruer & befæstelse, lim/sand/øvrigt) med varenummer og
+gulv, loft, tag, isolering & tætning, skruer & befæstelse, lim/sand/øvrigt) med tekst og
 mængde afskrevet fra fakturaen. Billeder til siden (fx skrueæsker) lægges i
 `src/assets/faktisk-materialeliste/`.
 

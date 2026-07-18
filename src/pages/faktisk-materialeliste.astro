@@ -83,7 +83,6 @@ const billeder = [
               <thead class="bg-ler-100 text-ler-800">
                 <tr>
                   <th class="px-4 py-3 font-semibold">Vare</th>
-                  <th class="px-4 py-3 font-semibold">Varenr.</th>
                   <th class="whitespace-nowrap px-4 py-3 text-right font-semibold">Antal</th>
                 </tr>
               </thead>
@@ -91,9 +90,6 @@ const billeder = [
                 {gruppe.varer.map((v) => (
                   <tr class="border-t border-ler-200 align-top">
                     <td class="px-4 py-3 font-medium text-ler-900">{v.tekst}</td>
-                    <td class="whitespace-nowrap px-4 py-3 font-mono text-xs text-ler-500">
-                      {v.varenr || '—'}
-                    </td>
                     <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">
                       {talFormat.format(v.maengde)} {v.enhed}
                     </td>
