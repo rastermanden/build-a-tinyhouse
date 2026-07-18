@@ -1,0 +1,40 @@
+---
+interface Materiale {
+  navn: string;
+  dimension?: string;
+  note?: string;
+}
+
+interface Props {
+  materialer: Materiale[];
+}
+
+const { materialer } = Astro.props;
+---
+
+{
+  materialer.length > 0 ? (
+    <div class="overflow-x-auto rounded-xl border border-ler-200">
+      <table class="w-full border-collapse text-left text-sm">
+        <thead class="bg-ler-100 text-ler-800">
+          <tr>
+            <th class="px-4 py-3 font-semibold">Materiale</th>
+            <th class="px-4 py-3 font-semibold">Dimension</th>
+            <th class="px-4 py-3 font-semibold">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          {materialer.map((m) => (
+            <tr class="border-t border-ler-200 align-top">
+              <td class="px-4 py-3 font-medium text-ler-900">{m.navn}</td>
+              <td class="px-4 py-3 text-ler-700">{m.dimension ?? '—'}</td>
+              <td class="px-4 py-3 text-ler-600">{m.note ?? ''}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <p class="text-ler-600">Materialeliste tilføjes snart.</p>
+  )
+}

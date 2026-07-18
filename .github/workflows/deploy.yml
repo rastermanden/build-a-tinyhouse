@@ -1,0 +1,42 @@
+name: Deploy til GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Opsæt Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Installer afhængigheder
+        run: npm ci
+
+      - name: Byg site (produktion)
+        run: npm run build
+        env:
+          PUBLIC_BASE_PATH: /build-a-tinyhouse/
+
+      - name: Udgiv til gh-pages (rod)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          # Bevar pr-preview/ mappen, så åbne PR-previews ikke slettes ved deploy.
+          keep_files: true

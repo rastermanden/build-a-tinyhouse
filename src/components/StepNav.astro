@@ -1,0 +1,51 @@
+---
+import { href } from '../lib/url';
+
+interface Nabo {
+  titel: string;
+  slug: string;
+  order: number;
+}
+
+interface Props {
+  forrige?: Nabo;
+  naeste?: Nabo;
+}
+
+const { forrige, naeste } = Astro.props;
+---
+
+<nav class="mt-12 grid gap-3 sm:grid-cols-2" aria-label="Trin-navigation">
+  {
+    forrige ? (
+      <a
+        href={href(`steps/${forrige.slug}`)}
+        class="group flex flex-col rounded-xl border border-ler-200 bg-ler-50 p-4 transition-colors hover:border-ler-300 hover:bg-ler-100"
+      >
+        <span class="text-xs font-semibold uppercase tracking-wide text-ler-500">
+          ← Forrige trin
+        </span>
+        <span class="mt-1 font-semibold text-ler-900">
+          {forrige.order}. {forrige.titel}
+        </span>
+      </a>
+    ) : (
+      <span class="hidden sm:block" />
+    )
+  }
+  {
+    naeste && (
+      <a
+        href={href(`steps/${naeste.slug}`)}
+        class="group flex flex-col rounded-xl border border-ler-200 bg-ler-50 p-4 text-right transition-colors hover:border-ler-300 hover:bg-ler-100"
+      >
+        <span class="text-xs font-semibold uppercase tracking-wide text-ler-500">
+          Næste trin →
+        </span>
+        <span class="mt-1 font-semibold text-ler-900">
+          {naeste.order}. {naeste.titel}
+        </span>
+      </a>
+    )
+  }
+</nav>

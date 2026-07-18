@@ -1,0 +1,46 @@
+name: PR-preview på GitHub Pages
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    # Kør ikke build for PR'er fra forks (de har ikke skriverettigheder til gh-pages).
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Opsæt Node
+        if: github.event.action != 'closed'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Installer afhængigheder
+        if: github.event.action != 'closed'
+        run: npm ci
+
+      - name: Byg site (preview-sti)
+        if: github.event.action != 'closed'
+        run: npm run build
+        env:
+          PUBLIC_BASE_PATH: /build-a-tinyhouse/pr-preview/pr-${{ github.event.pull_request.number }}/
+
+      - name: Udgiv / opdatér / fjern preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./dist
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview

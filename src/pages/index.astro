@@ -1,0 +1,142 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { href } from '../lib/url';
+
+const steps = (await getCollection('steps')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout titel="Byg dit eget tiny house">
+  <!-- Hero -->
+  <section class="border-b border-ler-200 bg-gradient-to-b from-ler-100 to-ler-50">
+    <div class="mx-auto max-w-5xl px-4 py-16 sm:py-24">
+      <p class="text-sm font-semibold uppercase tracking-wide text-skov-600">
+        Selvbyg i naturmaterialer
+      </p>
+      <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight text-ler-900 sm:text-5xl">
+        Byg dit eget tiny house – trin for trin
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg text-ler-700">
+        Jeg har været på tiny house-kursus hos <a
+          href="https://smaabyg.nu/"
+          target="_blank"
+          rel="noopener"
+          class="font-medium text-skov-600 underline underline-offset-2">småBYG</a
+        > og bygger nu mit eget lille hus i træ, træfiber og ler. Her dokumenterer jeg hele
+        processen – så du nemt kan bygge dit eget.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href={href('#byggesteps')}
+          class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+          >Se byggeguiden</a
+        >
+        <a
+          href={href('beregner')}
+          class="rounded-lg border border-ler-300 bg-ler-50 px-5 py-3 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
+          >Beregn materialer</a
+        >
+        <a
+          href={href('planlaegning')}
+          class="rounded-lg border border-ler-300 bg-ler-50 px-5 py-3 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
+          >Planlægning &amp; indkøb</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- Filosofi -->
+  <section class="mx-auto max-w-5xl px-4 py-14">
+    <div class="grid gap-6 sm:grid-cols-3">
+      <div class="rounded-2xl border border-ler-200 bg-ler-50 p-6">
+        <p class="text-3xl" aria-hidden="true">🌲</p>
+        <h2 class="mt-3 text-lg font-bold text-ler-900">Naturmaterialer</h2>
+        <p class="mt-2 text-sm leading-relaxed text-ler-700">
+          Træ, træfiberisolering og lerpuds. Et sundt hus, der kan ånde, og som er rart at
+          bo i – sommer som vinter.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-ler-200 bg-ler-50 p-6">
+        <p class="text-3xl" aria-hidden="true">📐</p>
+        <h2 class="mt-3 text-lg font-bold text-ler-900">60 cm-modulet</h2>
+        <p class="mt-2 text-sm leading-relaxed text-ler-700">
+          Hele huset bygges i et raster på 60 cm. Det gør indkøb, isolering og plader
+          nemt – og giver mindre spild.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-ler-200 bg-ler-50 p-6">
+        <p class="text-3xl" aria-hidden="true">🔨</p>
+        <h2 class="mt-3 text-lg font-bold text-ler-900">Byg selv</h2>
+        <p class="mt-2 text-sm leading-relaxed text-ler-700">
+          Du kan selv. Med tålmodighed, almindeligt værktøj og en klar plan kommer du langt
+          – ét trin ad gangen.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Byggesteps -->
+  <section id="byggesteps" class="scroll-mt-20 bg-ler-100/60 py-14">
+    <div class="mx-auto max-w-5xl px-4">
+      <h2 class="text-3xl font-bold text-ler-900">Byggeguiden – {steps.length} trin</h2>
+      <p class="mt-2 max-w-2xl text-ler-700">
+        Følg processen i rækkefølge. Hvert trin har sine egne materialer, værktøj og billeder.
+      </p>
+
+      <ol class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          steps.map((step) => (
+            <li>
+              <a
+                href={href(`steps/${step.id}`)}
+                class="group flex h-full gap-4 rounded-2xl border border-ler-200 bg-ler-50 p-5 transition-colors hover:border-skov-600/40 hover:bg-ler-100"
+              >
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-skov-600 font-bold text-ler-50">
+                  {step.data.order}
+                </span>
+                <span>
+                  <span class="block font-bold text-ler-900 group-hover:text-skov-700">
+                    {step.data.titel}
+                  </span>
+                  <span class="mt-1 block text-sm text-ler-700">{step.data.resume}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Credits -->
+  <section class="mx-auto max-w-5xl px-4 py-16">
+    <div
+      class="rounded-3xl border border-skov-600/20 bg-gradient-to-br from-skov-600/5 to-ler-100 p-8 sm:p-10"
+    >
+      <h2 class="text-2xl font-bold text-ler-900">Med stor tak til småBYG &amp; Jonas 🙏</h2>
+      <p class="mt-4 max-w-2xl leading-relaxed text-ler-700">
+        Alt, hvad jeg deler her, står på skuldrene af <strong>Jonas</strong> og holdet hos
+        <strong>småBYG</strong>. Det var på deres tiny house-kursus, jeg lærte metoden,
+        materialerne og modet til at bygge selv. Teksterne på siden er skrevet med egne ord,
+        men bygger på deres undervisning og filosofi om at bo småt, billigt og klimavenligt.
+      </p>
+      <p class="mt-4 max-w-2xl leading-relaxed text-ler-700">
+        Vil du selv i gang? Tag på kursus hos dem – det anbefaler jeg af hele mit hjerte.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a
+          href="https://smaabyg.nu/"
+          target="_blank"
+          rel="noopener"
+          class="rounded-lg bg-skov-600 px-4 py-2.5 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+          >Besøg smaabyg.nu</a
+        >
+        <a
+          href={href('om-og-credits')}
+          class="rounded-lg border border-ler-300 bg-ler-50 px-4 py-2.5 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
+          >Læs mere om credits</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>

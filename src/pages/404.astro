@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { href } from '../lib/url';
+---
+
+<BaseLayout titel="Siden blev ikke fundet">
+  <div class="mx-auto max-w-2xl px-4 py-24 text-center">
+    <p class="text-5xl" aria-hidden="true">🛖</p>
+    <h1 class="mt-4 text-3xl font-bold text-ler-900">Her var der ikke noget hus …</h1>
+    <p class="mt-3 text-ler-700">Siden, du leder efter, findes ikke. Måske er den ikke bygget endnu.</p>
+    <a
+      href={href()}
+      class="mt-8 inline-block rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+      >← Tilbage til forsiden</a
+    >
+  </div>
+</BaseLayout>

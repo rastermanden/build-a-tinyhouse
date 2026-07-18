@@ -1,0 +1,230 @@
+{
+  "info": {
+    "vaeghojde_cm": 240,
+    "modul_cm": 60,
+    "kilde": "Vejledende materialelister – opbygning inspireret af småBYG-metoden (smaabyg.nu).",
+    "bemaerkning": "Alle mængder er vejledende estimater til planlægning. Tjek altid selv efter, og tilpas til dit konkrete projekt, spild og leverandørens mål."
+  },
+  "stepRaekkefolge": [
+    "bundrem",
+    "spaer-og-regler",
+    "gulv",
+    "loft",
+    "vaegge-og-isolering",
+    "vinduer-og-doere",
+    "tag",
+    "yderbeklaedning",
+    "lerpuds-af-vaegge"
+  ],
+  "stepTitler": {
+    "bundrem": "Bundrem",
+    "spaer-og-regler": "Spær og regler",
+    "gulv": "Gulv",
+    "loft": "Loft",
+    "vaegge-og-isolering": "Vægge og isolering",
+    "vinduer-og-doere": "Vinduer og døre",
+    "tag": "Tag",
+    "yderbeklaedning": "Yderbeklædning",
+    "lerpuds-af-vaegge": "Lerpuds af vægge"
+  },
+  "praedefineredeMaal": [
+    {
+      "id": "300x240",
+      "laengde_cm": 300,
+      "bredde_cm": 240,
+      "navn": "Kompakt (3,0 × 2,4 m)",
+      "beskrivelse": "Et lille, transportvenligt tiny house på 7,2 m². Perfekt som første byg.",
+      "materialerPrStep": {
+        "bundrem": [
+          { "materiale": "Konstruktionstræ 45×95 mm (ramme + tværregler)", "maengde": 28, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
+          { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 1, "enhed": "pk", "note": "ca. 100 stk." },
+          { "materiale": "Underlagspap / fugtspærre", "maengde": 8, "enhed": "lbm" },
+          { "materiale": "Vinkelbeslag", "maengde": 16, "enhed": "stk" }
+        ],
+        "spaer-og-regler": [
+          { "materiale": "Regler 45×95 mm (vægstolper + skinner)", "maengde": 60, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
+          { "materiale": "Spær 45×120 mm", "maengde": 30, "enhed": "lbm" },
+          { "materiale": "Spær- og vinkelbeslag", "maengde": 24, "enhed": "stk" },
+          { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 1, "enhed": "pk" }
+        ],
+        "gulv": [
+          { "materiale": "Træfiberisolering (gulv)", "maengde": 7.2, "enhed": "m²" },
+          { "materiale": "Vindspærre / underplade", "maengde": 7.2, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 9, "enhed": "m²", "note": "Inkl. overlæg" },
+          { "materiale": "Gulvbrædder / gulvplade", "maengde": 7.2, "enhed": "m²" },
+          { "materiale": "Gulvskruer 4×45 mm", "maengde": 1, "enhed": "pk" }
+        ],
+        "loft": [
+          { "materiale": "Loftlægter 45×70 mm", "maengde": 24, "enhed": "lbm" },
+          { "materiale": "Træfiberisolering (loft)", "maengde": 8.3, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 10, "enhed": "m²" },
+          { "materiale": "Loftbeklædning (træfiberplade/brædder)", "maengde": 8.3, "enhed": "m²" }
+        ],
+        "vaegge-og-isolering": [
+          { "materiale": "Træfiberisolering (vægge)", "maengde": 26, "enhed": "m²" },
+          { "materiale": "Vindspærre (plade/dug)", "maengde": 26, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 30, "enhed": "m²", "note": "Inkl. overlæg" },
+          { "materiale": "Indvendige træfiberplader", "maengde": 26, "enhed": "m²", "note": "Underlag for lerpuds" },
+          { "materiale": "Tætningstape til dampbremse", "maengde": 2, "enhed": "rl" }
+        ],
+        "vinduer-og-doere": [
+          { "materiale": "Vinduer", "maengde": 3, "enhed": "stk", "note": "Gerne genbrug – tilpas husets mål" },
+          { "materiale": "Yderdør", "maengde": 1, "enhed": "stk" },
+          { "materiale": "Komprimeringsbånd / fugebånd", "maengde": 12, "enhed": "lbm" },
+          { "materiale": "Tætningstape", "maengde": 2, "enhed": "rl" },
+          { "materiale": "Inddækningslister", "maengde": 20, "enhed": "lbm" }
+        ],
+        "tag": [
+          { "materiale": "Undertag (diffusionsåbent)", "maengde": 9, "enhed": "m²" },
+          { "materiale": "Afstandslister 25×50 mm", "maengde": 24, "enhed": "lbm" },
+          { "materiale": "Taglægter 38×73 mm", "maengde": 30, "enhed": "lbm" },
+          { "materiale": "Tagdækning (fx stålplade/tagpap)", "maengde": 9, "enhed": "m²" },
+          { "materiale": "Rygning + inddækninger", "maengde": 4, "enhed": "lbm" }
+        ],
+        "yderbeklaedning": [
+          { "materiale": "Afstandslister 25×50 mm", "maengde": 40, "enhed": "lbm" },
+          { "materiale": "Facadebrædder", "maengde": 28, "enhed": "m²", "note": "Inkl. ca. 10% spild" },
+          { "materiale": "Facadeskruer/-søm (rustfri)", "maengde": 2, "enhed": "pk" },
+          { "materiale": "Hjørne- og afslutningslister", "maengde": 16, "enhed": "lbm" }
+        ],
+        "lerpuds-af-vaegge": [
+          { "materiale": "Lerpuds (grundpuds)", "maengde": 260, "enhed": "kg", "note": "ca. 10 kg/m²" },
+          { "materiale": "Ler-finpuds", "maengde": 80, "enhed": "kg", "note": "ca. 3 kg/m²" },
+          { "materiale": "Armeringsvæv", "maengde": 26, "enhed": "m²" }
+        ]
+      }
+    },
+    {
+      "id": "360x240",
+      "laengde_cm": 360,
+      "bredde_cm": 240,
+      "navn": "Mellem (3,6 × 2,4 m)",
+      "beskrivelse": "Lidt mere plads på 8,6 m² – stadig let at flytte. God balance mellem plads og transport.",
+      "materialerPrStep": {
+        "bundrem": [
+          { "materiale": "Konstruktionstræ 45×95 mm (ramme + tværregler)", "maengde": 34, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
+          { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 1, "enhed": "pk", "note": "ca. 120 stk." },
+          { "materiale": "Underlagspap / fugtspærre", "maengde": 9, "enhed": "lbm" },
+          { "materiale": "Vinkelbeslag", "maengde": 18, "enhed": "stk" }
+        ],
+        "spaer-og-regler": [
+          { "materiale": "Regler 45×95 mm (vægstolper + skinner)", "maengde": 68, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
+          { "materiale": "Spær 45×120 mm", "maengde": 34, "enhed": "lbm" },
+          { "materiale": "Spær- og vinkelbeslag", "maengde": 26, "enhed": "stk" },
+          { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 1, "enhed": "pk" }
+        ],
+        "gulv": [
+          { "materiale": "Træfiberisolering (gulv)", "maengde": 8.6, "enhed": "m²" },
+          { "materiale": "Vindspærre / underplade", "maengde": 8.6, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 11, "enhed": "m²", "note": "Inkl. overlæg" },
+          { "materiale": "Gulvbrædder / gulvplade", "maengde": 8.6, "enhed": "m²" },
+          { "materiale": "Gulvskruer 4×45 mm", "maengde": 1, "enhed": "pk" }
+        ],
+        "loft": [
+          { "materiale": "Loftlægter 45×70 mm", "maengde": 28, "enhed": "lbm" },
+          { "materiale": "Træfiberisolering (loft)", "maengde": 9.9, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 12, "enhed": "m²" },
+          { "materiale": "Loftbeklædning (træfiberplade/brædder)", "maengde": 9.9, "enhed": "m²" }
+        ],
+        "vaegge-og-isolering": [
+          { "materiale": "Træfiberisolering (vægge)", "maengde": 29, "enhed": "m²" },
+          { "materiale": "Vindspærre (plade/dug)", "maengde": 29, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 33, "enhed": "m²", "note": "Inkl. overlæg" },
+          { "materiale": "Indvendige træfiberplader", "maengde": 29, "enhed": "m²", "note": "Underlag for lerpuds" },
+          { "materiale": "Tætningstape til dampbremse", "maengde": 3, "enhed": "rl" }
+        ],
+        "vinduer-og-doere": [
+          { "materiale": "Vinduer", "maengde": 4, "enhed": "stk", "note": "Gerne genbrug – tilpas husets mål" },
+          { "materiale": "Yderdør", "maengde": 1, "enhed": "stk" },
+          { "materiale": "Komprimeringsbånd / fugebånd", "maengde": 16, "enhed": "lbm" },
+          { "materiale": "Tætningstape", "maengde": 2, "enhed": "rl" },
+          { "materiale": "Inddækningslister", "maengde": 26, "enhed": "lbm" }
+        ],
+        "tag": [
+          { "materiale": "Undertag (diffusionsåbent)", "maengde": 10, "enhed": "m²" },
+          { "materiale": "Afstandslister 25×50 mm", "maengde": 28, "enhed": "lbm" },
+          { "materiale": "Taglægter 38×73 mm", "maengde": 34, "enhed": "lbm" },
+          { "materiale": "Tagdækning (fx stålplade/tagpap)", "maengde": 10, "enhed": "m²" },
+          { "materiale": "Rygning + inddækninger", "maengde": 4, "enhed": "lbm" }
+        ],
+        "yderbeklaedning": [
+          { "materiale": "Afstandslister 25×50 mm", "maengde": 46, "enhed": "lbm" },
+          { "materiale": "Facadebrædder", "maengde": 32, "enhed": "m²", "note": "Inkl. ca. 10% spild" },
+          { "materiale": "Facadeskruer/-søm (rustfri)", "maengde": 2, "enhed": "pk" },
+          { "materiale": "Hjørne- og afslutningslister", "maengde": 16, "enhed": "lbm" }
+        ],
+        "lerpuds-af-vaegge": [
+          { "materiale": "Lerpuds (grundpuds)", "maengde": 290, "enhed": "kg", "note": "ca. 10 kg/m²" },
+          { "materiale": "Ler-finpuds", "maengde": 90, "enhed": "kg", "note": "ca. 3 kg/m²" },
+          { "materiale": "Armeringsvæv", "maengde": 29, "enhed": "m²" }
+        ]
+      }
+    },
+    {
+      "id": "420x300",
+      "laengde_cm": 420,
+      "bredde_cm": 300,
+      "navn": "Rummelig (4,2 × 3,0 m)",
+      "beskrivelse": "Et større tiny house på 12,6 m² med plads til mere. Tæt på max-bredden for nem transport.",
+      "materialerPrStep": {
+        "bundrem": [
+          { "materiale": "Konstruktionstræ 45×95 mm (ramme + tværregler)", "maengde": 46, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
+          { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 2, "enhed": "pk", "note": "ca. 160 stk." },
+          { "materiale": "Underlagspap / fugtspærre", "maengde": 14, "enhed": "lbm" },
+          { "materiale": "Vinkelbeslag", "maengde": 22, "enhed": "stk" }
+        ],
+        "spaer-og-regler": [
+          { "materiale": "Regler 45×95 mm (vægstolper + skinner)", "maengde": 92, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
+          { "materiale": "Spær 45×120 mm", "maengde": 44, "enhed": "lbm" },
+          { "materiale": "Spær- og vinkelbeslag", "maengde": 32, "enhed": "stk" },
+          { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 2, "enhed": "pk" }
+        ],
+        "gulv": [
+          { "materiale": "Træfiberisolering (gulv)", "maengde": 12.6, "enhed": "m²" },
+          { "materiale": "Vindspærre / underplade", "maengde": 12.6, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 15, "enhed": "m²", "note": "Inkl. overlæg" },
+          { "materiale": "Gulvbrædder / gulvplade", "maengde": 12.6, "enhed": "m²" },
+          { "materiale": "Gulvskruer 4×45 mm", "maengde": 2, "enhed": "pk" }
+        ],
+        "loft": [
+          { "materiale": "Loftlægter 45×70 mm", "maengde": 40, "enhed": "lbm" },
+          { "materiale": "Træfiberisolering (loft)", "maengde": 14.5, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 17, "enhed": "m²" },
+          { "materiale": "Loftbeklædning (træfiberplade/brædder)", "maengde": 14.5, "enhed": "m²" }
+        ],
+        "vaegge-og-isolering": [
+          { "materiale": "Træfiberisolering (vægge)", "maengde": 35, "enhed": "m²" },
+          { "materiale": "Vindspærre (plade/dug)", "maengde": 35, "enhed": "m²" },
+          { "materiale": "Dampbremse", "maengde": 40, "enhed": "m²", "note": "Inkl. overlæg" },
+          { "materiale": "Indvendige træfiberplader", "maengde": 35, "enhed": "m²", "note": "Underlag for lerpuds" },
+          { "materiale": "Tætningstape til dampbremse", "maengde": 3, "enhed": "rl" }
+        ],
+        "vinduer-og-doere": [
+          { "materiale": "Vinduer", "maengde": 5, "enhed": "stk", "note": "Gerne genbrug – tilpas husets mål" },
+          { "materiale": "Yderdør", "maengde": 1, "enhed": "stk" },
+          { "materiale": "Komprimeringsbånd / fugebånd", "maengde": 22, "enhed": "lbm" },
+          { "materiale": "Tætningstape", "maengde": 3, "enhed": "rl" },
+          { "materiale": "Inddækningslister", "maengde": 34, "enhed": "lbm" }
+        ],
+        "tag": [
+          { "materiale": "Undertag (diffusionsåbent)", "maengde": 15, "enhed": "m²" },
+          { "materiale": "Afstandslister 25×50 mm", "maengde": 36, "enhed": "lbm" },
+          { "materiale": "Taglægter 38×73 mm", "maengde": 44, "enhed": "lbm" },
+          { "materiale": "Tagdækning (fx stålplade/tagpap)", "maengde": 15, "enhed": "m²" },
+          { "materiale": "Rygning + inddækninger", "maengde": 5, "enhed": "lbm" }
+        ],
+        "yderbeklaedning": [
+          { "materiale": "Afstandslister 25×50 mm", "maengde": 60, "enhed": "lbm" },
+          { "materiale": "Facadebrædder", "maengde": 38, "enhed": "m²", "note": "Inkl. ca. 10% spild" },
+          { "materiale": "Facadeskruer/-søm (rustfri)", "maengde": 3, "enhed": "pk" },
+          { "materiale": "Hjørne- og afslutningslister", "maengde": 20, "enhed": "lbm" }
+        ],
+        "lerpuds-af-vaegge": [
+          { "materiale": "Lerpuds (grundpuds)", "maengde": 350, "enhed": "kg", "note": "ca. 10 kg/m²" },
+          { "materiale": "Ler-finpuds", "maengde": 105, "enhed": "kg", "note": "ca. 3 kg/m²" },
+          { "materiale": "Armeringsvæv", "maengde": 35, "enhed": "m²" }
+        ]
+      }
+    }
+  ]
+}
