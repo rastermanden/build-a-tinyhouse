@@ -1,0 +1,50 @@
+---
+import { href } from '../lib/url';
+
+const nav = [
+  { label: 'Byggeguide', url: href('#byggesteps') },
+  { label: 'Planlægning', url: href('planlaegning') },
+  { label: 'Beregner', url: href('beregner') },
+  { label: 'Om & credits', url: href('om-og-credits') },
+];
+
+// Marker den aktive side (matcher pathname uden trailing slash).
+const current = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<header class="sticky top-0 z-40 border-b border-ler-200 bg-ler-50/90 backdrop-blur">
+  <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
+    <a href={href()} class="flex items-center gap-2 font-bold text-ler-900">
+      <span class="text-2xl" aria-hidden="true">🛖</span>
+      <span class="leading-tight">
+        Byg dit eget<br class="hidden sm:block" /> tiny house
+      </span>
+    </a>
+
+    <nav aria-label="Hovedmenu">
+      <ul class="flex flex-wrap items-center gap-1 text-sm sm:gap-2 sm:text-base">
+        {
+          nav.map((item) => {
+            const target = item.url.replace(/\/$/, '').split('#')[0];
+            const isActive = target !== '' && current.endsWith(target) && !item.url.includes('#');
+            return (
+              <li>
+                <a
+                  href={item.url}
+                  class:list={[
+                    'rounded-md px-2 py-1.5 font-medium transition-colors sm:px-3',
+                    isActive
+                      ? 'bg-ler-200 text-ler-900'
+                      : 'text-ler-700 hover:bg-ler-100 hover:text-ler-900',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

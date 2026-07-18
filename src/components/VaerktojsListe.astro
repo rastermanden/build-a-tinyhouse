@@ -1,0 +1,24 @@
+---
+interface Props {
+  vaerktoj: string[];
+}
+
+const { vaerktoj } = Astro.props;
+---
+
+{
+  vaerktoj.length > 0 ? (
+    <ul class="grid gap-2 sm:grid-cols-2">
+      {vaerktoj.map((v) => (
+        <li class="flex items-start gap-2 rounded-lg border border-ler-200 bg-ler-50 px-3 py-2 text-sm text-ler-800">
+          <span aria-hidden="true" class="mt-0.5 text-skov-600">
+            🔧
+          </span>
+          <span>{v}</span>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="text-ler-600">Værktøjsliste tilføjes snart.</p>
+  )
+}

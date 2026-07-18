@@ -1,0 +1,250 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import data from '../data/materialelister.json';
+
+const MODUL = data.info.modul_cm; // 60
+const MAX_LAENGDE = 600;
+const MAX_BREDDE = 360;
+
+const laengder = Array.from({ length: MAX_LAENGDE / MODUL }, (_, i) => (i + 1) * MODUL);
+const bredder = Array.from({ length: MAX_BREDDE / MODUL }, (_, i) => (i + 1) * MODUL);
+
+// Sæt de tilgængelige mål ind i data-attributter, så klient-scriptet kan slå op.
+const dataJson = JSON.stringify(data);
+---
+
+<BaseLayout
+  titel="Materialeberegner"
+  beskrivelse="Vælg længde og bredde på dit tiny house og få den fulde materialeliste."
+>
+  <div class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-ler-900 sm:text-4xl">Materialeberegner</h1>
+    <p class="mt-3 text-lg text-ler-700">
+      Vælg længde og bredde på dit hus, så viser vi den fulde, prædefinerede materialeliste –
+      trin for trin. Alle mål går op i {MODUL} cm-modulet.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-ler-200 bg-ler-100 p-4 text-sm text-ler-700">
+      ⚠️ Mængderne er <strong>vejledende estimater</strong> til planlægning. Tjek altid selv
+      efter og tilpas til dit projekt. Metoden er inspireret af
+      <a href="https://smaabyg.nu/" target="_blank" rel="noopener" class="font-medium text-skov-600 underline">småBYG</a>.
+    </div>
+
+    <!-- Vælgere -->
+    <form id="beregner-form" class="mt-8 grid gap-4 sm:grid-cols-2">
+      <label class="block">
+        <span class="mb-1 block text-sm font-semibold text-ler-800">Længde</span>
+        <select
+          id="vaelg-laengde"
+          class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
+        >
+          <option value="">Vælg længde …</option>
+          {laengder.map((l) => <option value={l}>{(l / 100).toLocaleString('da-DK')} m ({l} cm)</option>)}
+        </select>
+      </label>
+
+      <label class="block">
+        <span class="mb-1 block text-sm font-semibold text-ler-800">Bredde</span>
+        <select
+          id="vaelg-bredde"
+          class="w-full rounded-lg border border-ler-300 bg-ler-50 px-3 py-2.5 text-ler-900 focus:border-skov-600 focus:outline-none"
+        >
+          <option value="">Vælg bredde …</option>
+          {bredder.map((b) => <option value={b}>{(b / 100).toLocaleString('da-DK')} m ({b} cm)</option>)}
+        </select>
+      </label>
+    </form>
+
+    <p class="mt-3 text-sm text-ler-600">
+      Længde max {MAX_LAENGDE} cm · bredde max {MAX_BREDDE} cm · alt i {MODUL} cm-trin.
+      <span id="tilgaengelige-hint"></span>
+    </p>
+
+    <!-- Resultat -->
+    <div id="resultat" class="mt-8"></div>
+
+    <div id="handlinger" class="mt-6 hidden gap-3 no-print sm:flex">
+      <button
+        id="print-knap"
+        type="button"
+        class="rounded-lg bg-skov-600 px-4 py-2.5 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+      >
+        🖨️ Print / gem som PDF
+      </button>
+      <button
+        id="kopier-knap"
+        type="button"
+        class="rounded-lg border border-ler-300 bg-ler-50 px-4 py-2.5 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
+      >
+        📋 Kopiér liste
+      </button>
+    </div>
+  </div>
+
+  <script type="application/json" id="beregner-data" set:html={dataJson} />
+
+  <script>
+    interface Materiale {
+      materiale: string;
+      maengde: number;
+      enhed: string;
+      note?: string;
+    }
+    interface Maal {
+      id: string;
+      laengde_cm: number;
+      bredde_cm: number;
+      navn: string;
+      beskrivelse: string;
+      materialerPrStep: Record<string, Materiale[]>;
+    }
+    interface Data {
+      info: { vaeghojde_cm: number; modul_cm: number; kilde: string; bemaerkning: string };
+      stepRaekkefolge: string[];
+      stepTitler: Record<string, string>;
+      praedefineredeMaal: Maal[];
+    }
+
+    const data: Data = JSON.parse(document.getElementById('beregner-data')!.textContent!);
+
+    const laengdeSel = document.getElementById('vaelg-laengde') as HTMLSelectElement;
+    const breddeSel = document.getElementById('vaelg-bredde') as HTMLSelectElement;
+    const resultat = document.getElementById('resultat')!;
+    const handlinger = document.getElementById('handlinger')!;
+    const hint = document.getElementById('tilgaengelige-hint')!;
+
+    // Vis hvilke mål der har en færdig liste.
+    const tilgaengelige = data.praedefineredeMaal
+      .map((m) => `${(m.laengde_cm / 100).toLocaleString('da-DK')}×${(m.bredde_cm / 100).toLocaleString('da-DK')} m`)
+      .join(', ');
+    hint.textContent = ` Færdige lister: ${tilgaengelige}.`;
+
+    let aktivMaal: Maal | null = null;
+
+    function findMaal(l: number, b: number): Maal | undefined {
+      return data.praedefineredeMaal.find((m) => m.laengde_cm === l && m.bredde_cm === b);
+    }
+
+    function esc(s: string): string {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function formatMaengde(n: number): string {
+      return n.toLocaleString('da-DK');
+    }
+
+    function render() {
+      const l = Number(laengdeSel.value);
+      const b = Number(breddeSel.value);
+
+      if (!l || !b) {
+        resultat.innerHTML = '';
+        handlinger.classList.add('hidden');
+        handlinger.classList.remove('sm:flex');
+        aktivMaal = null;
+        return;
+      }
+
+      const maal = findMaal(l, b);
+      if (!maal) {
+        aktivMaal = null;
+        handlinger.classList.add('hidden');
+        handlinger.classList.remove('sm:flex');
+        resultat.innerHTML = `
+          <div class="rounded-2xl border border-dashed border-ler-300 bg-ler-100/60 p-8 text-center">
+            <p class="text-3xl">📐</p>
+            <p class="mt-3 font-semibold text-ler-900">Ingen færdig materialeliste for ${(l / 100).toLocaleString('da-DK')} × ${(b / 100).toLocaleString('da-DK')} m endnu.</p>
+            <p class="mt-2 text-sm text-ler-700">Vælg et af de tilgængelige mål (${esc(tilgaengelige)}),
+            eller tilføj målet i <code class="rounded bg-ler-200 px-1">src/data/materialelister.json</code>.</p>
+          </div>`;
+        return;
+      }
+
+      aktivMaal = maal;
+      handlinger.classList.remove('hidden');
+      handlinger.classList.add('sm:flex');
+
+      const sektioner = data.stepRaekkefolge
+        .map((noegle, i) => {
+          const titel = data.stepTitler[noegle] ?? noegle;
+          const rows = (maal.materialerPrStep[noegle] ?? [])
+            .map(
+              (m) => `
+              <tr class="border-t border-ler-200 align-top">
+                <td class="px-4 py-2.5 font-medium text-ler-900">${esc(m.materiale)}</td>
+                <td class="whitespace-nowrap px-4 py-2.5 text-right text-ler-800">${formatMaengde(m.maengde)}</td>
+                <td class="px-4 py-2.5 text-ler-700">${esc(m.enhed)}</td>
+                <td class="px-4 py-2.5 text-sm text-ler-500">${m.note ? esc(m.note) : ''}</td>
+              </tr>`,
+            )
+            .join('');
+          return `
+            <section class="mt-6">
+              <h3 class="mb-2 flex items-center gap-2 text-lg font-bold text-ler-900">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full bg-skov-600 text-xs font-bold text-ler-50">${i + 1}</span>
+                ${esc(titel)}
+              </h3>
+              <div class="overflow-x-auto rounded-xl border border-ler-200">
+                <table class="w-full border-collapse text-left text-sm">
+                  <thead class="bg-ler-100 text-ler-800">
+                    <tr>
+                      <th class="px-4 py-2.5 font-semibold">Materiale</th>
+                      <th class="px-4 py-2.5 text-right font-semibold">Mængde</th>
+                      <th class="px-4 py-2.5 font-semibold">Enhed</th>
+                      <th class="px-4 py-2.5 font-semibold">Note</th>
+                    </tr>
+                  </thead>
+                  <tbody>${rows}</tbody>
+                </table>
+              </div>
+            </section>`;
+        })
+        .join('');
+
+      resultat.innerHTML = `
+        <div class="rounded-2xl border border-skov-600/20 bg-skov-600/5 p-5">
+          <h2 class="text-xl font-bold text-ler-900">${esc(maal.navn)}</h2>
+          <p class="mt-1 text-ler-700">${esc(maal.beskrivelse)}</p>
+          <p class="mt-2 text-sm text-ler-600">Væghøjde brugt i beregningen: ${data.info.vaeghojde_cm} cm.</p>
+        </div>
+        ${sektioner}`;
+    }
+
+    function byggTekst(maal: Maal): string {
+      const linjer: string[] = [
+        `Materialeliste – ${maal.navn}`,
+        `(${maal.laengde_cm} × ${maal.bredde_cm} cm, væghøjde ${data.info.vaeghojde_cm} cm)`,
+        '',
+      ];
+      for (const noegle of data.stepRaekkefolge) {
+        linjer.push(`## ${data.stepTitler[noegle] ?? noegle}`);
+        for (const m of maal.materialerPrStep[noegle] ?? []) {
+          linjer.push(`- ${m.materiale}: ${formatMaengde(m.maengde)} ${m.enhed}${m.note ? ` (${m.note})` : ''}`);
+        }
+        linjer.push('');
+      }
+      linjer.push('Vejledende estimater. Metode inspireret af småBYG – smaabyg.nu');
+      return linjer.join('\n');
+    }
+
+    laengdeSel.addEventListener('change', render);
+    breddeSel.addEventListener('change', render);
+
+    document.getElementById('print-knap')!.addEventListener('click', () => window.print());
+
+    document.getElementById('kopier-knap')!.addEventListener('click', async (e) => {
+      if (!aktivMaal) return;
+      const knap = e.currentTarget as HTMLButtonElement;
+      try {
+        await navigator.clipboard.writeText(byggTekst(aktivMaal));
+        const org = knap.textContent;
+        knap.textContent = '✅ Kopieret!';
+        setTimeout(() => (knap.textContent = org), 2000);
+      } catch {
+        knap.textContent = 'Kunne ikke kopiere';
+      }
+    });
+  </script>
+</BaseLayout>

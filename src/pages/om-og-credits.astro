@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { href } from '../lib/url';
+
+const links = [
+  { label: 'smaabyg.nu', url: 'https://smaabyg.nu/', beskrivelse: 'Hjemmesiden med hele historien og filosofien.' },
+  { label: 'Kurser hos småBYG', url: 'https://smaabyg.nu/kurser', beskrivelse: 'Byg- og designkurser – hvor det hele startede for mig.' },
+  { label: 'Selvbyg', url: 'https://smaabyg.nu/selvbyg', beskrivelse: 'Om at bygge sit eget i deres hal ved Grobund.' },
+  { label: 'småBYG på YouTube', url: 'https://www.youtube.com/@smabyg871', beskrivelse: 'Videoer med Jonas om tiny house-livet og byggeriet.' },
+];
+---
+
+<BaseLayout
+  titel="Om & credits"
+  beskrivelse="Om projektet og en stor tak til småBYG og Jonas."
+>
+  <div class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-ler-900 sm:text-4xl">Om projektet &amp; credits</h1>
+
+    <section class="prose-tiny mt-6">
+      <h2>Om denne side</h2>
+      <p>
+        Dette er min personlige dokumentation af at bygge mit eget tiny house i
+        naturmaterialer – træ, træfiberisolering og lerpuds. Jeg deler processen trin for
+        trin, så andre nemt kan gøre kunsten efter og bygge deres eget.
+      </p>
+      <p>
+        Siden er lavet med åben kildekode og bygges automatisk, hver gang jeg tilføjer nyt.
+        Billeder er organiseret i mapper for hvert byggetrin, og materialelisterne ligger i
+        en åben datafil, så det er nemt at tilføje flere mål.
+      </p>
+
+      <h2>Den vigtigste tak: småBYG &amp; Jonas 🙏</h2>
+      <p>
+        Intet af det her havde været muligt uden <strong>Jonas</strong> og
+        <strong>småBYG</strong>. Det var på deres tiny house-kursus, jeg lærte hele metoden:
+        modultænkningen i 60 cm, den diffusionsåbne opbygning i naturmaterialer, den tætte
+        dampbremse og den smukke lerpuds til sidst.
+      </p>
+      <p>
+        Jonas er en del af Grobund-fællesskabet og har hjulpet mange mennesker med at bygge
+        små, selvforsynende og klimavenlige huse. Deres tanke om, at
+        <em>«de billigste kvadratmeter er dem, du ikke bygger»</em>, har været med mig hele
+        vejen.
+      </p>
+      <p>
+        Teksterne på denne side er skrevet med mine egne ord, men bygger helt og holdent på
+        det, jeg lærte hos dem. Al ære og anerkendelse går til småBYG og Jonas. Hvis du selv
+        drømmer om et tiny house, så tag på kursus hos dem – det er hver en krone værd.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl font-bold text-ler-900">Links til småBYG</h2>
+      <ul class="mt-4 grid gap-3">
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.url}
+                target="_blank"
+                rel="noopener"
+                class="group flex items-start justify-between gap-4 rounded-xl border border-ler-200 bg-ler-50 p-4 transition-colors hover:border-skov-600/40 hover:bg-ler-100"
+              >
+                <span>
+                  <span class="block font-semibold text-ler-900 group-hover:text-skov-700">{l.label}</span>
+                  <span class="mt-0.5 block text-sm text-ler-700">{l.beskrivelse}</span>
+                </span>
+                <span class="mt-1 shrink-0 text-skov-600" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <p class="mt-10 rounded-xl border border-ler-200 bg-ler-100 p-4 text-sm text-ler-600">
+      Bemærk: Denne side er et selvstændigt hobbyprojekt og er ikke officielt tilknyttet
+      småBYG. Følg altid gældende regler og vejledninger, og tjek materialemængder selv.
+    </p>
+
+    <div class="mt-8">
+      <a href={href()} class="font-medium text-skov-600 hover:text-skov-700">← Tilbage til forsiden</a>
+    </div>
+  </div>
+</BaseLayout>

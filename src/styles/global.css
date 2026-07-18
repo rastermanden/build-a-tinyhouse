@@ -1,0 +1,67 @@
+@import 'tailwindcss';
+
+/* ─── Tema: varme træ- og lertoner, inspireret af naturmaterialerne ───────── */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+
+  /* Ler / sand */
+  --color-ler-50: #faf6f0;
+  --color-ler-100: #f3ebdf;
+  --color-ler-200: #e6d5bf;
+  --color-ler-300: #d6bb98;
+  --color-ler-400: #c49d70;
+  --color-ler-500: #b58455;
+  --color-ler-600: #a06f47;
+  --color-ler-700: #85583c;
+  --color-ler-800: #6d4835;
+  --color-ler-900: #5b3d2f;
+
+  /* Skov / mos – accent */
+  --color-skov-500: #5b7355;
+  --color-skov-600: #4a6046;
+  --color-skov-700: #3c4e39;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-ler-50 text-ler-900 antialiased;
+}
+
+/* Typografi til markdown-brødtekst på step-siderne */
+.prose-tiny :where(h2):not(:first-child) {
+  @apply mt-10 mb-3 text-2xl font-bold text-ler-900;
+}
+.prose-tiny h2 {
+  @apply mb-3 text-2xl font-bold text-ler-900;
+}
+.prose-tiny h3 {
+  @apply mt-6 mb-2 text-xl font-semibold text-ler-800;
+}
+.prose-tiny p {
+  @apply my-4 leading-relaxed text-ler-800;
+}
+.prose-tiny ul {
+  @apply my-4 list-disc space-y-1 pl-6 text-ler-800;
+}
+.prose-tiny ol {
+  @apply my-4 list-decimal space-y-1 pl-6 text-ler-800;
+}
+.prose-tiny a {
+  @apply font-medium text-skov-600 underline underline-offset-2 hover:text-skov-700;
+}
+.prose-tiny blockquote {
+  @apply my-6 border-l-4 border-ler-300 bg-ler-100 py-2 pl-4 pr-3 italic text-ler-700;
+}
+.prose-tiny strong {
+  @apply font-semibold text-ler-900;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

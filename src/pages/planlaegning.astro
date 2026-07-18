@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { href } from '../lib/url';
+---
+
+<BaseLayout
+  titel="Planlægning og indkøb"
+  beskrivelse="Sådan planlægger du dit tiny house-byggeri og køber materialer smart ind."
+>
+  <div class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-ler-900 sm:text-4xl">Planlægning &amp; indkøb</h1>
+    <p class="mt-3 text-lg text-ler-700">
+      God planlægning er halvdelen af arbejdet. Her er, hvordan jeg griber det an, før den
+      første skrue sættes i.
+    </p>
+
+    <section class="prose-tiny mt-8">
+      <h2>1. Beslut dine mål</h2>
+      <p>
+        Start med at vælge husets <strong>længde og bredde</strong>. Alt bygges op omkring
+        et modul på <strong>60 cm</strong>, så både længde og bredde skal gå op i 60 cm. Det
+        gør isolering, plader og indkøb langt nemmere – og giver mindre spild.
+      </p>
+      <ul>
+        <li>Længde: op til <strong>600 cm</strong> (i trin á 60 cm)</li>
+        <li>Bredde: op til <strong>360 cm</strong> (i trin á 60 cm)</li>
+      </ul>
+      <p>
+        Bredden hænger tit sammen med, hvordan huset skal <strong>transporteres</strong> –
+        hold dig inden for lovlige mål, hvis det skal på en trailer eller ad landevej.
+      </p>
+
+      <h2>2. Lav din materialeliste</h2>
+      <p>
+        Brug <a href={href('beregner')}>materialeberegneren</a> til at få en fuld,
+        trin-for-trin materialeliste ud fra dine mål. Den giver dig et solidt overblik til
+        budget og indkøb.
+      </p>
+
+      <h2>3. Sæt et budget</h2>
+      <p>
+        Del budgettet op efter byggetrinnene. Nogle poster fylder mere end andre – typisk
+        træ, isolering, vinduer og tag. Regn med lidt ekstra til spild, skruer, tape og
+        værktøj, du opdager, du mangler undervejs.
+      </p>
+
+      <h2>4. Køb smart og bæredygtigt ind</h2>
+      <ul>
+        <li>
+          <strong>Genbrug</strong> hvor du kan – især vinduer og døre. Planlæg gerne husets
+          mål efter de elementer, du kan skaffe.
+        </li>
+        <li>
+          <strong>Køb træ samlet</strong> i samme dimension (fx 45×95 mm), så du kan bruge
+          det på tværs af flere trin og skære efter behov.
+        </li>
+        <li>
+          <strong>Bestil naturmaterialer i god tid</strong> – træfiberisolering, træfiberplader
+          og lerpuds har nogle gange leveringstid.
+        </li>
+      </ul>
+
+      <h2>5. Planlæg rækkefølge og plads</h2>
+      <p>
+        Følg <a href={href('#byggesteps')}>byggeguidens rækkefølge</a>: bundrem → skelet →
+        gulv → loft → vægge → vinduer/døre → tag → yderbeklædning → lerpuds. Sørg for tørt,
+        overdækket sted at arbejde, og plads til at opbevare materialer, så de holder sig
+        tørre.
+      </p>
+
+      <blockquote>
+        Hele denne tilgang – modultænkning, naturmaterialer og at bo småt og billigt – har
+        jeg lært hos <strong>småBYG</strong> og <strong>Jonas</strong>. Se
+        <a href="https://smaabyg.nu/" target="_blank" rel="noopener">smaabyg.nu</a> for kurser
+        og masser af inspiration.
+      </blockquote>
+    </section>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a
+        href={href('beregner')}
+        class="rounded-lg bg-skov-600 px-5 py-3 font-semibold text-ler-50 transition-colors hover:bg-skov-700"
+        >Åbn materialeberegneren</a
+      >
+      <a
+        href={href('#byggesteps')}
+        class="rounded-lg border border-ler-300 bg-ler-50 px-5 py-3 font-semibold text-ler-800 transition-colors hover:bg-ler-100"
+        >Se byggeguiden</a
+      >
+    </div>
+  </div>
+</BaseLayout>
