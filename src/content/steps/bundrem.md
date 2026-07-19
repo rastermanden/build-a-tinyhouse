@@ -4,6 +4,7 @@ titel: Bundrem
 resume: Fundamentet for hele huset. En stiv, retvinklet ramme i træ, der bærer gulv, vægge og tag.
 beregnerNoegle: bundrem
 tid: 1-2 dage
+materialerKlar: true
 vaerktoj:
   - Akku-boremaskine og slagskruemaskine
   - Håndrundsav eller kap-/geringssav
@@ -14,7 +15,7 @@ vaerktoj:
 materialer:
   - navn: Konstruktionstræ til rammen
     dimension: 45×95 mm
-    note: Den bærende ramme og tværgående regler (moduldelt pr. 60 cm)
+    note: Den bærende ramme og strøer (moduldelt pr. 60 cm)
   - navn: Skruer til konstruktion
     dimension: 5×90-100 mm
     note: Rustfrie eller varmforzinkede
@@ -36,10 +37,13 @@ begyndelsen.
 
 1. **Læg fugtspærre** dér, hvor træet møder trailer, sokkel eller punktfundament. Træ må
    aldrig stå og suge fugt.
-2. **Byg den ydre ramme** af 45×95 mm på højkant, og skru den sammen i hjørnerne.
+2. **Byg den ydre ramme** af kraftigt konstruktionstræ på højkant, og skru den sammen i
+   hjørnerne. Til de gennemgående samlinger af bundramme, spær og strø bruges **ekstra
+   lange konstruktionsskruer** (fx NKT Ø8 mm i 240 og 280 mm), så der er godt bid i træet.
 3. **Kontrollér vinklen** ved at måle begge diagonaler – de skal være lige lange. Juster
    til rammen er helt retvinklet.
-4. **Sæt tværregler** ind pr. 60 cm (center/center). De bærer gulvet og fastholder modulet.
+4. **Sæt strø** ind pr. 60 cm (center/center). Strøerne er de tværgående bjælker, der bærer
+   gulvet og fastholder modulet – skru dem fast gennem rammen med de lange skruer.
 5. **Fastgør rammen** til underlaget, så huset ikke kan flytte sig.
 
 ## Gode råd

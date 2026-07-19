@@ -35,8 +35,12 @@
   },
   "materialerPrTrin": {
     "bundrem": [
-      { "tekst": "45×195 mm C24, fra 5,7 m og længere", "maengde": 24, "enhed": "m", "kategori": "Konstruktionstræ" },
-      { "tekst": "Big bag bakkesand, 1,0 m³", "maengde": 1, "enhed": "stk", "kategori": "Sand", "note": "Til afretning/fundament" }
+      { "tekst": "45×195 mm C24, 6,0 m", "maengde": 4, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Gennemgående langremme" },
+      { "tekst": "45×145 mm C24 spærplanke, 3,60 m", "maengde": 2, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Endestykker (husets bredde)" },
+      { "tekst": "45×195 mm C24, 3,17 m", "maengde": 11, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Strø – pr. 60 cm" },
+      { "tekst": "23×121 mm tagbrædder, ru fors. høvl. bag + endenot", "maengde": 218, "enhed": "m", "kategori": "Beklædning", "note": "Lægges på undersiden – bundremmen vendes ned mod jord" },
+      { "tekst": "NKT konstruktionsskrue, Ø8,0×280 mm", "maengde": 22, "enhed": "stk", "kategori": "Skruer & befæstelse", "note": "Til montering af bundramme, spær og strø" },
+      { "tekst": "NKT konstruktionsskrue, Ø8,0×240 mm", "maengde": 11, "enhed": "stk", "kategori": "Skruer & befæstelse", "note": "Til montering af bundramme, spær og strø" }
     ],
     "spaer-og-regler": [
       { "tekst": "45×195 mm C24 spærplanke, t.o.m. 5,4 m", "maengde": 86.4, "enhed": "m", "kategori": "Konstruktionstræ" },
@@ -69,7 +73,6 @@
     ],
     "tag": [
       { "tekst": "Da TP 30-119 trapezplade tag, poly. std. farve, 1,03×4,00 m", "maengde": 6, "enhed": "pla", "kategori": "Tag" },
-      { "tekst": "23×121 mm tagbrædder, ru fors. høvl. bag + endenot", "maengde": 218, "enhed": "m", "kategori": "Tag" },
       { "tekst": "38×73 mm T1 taglægter (3,6 & 4,2 & 5,1 m)", "maengde": 71.4, "enhed": "m", "kategori": "Tag" },
       { "tekst": "22×100 mm forskalling, høvlet (2,4 – 5,1 m)", "maengde": 92.4, "enhed": "m", "kategori": "Tag" },
       { "tekst": "Dafa neutral UV-tape sort, 60 mm×25 m", "maengde": 1, "enhed": "rl", "kategori": "Isolering & tætning" },
@@ -89,7 +92,6 @@
     { "tekst": "Gaffatape – sort basic, 50 mm×48 m", "maengde": 2, "enhed": "rl", "kategori": "Isolering & tætning" },
     { "tekst": "Milwaukee bits Shockwave TX20×50 mm, p10", "maengde": 3, "enhed": "pak", "kategori": "Værktøj/bits" },
     { "tekst": "Milwaukee bits Shockwave display TX25×50 mm, p10", "maengde": 2, "enhed": "pak", "kategori": "Værktøj/bits" },
-    { "tekst": "Milwaukee bits Shockwave TX30×50 mm, cd10p", "maengde": 1, "enhed": "pak", "kategori": "Værktøj/bits" },
-    { "tekst": "CO2/diesel-afgift pr. leverance", "maengde": 1, "enhed": "stk", "kategori": "Øvrigt" }
+    { "tekst": "Milwaukee bits Shockwave TX30×50 mm, cd10p", "maengde": 1, "enhed": "pak", "kategori": "Værktøj/bits" }
   ]
 }
