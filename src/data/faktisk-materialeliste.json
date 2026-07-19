@@ -35,7 +35,9 @@
   },
   "materialerPrTrin": {
     "bundrem": [
-      { "tekst": "45×195 mm C24, fra 5,7 m og længere", "maengde": 24, "enhed": "m", "kategori": "Konstruktionstræ" },
+      { "tekst": "45×195 mm C24, 6,0 m", "maengde": 4, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Gennemgående langremme" },
+      { "tekst": "45×145 mm C24 spærplanke, 3,60 m", "maengde": 2, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Endestykker (husets bredde)" },
+      { "tekst": "45×195 mm C24, 3,17 m", "maengde": 11, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Tværregler pr. 60 cm" },
       { "tekst": "Big bag bakkesand, 1,0 m³", "maengde": 1, "enhed": "stk", "kategori": "Sand", "note": "Til afretning/fundament" }
     ],
     "spaer-og-regler": [
