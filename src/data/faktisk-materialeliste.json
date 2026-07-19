@@ -38,8 +38,8 @@
       { "tekst": "45×195 mm C24, 6,0 m", "maengde": 4, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Gennemgående langremme" },
       { "tekst": "45×145 mm C24 spærplanke, 3,60 m", "maengde": 2, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Endestykker (husets bredde)" },
       { "tekst": "45×195 mm C24, 3,17 m", "maengde": 11, "enhed": "stk", "kategori": "Konstruktionstræ", "note": "Strø – pr. 60 cm" },
-      { "tekst": "Lang konstruktionsskrue, 280 mm", "maengde": 22, "enhed": "stk", "kategori": "Skruer & befæstelse", "note": "Til montering af bundramme, spær og strø" },
-      { "tekst": "Lang konstruktionsskrue, 240 mm", "maengde": 11, "enhed": "stk", "kategori": "Skruer & befæstelse", "note": "Til montering af bundramme, spær og strø" }
+      { "tekst": "NKT konstruktionsskrue, Ø8,0×280 mm", "maengde": 22, "enhed": "stk", "kategori": "Skruer & befæstelse", "note": "Til montering af bundramme, spær og strø" },
+      { "tekst": "NKT konstruktionsskrue, Ø8,0×240 mm", "maengde": 11, "enhed": "stk", "kategori": "Skruer & befæstelse", "note": "Til montering af bundramme, spær og strø" }
     ],
     "spaer-og-regler": [
       { "tekst": "45×195 mm C24 spærplanke, t.o.m. 5,4 m", "maengde": 86.4, "enhed": "m", "kategori": "Konstruktionstræ" },
