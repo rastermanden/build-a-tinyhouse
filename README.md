@@ -77,8 +77,9 @@ en `kategori`. Billeder til siden (fx skrueæsker) lægges i `src/assets/faktisk
 **Valgt liste på byggetrinnene:** `src/lib/lister.ts` samler de tilgængelige lister ét sted.
 Man vælger en liste på Materialeliste-siden (gemmes i `localStorage` under nøglen
 `valgtMaterialeliste`), og hvert byggetrin viser derefter et banner med den valgte liste og
-netop det trins materialer. Man kan skifte mellem lister (der findes p.t. kun én, men flere
-kan tilføjes ved at udvide `lister` i `lister.ts`).
+netop det trins materialer. Er der ikke aktivt valgt en liste, bruges **den første liste som
+standard**, så trinnet altid viser materialer. Man kan skifte mellem lister (der findes p.t.
+kun én, men flere kan tilføjes ved at udvide `lister` i `lister.ts`).
 
 Hvert byggetrin viser **kun** materialer, når trinnet er markeret som klar med
 `materialerKlar: true` i frontmatter; ellers står der **"Kommer senere"**. Sæt flaget, når du
