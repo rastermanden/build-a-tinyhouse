@@ -16,6 +16,9 @@ const steps = defineCollection({
     beregnerNoegle: z.string(),
     // Estimeret tid (fri tekst, fx "1-2 dage").
     tid: z.string().optional(),
+    // Er trinnets materialeliste opdateret med faktiske tal? Når true vises
+    // de faktiske materialer på trinnet; ellers vises "Kommer senere".
+    materialerKlar: z.boolean().default(false),
     // Generisk referenceliste over værktøj til dette step.
     vaerktoj: z.array(z.string()).default([]),
     // Generisk referenceliste over materialer (mængder findes i beregneren).

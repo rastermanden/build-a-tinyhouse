@@ -4,6 +4,7 @@ titel: Bundrem
 resume: Fundamentet for hele huset. En stiv, retvinklet ramme i træ, der bærer gulv, vægge og tag.
 beregnerNoegle: bundrem
 tid: 1-2 dage
+materialerKlar: true
 vaerktoj:
   - Akku-boremaskine og slagskruemaskine
   - Håndrundsav eller kap-/geringssav

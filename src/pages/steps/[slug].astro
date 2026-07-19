@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import MaterialTabel from '../../components/MaterialTabel.astro';
 import VaerktojsListe from '../../components/VaerktojsListe.astro';
 import Galleri from '../../components/Galleri.astro';
 import StepNav from '../../components/StepNav.astro';
@@ -25,8 +24,12 @@ export async function getStaticPaths() {
 const { entry, forrige, naeste } = Astro.props;
 const { Content } = await render(entry);
 
+// Er trinnets materialeliste opdateret med faktiske tal? Ellers "Kommer senere".
+const materialerKlar = entry.data.materialerKlar === true;
+
 // Data til "materialer fra din valgte liste": for hver liste kun dette trins
-// varer. Klient-scriptet vælger ud fra localStorage.
+// varer. Klient-scriptet vælger ud fra localStorage, så man kan skifte mellem
+// lister (der findes p.t. kun én, men flere kan tilføjes).
 const valgtListeConfig = {
   storageKey: STORAGE_KEY,
   materialelisteUrl: href('faktisk-materialeliste'),
@@ -142,20 +145,22 @@ if (erYderbeklaedning) {
     </section>
 
     <section class="mt-12">
-      <h2 class="mb-4 text-2xl font-bold text-ler-900">🧱 Materialer</h2>
-      <MaterialTabel materialer={entry.data.materialer} />
-      <p class="mt-3 text-sm text-ler-600">
-        Vil du have konkrete mængder? Se
-        <a href={href('beregner')} class="font-medium text-skov-600 underline">materialelisterne</a>
-        og vælg en færdig størrelse.
-      </p>
-    </section>
-
-    <section class="mt-12">
       <h2 class="mb-4 flex items-center gap-2 text-2xl font-bold text-ler-900">
-        <span aria-hidden="true">📋</span> Materialer fra din valgte liste
+        <span aria-hidden="true">🧱</span> Materialer
       </h2>
-      <div id="valgt-liste-materialer"></div>
+      {
+        materialerKlar ? (
+          <div id="valgt-liste-materialer"></div>
+        ) : (
+          <div class="rounded-2xl border border-dashed border-ler-300 bg-ler-100/60 p-6 text-center">
+            <p class="text-2xl" aria-hidden="true">⏳</p>
+            <p class="mt-2 font-semibold text-ler-900">Kommer senere</p>
+            <p class="mt-1 text-sm text-ler-700">
+              Materialelisten for dette trin er ikke opdateret med faktiske tal endnu.
+            </p>
+          </div>
+        )
+      }
     </section>
 
     {
