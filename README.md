@@ -107,6 +107,14 @@ Sitet udgives til `gh-pages`-branchen:
 Under **Settings → Pages** skal *Source* sættes til **Deploy from a branch** og branchen
 til **`gh-pages`** (mappe `/ (root)`). Herefter kører det automatisk.
 
+## Tegninger i FreeCAD
+
+Vil du lave dine egne konstruktionstegninger, ligger der en kort guide i
+[`docs/freecad-parametrisk-konstruktion.md`](docs/freecad-parametrisk-konstruktion.md).
+Den viser, hvordan du bygger træskelettet parametrisk i FreeCAD med vores dimensioner
+(45×95 og 45×120 mm, 60 cm-modul), så du kan ændre husets længde/bredde ét sted og få både
+3D-model og tegninger til at følge med. Med links til de relevante FreeCAD-workbenches.
+
 ## Ansvarsfraskrivelse
 
 Dette er et personligt hobbyprojekt og er ikke officielt tilknyttet småBYG. Materialemængder
