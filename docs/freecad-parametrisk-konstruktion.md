@@ -128,6 +128,37 @@ Ud over de tekniske tegninger:
 | Ét regneark styrer også **antal** regler/spær (arrays) | Mere arbejde, men fuldt muligt |
 | Ændre størrelse på et *færdigbygget* projekt bagefter | Svært – planlæg det fra begyndelsen |
 
+## Lad Claude bygge modellen (MCP-server)
+
+Vil du ikke klikke det hele manuelt, findes der **MCP-servere til FreeCAD**, der lader Claude
+styre FreeCAD direkte: oprette/ændre objekter, køre Python-kode inde i FreeCAD og tage
+skærmbilleder af 3D-viewet, så Claude kan se modellen og rette til undervejs. Det passer godt
+til den parametriske tilgang her, fordi hele setuppet (Spreadsheet, aliaser, udtryk,
+Draft-arrays) kan skrives via FreeCADs Python-API.
+
+**Anbefaling:** [`neka-nat/freecad-mcp`](https://github.com/neka-nat/freecad-mcp) – den mest
+modne (understøtter FreeCAD 1.0/1.1, har skærmbillede-feedback, kører med **Claude Desktop**).
+Vil du hellere bruge **Claude Code** i terminalen, så tag
+[`contextform/freecad-mcp`](https://github.com/contextform/freecad-mcp) i stedet.
+
+| Din situation | Vælg |
+|---|---|
+| Standard (Claude Desktop-appen) | `neka-nat/freecad-mcp` |
+| Vil bruge Claude Code i terminalen | `contextform/freecad-mcp` |
+
+Sådan kommer du i gang:
+
+1. Installér serveren (kopiér addon'et til FreeCADs `Mod`-mappe og konfigurér Claude – se
+   serverens README).
+2. Giv Claude **denne guide** som kontekst, så den kender vores dimensioner (45×95, 45×120)
+   og 60 cm-modulet.
+3. Bed den bygge det parametriske skelet – f.eks. *"opret et Spreadsheet med laengde/bredde/
+   modul som aliaser og byg bundrem + regler c/c 600 med udtryk"*.
+
+> **Bemærk:** Det er et **superviseret** værktøj, ikke en autopilot. Det får hurtigt 80 % op
+> at stå, men tjek altid mål og placeringer efter – konstruktionstegninger skal være
+> korrekte. Serveren kører **lokalt** på din egen maskine (FreeCAD + Claude side om side).
+
 ## Nyttige links
 
 - FreeCAD – download: <https://www.freecad.org/downloads.php>
@@ -137,6 +168,8 @@ Ud over de tekniske tegninger:
 - Expressions (udtrykssproget): <https://wiki.freecad.org/Expressions>
 - Draft Array (kopier regler/spær): <https://wiki.freecad.org/Draft_OrthoArray>
 - Al FreeCAD-dokumentation: <https://wiki.freecad.org/>
+- MCP-server (Claude Desktop): <https://github.com/neka-nat/freecad-mcp>
+- MCP-server (Claude Code): <https://github.com/contextform/freecad-mcp>
 - FreeCAD-forummet (spørg om hjælp): <https://forum.freecad.org/>
 
 ---
