@@ -48,23 +48,22 @@ Billeder lægges i mappen <code class="rounded bg-ler-200 px-1">src/assets/steps
 ← Forrige trin
 </span> <span class="mt-1 font-semibold text-ler-900"> 1. Bundrem </span> </a> <a href="/build-a-tinyhouse/pr-preview/pr-6/steps/gulv" class="group flex flex-col rounded-xl border border-ler-200 bg-ler-50 p-4 text-right transition-colors hover:border-ler-300 hover:bg-ler-100"> <span class="text-xs font-semibold uppercase tracking-wide text-ler-500">
 Næste trin →
-</span> <span class="mt-1 font-semibold text-ler-900"> 3. Gulv </span> </a> </nav> </article> <script type="application/json" id="valgt-liste-data">{"storageKey":"valgtMaterialeliste","materialelisteUrl":"/build-a-tinyhouse/pr-preview/pr-6/faktisk-materialeliste","lister":[{"id":"faktisk-600x360","navn":"Faktisk liste – 6,0 × 3,6 m","maal":"6 × 3,6 m","varer":[{"tekst":"45×195 mm C24 spærplanke, t.o.m. 5,4 m","maengde":86.4,"enhed":"m","kategori":"Konstruktionstræ"},{"tekst":"45×145 mm C24 spærplanke, t.o.m. 5,40 m","maengde":172.8,"enhed":"m","kategori":"Konstruktionstræ"},{"tekst":"45×45 mm reglar (2,4 – 3,0 – 3,6 m)","maengde":14.4,"enhed":"m","kategori":"Konstruktionstræ"},{"tekst":"NKT Spun+ skrue UH TX30, 6,0×180/60 mm, climate-G3, 100 st","maengde":2,"enhed":"pak","kategori":"Skruer & befæstelse"},{"tekst":"NKT Topkon CK outdoor, 6×160 mm, 100 st","maengde":2,"enhed":"pak","kategori":"Skruer & befæstelse"},{"tekst":"NKT Basic skrue UH TX20, 5,0×120/60 mm, Ruspert1000, 200 st","maengde":4,"enhed":"pak","kategori":"Skruer & befæstelse"},{"tekst":"NKT Basic skrue UH TX20, 5,0×100/55 mm, Ruspert1000, 200 st","maengde":1,"enhed":"pak","kategori":"Skruer & befæstelse"}]}]}</script> <script type="module">const a=document.getElementById("valgt-liste-materialer"),d=document.getElementById("valgt-liste-data");if(a&&d){const s=JSON.parse(d.textContent||"{}"),i=l=>l.toLocaleString("da-DK"),r=l=>{const e=document.createElement("div");return e.textContent=l,e.innerHTML},n=()=>{const l=localStorage.getItem(s.storageKey),e=s.lister.find(t=>t.id===l);if(!e){a.innerHTML=`
+</span> <span class="mt-1 font-semibold text-ler-900"> 3. Gulv </span> </a> </nav> </article> <script type="application/json" id="valgt-liste-data">{"storageKey":"valgtMaterialeliste","materialelisteUrl":"/build-a-tinyhouse/pr-preview/pr-6/faktisk-materialeliste","defaultListeId":"faktisk-600x360","lister":[{"id":"faktisk-600x360","navn":"Faktisk liste – 6,0 × 3,6 m","maal":"6 × 3,6 m","varer":[{"tekst":"45×195 mm C24 spærplanke, t.o.m. 5,4 m","maengde":86.4,"enhed":"m","kategori":"Konstruktionstræ"},{"tekst":"45×145 mm C24 spærplanke, t.o.m. 5,40 m","maengde":172.8,"enhed":"m","kategori":"Konstruktionstræ"},{"tekst":"45×45 mm reglar (2,4 – 3,0 – 3,6 m)","maengde":14.4,"enhed":"m","kategori":"Konstruktionstræ"},{"tekst":"NKT Spun+ skrue UH TX30, 6,0×180/60 mm, climate-G3, 100 st","maengde":2,"enhed":"pak","kategori":"Skruer & befæstelse"},{"tekst":"NKT Topkon CK outdoor, 6×160 mm, 100 st","maengde":2,"enhed":"pak","kategori":"Skruer & befæstelse"},{"tekst":"NKT Basic skrue UH TX20, 5,0×120/60 mm, Ruspert1000, 200 st","maengde":4,"enhed":"pak","kategori":"Skruer & befæstelse"},{"tekst":"NKT Basic skrue UH TX20, 5,0×100/55 mm, Ruspert1000, 200 st","maengde":1,"enhed":"pak","kategori":"Skruer & befæstelse"}]}]}</script> <script type="module">const n=document.getElementById("valgt-liste-materialer"),d=document.getElementById("valgt-liste-data");if(n&&d){const r=JSON.parse(d.textContent||"{}"),i=s=>s.toLocaleString("da-DK"),l=s=>{const t=document.createElement("div");return t.textContent=s,t.innerHTML},a=()=>{const s=localStorage.getItem(r.storageKey),t=r.lister.find(e=>e.id===s)??r.lister.find(e=>e.id===r.defaultListeId)??r.lister[0];if(!t){n.innerHTML=`
             <div class="rounded-2xl border border-dashed border-ler-300 bg-ler-100/60 p-6 text-center">
               <p class="text-2xl" aria-hidden="true">📋</p>
-              <p class="mt-2 font-semibold text-ler-900">Du har ikke valgt en materialeliste endnu.</p>
-              <p class="mt-1 text-sm text-ler-700">Vælg en liste, så du ser dette trins materialer med konkrete mængder her.</p>
-              <a href="${s.materialelisteUrl}" class="mt-3 inline-block font-semibold text-skov-600 underline">Vælg materialeliste →</a>
+              <p class="mt-2 font-semibold text-ler-900">Ingen materialeliste tilgængelig endnu.</p>
+              <a href="${r.materialelisteUrl}" class="mt-3 inline-block font-semibold text-skov-600 underline">Se materialelister →</a>
             </div>`;return}const o=`
           <div class="flex flex-wrap items-center gap-2 rounded-xl border border-skov-600/30 bg-skov-600/10 px-4 py-3 text-sm">
             <span class="font-semibold text-ler-900">Valgt liste:</span>
-            <span class="text-ler-800">${r(e.navn)}</span>
-            <span class="text-ler-500">(${r(e.maal)})</span>
-            <a href="${s.materialelisteUrl}" class="ml-auto font-medium text-skov-600 underline">Skift liste</a>
-          </div>`;if(!e.varer.length){a.innerHTML=o+'<p class="mt-3 rounded-xl border border-ler-200 bg-ler-50 px-4 py-4 text-sm text-ler-600">Den valgte liste har ingen varer specifikt til dette trin.</p>';return}const c=e.varer.map(t=>`
+            <span class="text-ler-800">${l(t.navn)}</span>
+            <span class="text-ler-500">(${l(t.maal)})</span>
+            <a href="${r.materialelisteUrl}" class="ml-auto font-medium text-skov-600 underline">Skift liste</a>
+          </div>`;if(!t.varer.length){n.innerHTML=o+'<p class="mt-3 rounded-xl border border-ler-200 bg-ler-50 px-4 py-4 text-sm text-ler-600">Den valgte liste har ingen varer specifikt til dette trin.</p>';return}const c=t.varer.map(e=>`
             <tr class="border-t border-ler-200 align-top">
-              <td class="px-4 py-3 font-medium text-ler-900">${r(t.tekst)}${t.note?`<span class="mt-0.5 block text-xs font-normal text-ler-500">${r(t.note)}</span>`:""}</td>
-              <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">${i(t.maengde)} ${r(t.enhed)}</td>
-            </tr>`).join("");a.innerHTML=o+`<div class="mt-3 overflow-x-auto rounded-xl border border-ler-200">
+              <td class="px-4 py-3 font-medium text-ler-900">${l(e.tekst)}${e.note?`<span class="mt-0.5 block text-xs font-normal text-ler-500">${l(e.note)}</span>`:""}</td>
+              <td class="whitespace-nowrap px-4 py-3 text-right text-ler-700">${i(e.maengde)} ${l(e.enhed)}</td>
+            </tr>`).join("");n.innerHTML=o+`<div class="mt-3 overflow-x-auto rounded-xl border border-ler-200">
             <table class="w-full border-collapse text-left text-sm">
               <thead class="bg-ler-100 text-ler-800">
                 <tr>
@@ -74,7 +73,7 @@ Næste trin →
               </thead>
               <tbody>${c}</tbody>
             </table>
-          </div>`};window.addEventListener("storage",n),n()}</script>  </main> <footer class="mt-16 border-t border-ler-200 bg-ler-100"> <div class="mx-auto max-w-5xl px-4 py-10"> <div class="grid gap-8 sm:grid-cols-2"> <div> <p class="flex items-center gap-2 text-lg font-bold text-ler-900"> <span aria-hidden="true">🛖</span> Byg dit eget tiny house
+          </div>`};window.addEventListener("storage",a),a()}</script>  </main> <footer class="mt-16 border-t border-ler-200 bg-ler-100"> <div class="mx-auto max-w-5xl px-4 py-10"> <div class="grid gap-8 sm:grid-cols-2"> <div> <p class="flex items-center gap-2 text-lg font-bold text-ler-900"> <span aria-hidden="true">🛖</span> Byg dit eget tiny house
 </p> <p class="mt-2 max-w-md text-sm leading-relaxed text-ler-700">
 En åben byggeguide, hvor jeg dokumenterer processen med at bygge mit eget tiny
           house i naturmaterialer – så du nemt kan bygge dit eget.
