@@ -70,6 +70,7 @@ UDREGNET = [
     ("B16", "=vaeg_bag - regel_z", "regel_l_bag", "Regel i bagvaeg"),
     ("B17", "=bundrem_h - udskaering_h", "regel_z", "Reglens underkant over terraen"),
     ("B18", "=laengde - 2 * regel_b", "bundrem_l", "Front/bag mellem gavlremmene"),
+    ("B28", "=bredde - 2 * bundrem_b", "stroe_l", "Stroe mellem front- og bagrem"),
     ("B22", "=vaeg_front - vaeg_bag", "fald", "Tagets fald over husets bredde"),
     ("B23", "=fald / bredde * 100", "haeldning_pct", "Taghaeldning i procent"),
     ("B24", "=atan(fald / bredde)", "spaer_vinkel", "Spaerets vinkel i grader"),
@@ -204,6 +205,30 @@ bjaelke(
     x=S + "regel_b",
     y=S + "bredde - " + S + "regel_b",
 )
+
+# ---------------------------------------------------------------- stroe
+# Gulvstroe paa hoejkant i samme hoejde som bundremmen, saa overkanten er plan
+# hele vejen. De gaar mellem front- og bagremmens INDERSIDER, altsaa
+# bundrem_b inde fra hver side.
+#
+# Stroeen ligger klods op ad sin regel, ikke i samme x. Reglerne er 145 dybe,
+# men udskaeringen daekker kun bundremmens 90 mm - de sidste 55 mm af reglens
+# fod gaar derfor helt ned til z = regel_z og staar netop dér hvor en stroe i
+# samme x ville ligge (klask paa 45 x 55 x 190 mm). Forskydningen paa regel_b
+# er altsaa en betingelse, ikke en detalje.
+#
+# Der er kun stroe ved arrayets regler. Ved hjoerne- og endestolpen er der
+# ikke plads: gavlreglerne er regel_h dybe men staar paa en gavlrem der kun er
+# regel_b bred, saa deres fod rager regel_h - regel_b ind over gulvet helt ned
+# til regel_z. Gavlremmen loeber til gengaeld i fuld laengde og fungerer selv
+# som kantbjaelke, saa en stroe der ville alligevel vaere overfloedig.
+# Yderfagene bliver derfor 500 og 365 mm mod 555 mm i resten.
+
+stroe = bjaelke(
+    "Stroe", S + "regel_b", S + "stroe_l", S + "bundrem_h",
+    x=S + "modul + " + S + "regel_b", y=S + "bundrem_b",
+)
+array(stroe, "x", S + "array_x - 1", S + "modul")
 
 # ---------------------------------------------------------------- topskinne
 
