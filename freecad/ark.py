@@ -42,7 +42,10 @@ def spaer(doc):
     """Hele spaeret plus et udsnit af hver sædeudskaering."""
     s = doc.Spreadsheet
     flad = detaljer.spaer_fladt(doc)
-    pts = flyt_til_nul(kontur(flad, (1, 0, 0), float(s.regel_b) / 2,
+    # Spaer ligger nu i arrayets foerste position (x = modul), ikke i x = 0,
+    # saa snittet skal tages midt i emnet - ikke ved et fast regel_b / 2.
+    pts = flyt_til_nul(kontur(flad, (1, 0, 0),
+                              flad.BoundBox.XMin + float(s.regel_b) / 2,
                               ("y", "z")))
     hj = hjoerner(pts)
     L = max(p[0] for p in pts)
@@ -317,8 +320,8 @@ def _konturer(doc, navne, normal, offset, akser):
 def bundrem_hjoerne(doc):
     """Vandret snit gennem bundremmens hjoerne.
 
-    Viser at gavlremmen loeber i fuld bredde og at front/bag gaar imellem
-    dem, samt limfugen mellem de to laegter i fronten.
+    Viser at gavlremmen ligger uden paa enden af front- og bagremmen, saa
+    front/bag er laengde lange, samt limfugen mellem de to laegter i fronten.
     """
     s = doc.Spreadsheet
     rb, bb_ = float(s.regel_b), float(s.bundrem_b)
@@ -329,10 +332,10 @@ def bundrem_hjoerne(doc):
     t = Tegning(enhed=vis / 30.0)
     for navn, pts in stk:
         t.polygon(pts)
-    t.maal_vandret(0, rb, -rb * 1.4, hjaelp_fra=0)
+    t.maal_vandret(-rb, 0, -rb * 1.4, hjaelp_fra=0)
     t.maal_lodret(0, rb, -rb * 1.4, hjaelp_fra=0)
     t.maal_lodret(rb, bb_, -rb * 3.0, hjaelp_fra=0)
-    t.note(rb * 5.5, rb * 5.0, "Gavlrem i fuld bredde - front/bag gaar imellem",
+    t.note(rb * 5.5, rb * 5.0, "Gavlrem uden paa - front/bag i fuld laengde",
            rb * .5, rb * 4.0)
     t.note(rb * 5.5, -rb * 3.4, "Limfuge mellem de to laegter",
            rb * 3.0, rb)
@@ -348,7 +351,7 @@ def gavl_top(doc):
     s = doc.Spreadsheet
     rb, rh = float(s.regel_b), float(s.regel_h)
     y = float(s.modul) + rb / 2
-    stk = _konturer(doc, ["Regel_gavl_venstre", "Spaer"],
+    stk = _konturer(doc, ["Regel_gavl_venstre", "Spaer_gavl_venstre"],
                     (0, 1, 0), y, ("x", "z"))
     # kun de emner der faktisk ligger i gavlen
     stk = [(n, p) for n, p in stk if min(q[0] for q in p) < rh * 1.5]

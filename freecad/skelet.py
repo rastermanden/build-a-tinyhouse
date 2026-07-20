@@ -85,7 +85,9 @@ UDREGNET = [
     ("B14", "=antal_gavl - 1", "array_y", "Heraf i array"),
     ("B15", "=vaeg_front - regel_z", "regel_l_front", "Regel i forvaeg"),
     ("B16", "=vaeg_bag - regel_z", "regel_l_bag", "Regel i bagvaeg"),
-    ("B18", "=laengde", "bundrem_l", "Front/bag mellem gavlremmene"),
+    ("B19", "=laengde + 2 * regel_b", "vaeg_l",
+     "Vaegrammens fulde laengde - flugter med gavlremmene"),
+    ("B18", "=laengde", "bundrem_l", "Front/bag i fuld laengde; gavlremmene ligger uden paa"),
     ("B28", "=bredde - 2 * bundrem_b", "stroe_l", "Stroe mellem front- og bagrem"),
     ("B22", "=vaeg_front - vaeg_bag", "fald", "Tagets fald over husets bredde"),
     ("B23", "=fald / bredde * 100", "haeldning_pct", "Taghaeldning i procent"),
@@ -328,6 +330,12 @@ def byg(navn, **afvigelser):
         a.setExpression("Interval%s.%s" % ("X", retning), interval)
         return a
 
+    # Gavlvaeggens yderside. Gavlremmen ligger uden paa bundremmens ender,
+    # og gavlvaeggen flugter med den, saa origo (x=0) er bundremmens ende og
+    # gavlvaeggen ligger et regel_b uden for den - ved negativ x i venstre
+    # ende. Modulnettet bliver liggende paa 0, 600, 1200 ...
+    GAVL_V = "-" + S + "regel_b"
+
     # ------------------------------------------------------------- bundrem
     # Gulvbjaelker paa hoejkant. Front og bag er to laegter limet sammen; de
     # tegnes som to separate emner, saa limfugen kan ses paa tegningen og hver
@@ -406,13 +414,14 @@ def byg(navn, **afvigelser):
 
     # ----------------------------------------------------------- topskinne
 
-    bjaelke("Topskinne_front", S + "laengde", S + "regel_h", S + "regel_b",
-            z=S + "vaeg_front")
+    bjaelke("Topskinne_front", S + "vaeg_l", S + "regel_h", S + "regel_b",
+            x=GAVL_V, z=S + "vaeg_front")
     bjaelke(
         "Topskinne_bag",
-        S + "laengde",
+        S + "vaeg_l",
         S + "regel_h",
         S + "regel_b",
+        x=GAVL_V,
         y=S + "bredde - " + S + "regel_h",
         z=S + "vaeg_bag",
     )
@@ -430,8 +439,11 @@ def byg(navn, **afvigelser):
     REGEL_Z = S + "regel_z"
     BAG_Y = S + "bredde - " + S + "regel_h"
     BAG_UDSK_Y = S + "bredde - " + S + "bundrem_b"
-    HJOERNE_X = S + "regel_b"
-    ENDE_X = S + "laengde - 2 * " + S + "regel_b"
+    # Klods op ad hjoernestolpen. Den ligger nu paa GAVL_V..0 i venstre ende
+    # og laengde..laengde+regel_b i hoejre, saa hjoerne-/endestolpen rykker
+    # med ud til 0 og laengde-regel_b.
+    HJOERNE_X = "0"
+    ENDE_X = S + "laengde - " + S + "regel_b"
 
     regel(
         "Regel_front_hjoerne", S + "regel_b", S + "regel_h",
@@ -467,8 +479,8 @@ def byg(navn, **afvigelser):
     array(lang_bag, "x", S + "array_x - 1", S + "modul")
 
     # ------------------------------------------------------ hjoernestolper
-    # Selve hjoernet (x 0..regel_b) havde ingen lodret stolpe: gavlreglerne
-    # starter foerst ved modul, og front/bag-stolpen staar inde ved regel_b,
+    # Selve hjoernet (x GAVL_V..0) havde ingen lodret stolpe: gavlreglerne
+    # starter foerst ved modul, og front/bag-stolpen staar inde ved siden af,
     # fordi den skal hvile paa front/bag-remmen. Yderbeklaedningen havde
     # dermed intet at sidde fast i hverken paa gavlfladen eller paa
     # frontfladen ude i selve hjoernet.
@@ -480,12 +492,12 @@ def byg(navn, **afvigelser):
 
     HJ_FRONT = S + "vaeg_front - " + S + "bundrem_h"
     HJ_BAG = S + "vaeg_bag - " + S + "bundrem_h"
-    HOEJRE_X = S + "laengde - " + S + "regel_b"
+    HOEJRE_X = S + "laengde"
 
     for hjnavn, hjx, hjy, hjh in (
-        ("Hjoernestolpe_front_venstre", "0", "0", HJ_FRONT),
+        ("Hjoernestolpe_front_venstre", GAVL_V, "0", HJ_FRONT),
         ("Hjoernestolpe_front_hoejre", HOEJRE_X, "0", HJ_FRONT),
-        ("Hjoernestolpe_bag_venstre", "0", BAG_Y, HJ_BAG),
+        ("Hjoernestolpe_bag_venstre", GAVL_V, BAG_Y, HJ_BAG),
         ("Hjoernestolpe_bag_hoejre", HOEJRE_X, BAG_Y, HJ_BAG),
     ):
         bjaelke(hjnavn, S + "regel_b", S + "regel_h", hjh,
@@ -501,15 +513,16 @@ def byg(navn, **afvigelser):
     gavl_venstre = regel(
         "Regel_gavl_venstre_raa", S + "regel_h", S + "regel_b", GAVL_H,
         S + "regel_b", S + "regel_b",
-        y=S + "modul", z=REGEL_Z,
+        x=GAVL_V, y=S + "modul", z=REGEL_Z,
     )
     arr_gv = array(gavl_venstre, "y", S + "array_y - 1", S + "modul")
 
     gavl_hoejre = regel(
         "Regel_gavl_hoejre_raa", S + "regel_h", S + "regel_b", GAVL_H,
         S + "regel_b", S + "regel_b",
-        x=S + "laengde - " + S + "regel_h", y=S + "modul", z=REGEL_Z,
-        udsk_x=S + "laengde - " + S + "regel_b",
+        x=S + "laengde + " + S + "regel_b - " + S + "regel_h",
+        y=S + "modul", z=REGEL_Z,
+        udsk_x=S + "laengde",
     )
     arr_gh = array(gavl_hoejre, "y", S + "array_y - 1", S + "modul")
 
@@ -568,9 +581,14 @@ def byg(navn, **afvigelser):
         snit.Tool = saede_b
         return snit
 
-    sp = spaer("Spaer", "0")
-    array(sp, "x", S + "array_x", S + "modul")
-    spaer("Spaer_ende", S + "laengde - " + S + "regel_b")
+    # Gavlspaerene ligger over gavlvaeggene ved -regel_b og laengde, mens
+    # arrayet bliver liggende paa modulnettet 600, 1200 ... Faget ind mod
+    # hver gavl bliver derfor ikke modul bredt - det er prisen for at
+    # gavlvaeggen flugter med gavlremmen.
+    spaer("Spaer_gavl_venstre", GAVL_V)
+    sp = spaer("Spaer", S + "modul")
+    array(sp, "x", S + "array_x - 1", S + "modul")
+    spaer("Spaer_gavl_hoejre", S + "laengde")
 
     doc.recompute()
 
