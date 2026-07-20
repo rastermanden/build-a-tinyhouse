@@ -85,7 +85,7 @@ UDREGNET = [
     ("B14", "=antal_gavl - 1", "array_y", "Heraf i array"),
     ("B15", "=vaeg_front - regel_z", "regel_l_front", "Regel i forvaeg"),
     ("B16", "=vaeg_bag - regel_z", "regel_l_bag", "Regel i bagvaeg"),
-    ("B18", "=laengde - 2 * regel_b", "bundrem_l", "Front/bag mellem gavlremmene"),
+    ("B18", "=laengde", "bundrem_l", "Front/bag mellem gavlremmene"),
     ("B28", "=bredde - 2 * bundrem_b", "stroe_l", "Stroe mellem front- og bagrem"),
     ("B22", "=vaeg_front - vaeg_bag", "fald", "Tagets fald over husets bredde"),
     ("B23", "=fald / bredde * 100", "haeldning_pct", "Taghaeldning i procent"),
@@ -333,31 +333,35 @@ def byg(navn, **afvigelser):
     # tegnes som to separate emner, saa limfugen kan ses paa tegningen og hver
     # laegte kan taelles med i styklisten. Gavlenderne er enkelte laegter.
     #
-    # Gavlremmene (venstre/hoejre) er monteret UDEN PAA og loeber i fuld
-    # bredde fra y=0 til y=bredde. Front og bag gaar imellem dem og er derfor
-    # 2 x regel_b kortere end huset.
+    # Gavlremmene (venstre/hoejre) er monteret UDEN PAA enden af front- og
+    # bagremmen og loeber i fuld bredde fra y=0 til y=bredde. Front og bag er
+    # derfor laengde lange - det runde maal - og gavlremmene ligger uden for
+    # dem, saa gulvrammens ydermaal bliver laengde + 2 x regel_b.
+    #
+    # Det betyder at gavlremmen ligger ved negativ x i venstre ende. Origo
+    # bliver liggende i vaeglinjen, saa modulnettet stadig staar paa
+    # 0, 600, 1200 ... - det er det maal der saettes ud efter paa pladsen.
 
-    bjaelke("Bundrem_venstre", S + "regel_b", S + "bredde", S + "bundrem_h")
+    bjaelke("Bundrem_venstre", S + "regel_b", S + "bredde", S + "bundrem_h",
+            x="-" + S + "regel_b")
     bjaelke(
         "Bundrem_hoejre",
         S + "regel_b",
         S + "bredde",
         S + "bundrem_h",
-        x=S + "laengde - " + S + "regel_b",
+        x=S + "laengde",
     )
     bjaelke(
         "Bundrem_front_ydre",
         S + "bundrem_l",
         S + "regel_b",
         S + "bundrem_h",
-        x=S + "regel_b",
     )
     bjaelke(
         "Bundrem_front_indre",
         S + "bundrem_l",
         S + "regel_b",
         S + "bundrem_h",
-        x=S + "regel_b",
         y=S + "regel_b",
     )
     bjaelke(
@@ -365,7 +369,6 @@ def byg(navn, **afvigelser):
         S + "bundrem_l",
         S + "regel_b",
         S + "bundrem_h",
-        x=S + "regel_b",
         y=S + "bredde - " + S + "bundrem_b",
     )
     bjaelke(
@@ -373,7 +376,6 @@ def byg(navn, **afvigelser):
         S + "bundrem_l",
         S + "regel_b",
         S + "bundrem_h",
-        x=S + "regel_b",
         y=S + "bredde - " + S + "regel_b",
     )
 

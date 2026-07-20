@@ -36,8 +36,12 @@ for hus in huse.HUSE:
         xs += [bb.XMin, bb.XMax]; ys += [bb.YMin, bb.YMax]; zs += [bb.ZMin, bb.ZMax]
     print("bbox X %.0f..%.0f  Y %.0f..%.0f  Z %.0f..%.0f  (%d emner)"
           % (min(xs), max(xs), min(ys), max(ys), min(zs), max(zs), len(top)))
-    if abs(min(xs)) > .1 or abs(max(xs) - L) > .1 or abs(min(ys)) > .1:
-        print("  !! bbox er ikke 0..%.0f i x og 0.. i y" % L)
+    # Gavlremmene ligger UDEN PAA enderne af bundremmen, saa huset raekker
+    # regel_b ud over vaeglinjen i begge ender: ydermaalet er laengde + 2 x
+    # regel_b, og origo ligger i vaeglinjen med gavlremmen ved negativ x.
+    rb = float(s.regel_b)
+    if abs(min(xs) + rb) > .1 or abs(max(xs) - (L + rb)) > .1 or abs(min(ys)) > .1:
+        print("  !! bbox er ikke %.0f..%.0f i x og 0.. i y" % (-rb, L + rb))
         fejl += 1
 
     # gavlregler skal ramme spaerets underside
