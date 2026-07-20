@@ -16,6 +16,7 @@ det kan fanges i et script.
 """
 
 import os
+import shutil
 import sys
 import traceback
 
@@ -28,6 +29,14 @@ import FreeCAD as App
 import huse
 import skelet
 import tegninger
+
+import builtins
+import functools
+
+# FreeCADs konsol bufrer stdout, og ved omdirigering forsvinder print()
+# helt - kørslen virker, men man ser aldrig resultatet. stderr kommer
+# pålideligt igennem, så al besked herfra gaar den vej.
+print = functools.partial(builtins.print, file=sys.stderr, flush=True)
 
 
 UD = os.path.join(os.path.dirname(HER), "ud")
@@ -65,6 +74,12 @@ def byg_et(hus):
     navn = hus["navn"]
     titel = hus.get("titel", navn)
     udmappe = os.path.join(UD, navn)
+
+    # Ryd husets mappe foerst. Ellers bliver omdoebte emner staaende som
+    # levn ved siden af de nye - efter en omdoebning laa der baade
+    # nagleraekke_venstre.svg og gavllaegte_venstre.svg.
+    if os.path.isdir(udmappe):
+        shutil.rmtree(udmappe)
 
     doc = skelet.byg("Hus_" + navn, **hus["maal"])
     try:

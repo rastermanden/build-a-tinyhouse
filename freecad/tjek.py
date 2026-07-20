@@ -13,6 +13,15 @@ import Part
 import huse
 import skelet
 
+import builtins
+import functools
+
+# FreeCADs konsol bufrer stdout, og ved omdirigering forsvinder print()
+# helt - kørslen virker, men man ser aldrig resultatet. stderr kommer
+# pålideligt igennem, så al besked herfra gaar den vej.
+print = functools.partial(builtins.print, file=sys.stderr, flush=True)
+
+
 fejl = 0
 for hus in huse.HUSE:
     doc = skelet.byg("T_" + hus["navn"], **hus["maal"])
