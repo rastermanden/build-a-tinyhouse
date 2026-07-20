@@ -95,13 +95,32 @@ UDREGNET = [
     ("B27", "=vaeg_bag + regel_b", "oplaeg_bag", "Overkant topskinne, bagvaeg"),
 ]
 
-# Emner der bestaar af to stykker trae faar hver sit stykke sin egen farve,
-# saa samlingen er tydelig i 3D-viewet. Rent visuelt - geometrien er uaendret.
+# Alt i huset er trae, saa alt skal ogsaa se ud som trae. Uden dette stod
+# halvdelen af emnerne i FreeCADs graa standardfarve og lignede staal.
 #
-# Bundremmens front og bag er to laegter limet sammen. Hjoernet er ogsaa to
-# stykker: hjoernestolpen yderst og hjoerne-/endestolpen ved siden af. De
-# to hjoernefarver ligger i en anden tone end bundremmens, saa man kan se
-# forskel paa gulvets samling og hjoernets.
+# Hvert byggetrin faar sin egen tone i naaletraefamilien - lyse toner hoejt
+# oppe og ude, moerkere nede og inde - saa man kan se trinnene skille sig
+# fra hinanden uden at noget falder ud af traefarven.
+#
+# Emner der bestaar af to stykker trae faar desuden hver sit stykke sin egen
+# farve, saa samlingen er tydelig. Bundremmens front og bag er to laegter
+# limet sammen. Hjoernet er ogsaa to stykker: hjoernestolpen yderst og
+# hjoerne-/endestolpen ved siden af.
+#
+# Alt herunder er rent visuelt - geometrien er uaendret.
+
+TRAE = (0.80, 0.66, 0.45)  # grundtonen, hvis intet andet passer
+
+# Efter praefiks. Foerste traeffer vinder, saa de specifikke staar oeverst.
+TRAEFARVER = [
+    ("Stroe", (0.72, 0.58, 0.38)),
+    ("Regel_gavl_", (0.86, 0.74, 0.55)),
+    ("Regel_", (0.83, 0.70, 0.50)),
+    ("Topskinne_", (0.70, 0.55, 0.36)),
+    ("Spaer", (0.66, 0.50, 0.32)),
+]
+
+# Efter fuldt navn - de to-delte samlinger. Slaar TRAEFARVER.
 FARVER = {
     # bundrem: lys ydre laegte, moerk indre
     "Bundrem_front_ydre": (0.87, 0.74, 0.55),
@@ -120,6 +139,39 @@ FARVER = {
     "Regel_front_ende": (0.47, 0.42, 0.26),
     "Regel_bag_ende": (0.47, 0.42, 0.26),
 }
+
+
+def grundemne(o):
+    """Det emne et Draft-array kopierer - eller o selv, hvis det ikke er et.
+
+    Et array har en Link-viewprovider uden ShapeColor; farven skal saettes
+    paa emnet den kopierer, saa slaar den igennem paa alle kopierne.
+    Der foelges kun .Base paa arrays - et Part::Cut har ogsaa en .Base, men
+    det er det uudskaarne emne og ikke det vi vil farve.
+    """
+    while o.Name.startswith("Array") and getattr(o, "Base", None) is not None:
+        o = o.Base
+    return o
+
+
+def saet_farve(o, f):
+    """Farv et emne og det emne det evt. kopierer. Kun i GUI - headless har
+    ingen ViewObject."""
+    for x in (o, grundemne(o)):
+        vo = getattr(x, "ViewObject", None)
+        if vo is not None and hasattr(vo, "ShapeColor"):
+            vo.ShapeColor = f
+
+
+def farve(navn):
+    """Traefarven for et emne. Alt faar en - ingen falder tilbage paa graa."""
+    if navn in FARVER:
+        return FARVER[navn]
+    for praefiks, f in TRAEFARVER:
+        if navn.startswith(praefiks):
+            return f
+    return TRAE
+
 
 # Byggetrin. Raekkefoelgen er den huset faktisk rejses i: hvert trin hviler
 # kun paa det der allerede staar. Gavlreglerne kommer foer spaerene, fordi
@@ -260,10 +312,17 @@ def byg(navn, **afvigelser):
         return o
 
     def array(base, retning, antal, interval):
-        """Draft Ortho Array med antal og interval styret af regnearket."""
+        """Draft Ortho Array med antal og interval styret af regnearket.
+
+        use_link=False giver et almindeligt Draft-array i stedet for et App::Link.
+        Et Link har ingen ShapeColor og arver ikke grundemnets farve - det viser
+        Drafts standard-cyan uanset hvad grundemnet er farvet med. Uden dette
+        stod stroe, vaegregler og spaer blaa i et hus hvor alt andet var trae.
+        """
         v = App.Vector(600, 0, 0) if retning == "x" else App.Vector(0, 600, 0)
         a = Draft.make_ortho_array(
-            base, v, App.Vector(0, 0, 0), App.Vector(0, 0, 0), 2, 1, 1
+            base, v, App.Vector(0, 0, 0), App.Vector(0, 0, 0), 2, 1, 1,
+            use_link=False,
         )
         a.setExpression("NumberX", antal)
         a.setExpression("Interval%s.%s" % ("X", retning), interval)
@@ -528,10 +587,8 @@ def byg(navn, **afvigelser):
     doc.recompute()
 
     # Kun i GUI; headless har ingen ViewObject og springer over.
-    for objektnavn, farve in FARVER.items():
-        o = doc.getObject(objektnavn)
-        if o is not None and getattr(o, "ViewObject", None) is not None:
-            o.ViewObject.ShapeColor = farve
+    for o in emner(doc):
+        saet_farve(o, farve(logisk_navn(o)))
 
     return doc
 
@@ -563,9 +620,7 @@ def logisk_navn(o):
     foelges .Base indtil et navn der goer. Part::Cut har ogsaa .Base, men
     hedder allerede noget fornuftigt - derfor kun for Array.
     """
-    while o.Name.startswith("Array") and getattr(o, "Base", None) is not None:
-        o = o.Base
-    return o.Name
+    return grundemne(o).Name
 
 
 def byggetrin(doc):
