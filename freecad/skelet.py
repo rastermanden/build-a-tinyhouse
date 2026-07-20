@@ -106,6 +106,26 @@ FARVER = {
     "Bundrem_hoejre": (0.75, 0.60, 0.42),
 }
 
+# Byggetrin. Raekkefoelgen er den huset faktisk rejses i: hvert trin hviler
+# kun paa det der allerede staar. Gavlreglerne kommer foer spaerene, fordi
+# hjoernespaeret hviler paa deres toppe.
+#
+# Emnerne samles i FreeCAD-grupper med samme navne, saa et helt trin kan
+# taendes og slukkes under ét i modeltraeet - og saa websitet kan vise huset
+# rejse sig trin for trin.
+# Navnet maa ikke starte med et ciffer - FreeCAD praefixer det saa med "_",
+# og doc.getObject() finder det ikke igen. Nummeret staar derfor i Label,
+# som ogsaa er det traeet viser.
+BYGGETRIN = [
+    ("Trin1_bundrem", "1. Bundrem", ("Bundrem_",)),
+    ("Trin2_stroe", "2. Stroe", ("Stroe",)),
+    ("Trin3_vaegregler", "3. Vaegregler",
+     ("Regel_front", "Regel_bag", "Hjoernestolpe_")),
+    ("Trin4_topskinner", "4. Topskinner", ("Topskinne_",)),
+    ("Trin5_gavlregler", "5. Gavlregler", ("Regel_gavl_",)),
+    ("Trin6_spaer", "6. Spaer", ("Spaer",)),
+]
+
 S = "Spreadsheet."
 
 
@@ -478,6 +498,20 @@ def byg(navn, **afvigelser):
 
     doc.recompute()
 
+    # Byggetrin-grupper. En gruppe har ingen Shape, saa emner() ser den ikke.
+    efter_navn = {}
+    for o in emner(doc):
+        efter_navn.setdefault(logisk_navn(o), []).append(o)
+
+    for gruppenavn, titel, praefikser in BYGGETRIN:
+        gruppe = doc.addObject("App::DocumentObjectGroup", gruppenavn)
+        gruppe.Label = titel
+        for navn, objekter in efter_navn.items():
+            if navn.startswith(praefikser):
+                gruppe.Group = gruppe.Group + objekter
+
+    doc.recompute()
+
     # Kun i GUI; headless har ingen ViewObject og springer over.
     for objektnavn, farve in FARVER.items():
         o = doc.getObject(objektnavn)
@@ -501,8 +535,35 @@ def emner(doc):
                 forbrugt.add(barn.Name)
     return [
         o for o in doc.Objects
-        if o.Name not in forbrugt and hasattr(o, "Shape") and o.Shape.Volume > 0
+        if o.Name not in forbrugt
+        and o.TypeId != "App::DocumentObjectGroup"
+        and hasattr(o, "Shape") and o.Shape.Volume > 0
     ]
+
+
+def logisk_navn(o):
+    """Det emne et objekt reelt gentager.
+
+    Draft-arrays hedder Array00x og siger intet om deres indhold, saa der
+    foelges .Base indtil et navn der goer. Part::Cut har ogsaa .Base, men
+    hedder allerede noget fornuftigt - derfor kun for Array.
+    """
+    while o.Name.startswith("Array") and getattr(o, "Base", None) is not None:
+        o = o.Base
+    return o.Name
+
+
+def byggetrin(doc):
+    """[(gruppenavn, titel, [objekter], antal emner)] i byggerækkefølge."""
+    ud = []
+    for gruppenavn, titel, _ in BYGGETRIN:
+        gruppe = doc.getObject(gruppenavn)
+        if gruppe is None:
+            continue
+        objekter = list(gruppe.Group)
+        stk = sum(len(o.Shape.Solids) for o in objekter if hasattr(o, "Shape"))
+        ud.append((gruppenavn, titel, objekter, stk))
+    return ud
 
 
 def maalskema(doc):
