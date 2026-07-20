@@ -46,7 +46,7 @@ STANDARD = {
     "modul": 600,
     "regel_b": 45,
     "regel_h": 145,
-    "spaer_h": 120,
+    "spaer_h": 195,
     "regel_l_front": 3150,
     "regel_l_bag": 2850,
     "udhug": 30,
@@ -123,9 +123,9 @@ TRAE = (0.80, 0.66, 0.45)  # ukendt tvaersnit - falder aldrig ud af trae
 # Noeglen er (tykkelse, hoejde) i mm, mindste maal foerst. Lyst for det
 # groveste trae, moerkere jo spinklere emnet er.
 TVAERSNIT_FARVER = {
-    (45, 195): (0.86, 0.73, 0.53),  # bundrem og stroe
+    (45, 195): (0.86, 0.73, 0.53),  # bundrem, stroe og spaer
     (45, 145): (0.76, 0.61, 0.41),  # regler, hjoernestolper, topskinner
-    (45, 120): (0.63, 0.48, 0.31),  # spaer
+    (45, 120): (0.63, 0.48, 0.31),  # ubrugt - spaerene var 120 hoeje
 }
 
 
