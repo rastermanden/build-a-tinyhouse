@@ -106,46 +106,26 @@ UDREGNET = [
 # Alt i huset er trae, saa alt skal ogsaa se ud som trae. Uden dette stod
 # halvdelen af emnerne i FreeCADs graa standardfarve og lignede staal.
 #
-# Hvert byggetrin faar sin egen tone i naaletraefamilien - lyse toner hoejt
-# oppe og ude, moerkere nede og inde - saa man kan se trinnene skille sig
-# fra hinanden uden at noget falder ud af traefarven.
+# Farven foelger TVAERSNITTET, ikke rollen i huset. Alle emner der saves af
+# den samme dimension staar i den samme farve, uanset hvor de sidder - strøet
+# har samme farve som bundremmen fordi begge er 45x195, og topskinnen samme
+# som reglerne fordi begge er 45x145. Saa kan man se paa modellen hvilket
+# trae der skal bestilles, og hvad der kan saves af det samme stykke.
 #
-# Emner der bestaar af to stykker trae faar desuden hver sit stykke sin egen
-# farve, saa samlingen er tydelig. Bundremmens front og bag er to laegter
-# limet sammen. Hjoernet er ogsaa to stykker: hjoernestolpen yderst og
-# hjoerne-/endestolpen ved siden af.
+# Det betyder omvendt at de to-delte samlinger ikke laengere skiller sig ad
+# paa farven: bundremmens ydre og indre laegte er begge 45x195, og
+# hjoernestolpen og reglen ved siden af er begge 45x145.
 #
 # Alt herunder er rent visuelt - geometrien er uaendret.
 
-TRAE = (0.80, 0.66, 0.45)  # grundtonen, hvis intet andet passer
+TRAE = (0.80, 0.66, 0.45)  # ukendt tvaersnit - falder aldrig ud af trae
 
-# Efter praefiks. Foerste traeffer vinder, saa de specifikke staar oeverst.
-TRAEFARVER = [
-    ("Stroe", (0.72, 0.58, 0.38)),
-    ("Regel_gavl_", (0.86, 0.74, 0.55)),
-    ("Regel_", (0.83, 0.70, 0.50)),
-    ("Topskinne_", (0.70, 0.55, 0.36)),
-    ("Spaer", (0.66, 0.50, 0.32)),
-]
-
-# Efter fuldt navn - de to-delte samlinger. Slaar TRAEFARVER.
-FARVER = {
-    # bundrem: lys ydre laegte, moerk indre
-    "Bundrem_front_ydre": (0.87, 0.74, 0.55),
-    "Bundrem_bag_ydre": (0.87, 0.74, 0.55),
-    "Bundrem_front_indre": (0.62, 0.46, 0.30),
-    "Bundrem_bag_indre": (0.62, 0.46, 0.30),
-    "Bundrem_venstre": (0.75, 0.60, 0.42),
-    "Bundrem_hoejre": (0.75, 0.60, 0.42),
-    # hjoerne: lys yderste stolpe, moerk regel ved siden af
-    "Hjoernestolpe_front_venstre": (0.78, 0.72, 0.52),
-    "Hjoernestolpe_front_hoejre": (0.78, 0.72, 0.52),
-    "Hjoernestolpe_bag_venstre": (0.78, 0.72, 0.52),
-    "Hjoernestolpe_bag_hoejre": (0.78, 0.72, 0.52),
-    "Regel_front_hjoerne": (0.47, 0.42, 0.26),
-    "Regel_bag_hjoerne": (0.47, 0.42, 0.26),
-    "Regel_front_ende": (0.47, 0.42, 0.26),
-    "Regel_bag_ende": (0.47, 0.42, 0.26),
+# Noeglen er (tykkelse, hoejde) i mm, mindste maal foerst. Lyst for det
+# groveste trae, moerkere jo spinklere emnet er.
+TVAERSNIT_FARVER = {
+    (45, 195): (0.86, 0.73, 0.53),  # bundrem og stroe
+    (45, 145): (0.76, 0.61, 0.41),  # regler, hjoernestolper, topskinner
+    (45, 120): (0.63, 0.48, 0.31),  # spaer
 }
 
 
@@ -171,14 +151,38 @@ def saet_farve(o, f):
             vo.ShapeColor = f
 
 
-def farve(navn):
-    """Traefarven for et emne. Alt faar en - ingen falder tilbage paa graa."""
-    if navn in FARVER:
-        return FARVER[navn]
-    for praefiks, f in TRAEFARVER:
-        if navn.startswith(praefiks):
-            return f
-    return TRAE
+def grundkasse(o):
+    """Den Part::Box der ligger under et emne.
+
+    Emnerne er pakket ind i flere lag: et Draft-array peger paa sit grundemne,
+    og et Part::Cut peger paa det uudskaarne emne. Begge hedder .Base, saa vi
+    foelger den hele vejen ned til kassen. Der er brug for kassen og ikke
+    shapens bounding box, fordi spaerene er roterede - deres bbox er 3612 x
+    150 x 172 og ikke det tvaersnit de saves i.
+    """
+    seet = set()
+    while o is not None and o.Name not in seet:
+        seet.add(o.Name)
+        if o.isDerivedFrom("Part::Box"):
+            return o
+        o = getattr(o, "Base", None)
+    return None
+
+
+def tvaersnit(o):
+    """Emnets (tykkelse, hoejde) i mm - de to mindste maal af grundkassen."""
+    kasse = grundkasse(o)
+    if kasse is None:
+        return None
+    maal = sorted(round(float(m)) for m in
+                  (kasse.Length, kasse.Width, kasse.Height))
+    return (maal[0], maal[1])
+
+
+def farve(o):
+    """Traefarven for et emne, bestemt af tvaersnittet. Alt faar en farve -
+    ingen falder tilbage paa graa."""
+    return TVAERSNIT_FARVER.get(tvaersnit(o), TRAE)
 
 
 # Byggetrin. Raekkefoelgen er den huset faktisk rejses i: hvert trin hviler
@@ -616,7 +620,7 @@ def byg(navn, **afvigelser):
 
     # Kun i GUI; headless har ingen ViewObject og springer over.
     for o in emner(doc):
-        saet_farve(o, farve(logisk_navn(o)))
+        saet_farve(o, farve(o))
 
     return doc
 
