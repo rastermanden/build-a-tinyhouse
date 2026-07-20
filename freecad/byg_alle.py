@@ -75,9 +75,9 @@ def byg_et(hus):
     titel = hus.get("titel", navn)
     udmappe = os.path.join(UD, navn)
 
-    # Ryd husets mappe foerst. Ellers bliver omdoebte emner staaende som
-    # levn ved siden af de nye - efter en omdoebning laa der baade
-    # nagleraekke_venstre.svg og gavllaegte_venstre.svg.
+    # Ryd husets mappe foerst. Ellers bliver omdoebte og fjernede emner
+    # staaende som levn ved siden af de nye ark, og antallet af ark ser
+    # hoejere ud end det er.
     if os.path.isdir(udmappe):
         shutil.rmtree(udmappe)
 

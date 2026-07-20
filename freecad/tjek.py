@@ -36,11 +36,8 @@ for hus in huse.HUSE:
         xs += [bb.XMin, bb.XMax]; ys += [bb.YMin, bb.YMax]; zs += [bb.ZMin, bb.ZMax]
     print("bbox X %.0f..%.0f  Y %.0f..%.0f  Z %.0f..%.0f  (%d emner)"
           % (min(xs), max(xs), min(ys), max(ys), min(zs), max(zs), len(top)))
-    # Gavllaegten ligger uden paa hjoernespaeret og rager derfor gavllaegte_b ud
-    # over konstruktionsmaalet i begge gavle. Alt andet skal ligge indenfor.
-    N = float(s.gavllaegte_b)
-    if abs(min(xs) + N) > .1 or abs(max(xs) - (L + N)) > .1 or abs(min(ys)) > .1:
-        print("  !! bbox er ikke -%.0f..%.0f i x og 0.. i y" % (N, L + N))
+    if abs(min(xs)) > .1 or abs(max(xs) - L) > .1 or abs(min(ys)) > .1:
+        print("  !! bbox er ikke 0..%.0f i x og 0.. i y" % L)
         fejl += 1
 
     # gavlregler skal ramme spaerets underside

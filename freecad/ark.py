@@ -262,7 +262,6 @@ def alle(doc, udmappe):
     tegn.update(kasse(doc, "Hjoernestolpe_bag_venstre",
                       "HJOERNESTOLPE, BAG"))
     tegn.update(kasse(doc, "Stroe", "STROE"))
-    tegn.update(kasse(doc, "Gavllaegte_venstre", "GAVLLAEGTE"))
     tegn.update(kasse(doc, "Bundrem_venstre", "BUNDREM, GAVL"))
     tegn.update(kasse(doc, "Bundrem_front_ydre", "BUNDREM, FRONT/BAG"))
     tegn.update(kasse(doc, "Topskinne_front", "TOPSKINNE"))
@@ -345,12 +344,11 @@ def bundrem_hjoerne(doc):
 
 
 def gavl_top(doc):
-    """Lodret snit gennem gavltoppen: gavlregel, hjoernespaer, gavllaegte."""
+    """Lodret snit gennem gavltoppen: gavlregel og hjoernespaer."""
     s = doc.Spreadsheet
     rb, rh = float(s.regel_b), float(s.regel_h)
     y = float(s.modul) + rb / 2
-    stk = _konturer(doc, ["Regel_gavl_venstre", "Spaer",
-                          "Gavllaegte_venstre"],
+    stk = _konturer(doc, ["Regel_gavl_venstre", "Spaer"],
                     (0, 1, 0), y, ("x", "z"))
     # kun de emner der faktisk ligger i gavlen
     stk = [(n, p) for n, p in stk if min(q[0] for q in p) < rh * 1.5]
@@ -360,16 +358,13 @@ def gavl_top(doc):
     t = Tegning(enhed=vis / 30.0)
     for navn, pts in stk:
         t.polygon(pts)
-    t.maal_vandret(-float(s.gavllaegte_b), 0, top + rh * .55, hjaelp_fra=top)
-    t.maal_vandret(0, rb, top + rh * 1.15, hjaelp_fra=top)
+    t.maal_vandret(0, rb, top + rh * .55, hjaelp_fra=top)
     t.maal_vandret(0, rh, top - rh * 2.2, hjaelp_fra=top - rh * 1.9)
-    t.note(rh * 1.9, top + rh * .30, "Gavllaegte - fastgoerelse for "
-           "gavlbeklaedningens oeverste kant", -float(s.gavllaegte_b) / 2, top)
     t.note(rh * 1.9, top - rh * .55, "Hjoernespaer", rb / 2, top - rb)
     t.note(rh * 1.9, top - rh * 1.35, "Gavlregel, skaaret i tagets plan",
            rh * .75, top - rh * 1.5)
     t.udsnit(-rh * 1.1, top - vis * .72, vis, vis)
     return {"gavl_top": _ark(
         t, "DETALJE: gavltop",
-        "Gavllaegte %.0f mm uden paa hjoernespaeret %.0f mm"
-        % (s.gavllaegte_b, rb))}
+        "Hjoernespaer %.0f x %.0f mm oven paa gavlreglerne"
+        % (s.regel_b, s.spaer_h))}

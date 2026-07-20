@@ -52,7 +52,6 @@ STANDARD = {
     "udhug": 30,
     "bundrem_h": 195,
     "udskaering_h": 190,
-    "gavllaegte_b": 45,
 }
 
 PARAMETRE = [
@@ -67,7 +66,6 @@ PARAMETRE = [
     ("B21", "udhug", "Udhuggets dybde i spaeret ved oplaeg"),
     ("B8", "bundrem_h", "Bundremmens hoejde (paa hoejkant)"),
     ("B9", "udskaering_h", "Udskaeringens hoejde i reglen"),
-    ("B29", "gavllaegte_b", "Gavllaegtens tykkelse, uden paa hjoernespaeret"),
 ]
 
 # Udregnede maal. antal_* er totalen inkl. endestolpen; array_* er det antal
@@ -477,26 +475,6 @@ def byg(navn, **afvigelser):
     sp = spaer("Spaer", "0")
     array(sp, "x", S + "array_x", S + "modul")
     spaer("Spaer_ende", S + "laengde - " + S + "regel_b")
-
-    # -------------------------------------------------------- gavllaegte
-    # Gavlbeklaedningen loeber lodret op ad gavlen og fastgoeres i
-    # gavlreglerne, men de staar c/c modul - mellem dem har beklaedningens
-    # oeverste kant intet at sidde fast i. Gavllaegten er en gennemgaaende
-    # laegte paa hjoernespaerets YDERSIDE, der foelger taghaeldningen hele
-    # gavlens laengde og giver den kant fastgoerelse.
-    #
-    # Den ligger uden paa spaeret og rager derfor gavllaegte_b ud over husets
-    # konstruktionsmaal i begge gavle. Det er med vilje: beklaedningen
-    # sidder alligevel uden paa, og konstruktionsmaalet er stadig laengde.
-
-    def gavllaegte(navn, x):
-        o = bjaelke(navn, S + "gavllaegte_b", S + "spaer_l", S + "spaer_h",
-                    x=x, y="0", z=S + "oplaeg_front - " + S + "udhug")
-        vip(o)
-        return o
-
-    gavllaegte("Gavllaegte_venstre", "-" + S + "gavllaegte_b")
-    gavllaegte("Gavllaegte_hoejre", S + "laengde")
 
     doc.recompute()
 
