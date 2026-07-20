@@ -257,6 +257,10 @@ def alle(doc, udmappe):
     tegn.update(regel_lang(doc, "Regel_bag", "REGEL, BAGVAEG"))
     tegn.update(bundrem_hjoerne(doc))
     tegn.update(gavl_top(doc))
+    tegn.update(kasse(doc, "Hjoernestolpe_front_venstre",
+                      "HJOERNESTOLPE, FRONT"))
+    tegn.update(kasse(doc, "Hjoernestolpe_bag_venstre",
+                      "HJOERNESTOLPE, BAG"))
     tegn.update(kasse(doc, "Stroe", "STROE"))
     tegn.update(kasse(doc, "Gavllaegte_venstre", "GAVLLAEGTE"))
     tegn.update(kasse(doc, "Bundrem_venstre", "BUNDREM, GAVL"))
@@ -271,7 +275,8 @@ def alle(doc, udmappe):
 
     # raekkefoelge: oversigt foerst, saa udsnit, saa de enkelte gavlregler
     orden = ["spaer", "spaer_saede_front", "spaer_saede_bag",
-             "regel_front", "regel_bag", "gavlregler", "gavl_top",
+             "regel_front", "regel_bag", "hjoernestolpe_front_venstre",
+             "hjoernestolpe_bag_venstre", "gavlregler", "gavl_top",
              "bundrem_hjoerne"]
     orden += sorted(n for n in tegn if n.startswith("gavlregel_"))
     orden += sorted(n for n in tegn if n not in orden)

@@ -67,7 +67,7 @@ PARAMETRE = [
     ("B21", "udhug", "Udhuggets dybde i spaeret ved oplaeg"),
     ("B8", "bundrem_h", "Bundremmens hoejde (paa hoejkant)"),
     ("B9", "udskaering_h", "Udskaeringens hoejde i reglen"),
-    ("B29", "gavllaegte_b", "Gavllaegtens tykkelse uden paa hjoernespaeret"),
+    ("B29", "gavllaegte_b", "Gavllaegtens tykkelse, uden paa hjoernespaeret"),
 ]
 
 # Udregnede maal. antal_* er totalen inkl. endestolpen; array_* er det antal
@@ -332,9 +332,6 @@ def byg(navn, **afvigelser):
     # Alle regler gaar fra z = regel_z (bundremmens overkant minus
     # udskaeringen) op til underkant topskinne - i gavlene helt op til
     # spaerene.
-    #
-    # AABENT PUNKT: selve hjoernet (x 0..regel_b) har ingen lodret stolpe,
-    # fordi hverken gavlregel eller hjoernestolpe naar helt derud.
 
     REGEL_Z = S + "regel_z"
     BAG_Y = S + "bredde - " + S + "regel_h"
@@ -374,6 +371,31 @@ def byg(navn, **afvigelser):
         x=S + "modul", y=BAG_Y, z=REGEL_Z, udsk_y=BAG_UDSK_Y,
     )
     array(lang_bag, "x", S + "array_x - 1", S + "modul")
+
+    # ------------------------------------------------------ hjoernestolper
+    # Selve hjoernet (x 0..regel_b) havde ingen lodret stolpe: gavlreglerne
+    # starter foerst ved modul, og front/bag-stolpen staar inde ved regel_b,
+    # fordi den skal hvile paa front/bag-remmen. Yderbeklaedningen havde
+    # dermed intet at sidde fast i hverken paa gavlfladen eller paa
+    # frontfladen ude i selve hjoernet.
+    #
+    # Hjoernestolpen staar OVEN PAA gavlremmen og har derfor ingen
+    # udskaering - gavlremmen er regel_b bred og baerer den i fuld bredde.
+    # Sammen med front/bag-stolpen ved siden af danner den et 2 x regel_b
+    # bredt hjoerne med fastgoerelse paa begge yderflader.
+
+    HJ_FRONT = S + "vaeg_front - " + S + "bundrem_h"
+    HJ_BAG = S + "vaeg_bag - " + S + "bundrem_h"
+    HOEJRE_X = S + "laengde - " + S + "regel_b"
+
+    for hjnavn, hjx, hjy, hjh in (
+        ("Hjoernestolpe_front_venstre", "0", "0", HJ_FRONT),
+        ("Hjoernestolpe_front_hoejre", HOEJRE_X, "0", HJ_FRONT),
+        ("Hjoernestolpe_bag_venstre", "0", BAG_Y, HJ_BAG),
+        ("Hjoernestolpe_bag_hoejre", HOEJRE_X, BAG_Y, HJ_BAG),
+    ):
+        bjaelke(hjnavn, S + "regel_b", S + "regel_h", hjh,
+                x=hjx, y=hjy, z=S + "bundrem_h")
 
     # ----------------------------------------------------------- gavlregler
     # Bygges hoejere end taget og skaeres af med tagplanet nedenfor, saa hver
