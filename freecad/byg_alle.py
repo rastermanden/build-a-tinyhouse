@@ -29,20 +29,32 @@ import huse
 import skelet
 import tegninger
 
+
 UD = os.path.join(os.path.dirname(HER), "ud")
 
 INDEX_HOVED = """<!doctype html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tinyhouse - alle huse</title>
 <style>
- body{font-family:system-ui,sans-serif;margin:2rem;max-width:50rem}
+ :root{color-scheme:light dark}
+ body{font-family:system-ui,sans-serif;margin:2rem auto;max-width:50rem;
+      padding:0 1rem;background:#fff;color:#111}
  h1{font-size:1.4rem}
+ .tabel{overflow-x:auto}
  table{border-collapse:collapse;width:100%;margin-top:1rem}
  th,td{border:1px solid #ddd;padding:.4rem .7rem;text-align:left}
  td.tal{text-align:right;font-variant-numeric:tabular-nums}
  .fejl{color:#a00}
+ a{color:inherit}
+ @media (prefers-color-scheme:dark){
+   body{background:#16181c;color:#e6e6e6}
+   th,td{border-color:#3a3a3a}
+   .fejl{color:#f66}
+ }
 </style>
 <h1>Tinyhouse - alle huse</h1>
+<div class="tabel">
 <table>
 <tr><th>Hus</th><th>Laengde</th><th>Bredde</th><th>Haeldning</th><th>Emner</th></tr>
 """
@@ -97,7 +109,7 @@ def main():
     with open(os.path.join(UD, "index.html"), "w") as f:
         f.write(INDEX_HOVED)
         f.writelines(raekker)
-        f.write("</table>\n")
+        f.write("</table>\n</div>\n")
 
     bygget = len(huse.HUSE) - len(fejlede)
     print("\n%d af %d huse bygget -> %s/index.html"

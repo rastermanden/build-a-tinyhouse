@@ -280,7 +280,8 @@ def alle(doc, udmappe):
     for navn in orden:
         dele.append('<div class="ark">%s</div>\n' % tegn[navn].svg())
 
-    dele.append("<h2>Gavlregler - laengder</h2>\n<table>\n"
+    dele.append("<h2>Gavlregler - laengder</h2>\n"
+                "<div class=\"tabel\">\n<table>\n"
                 "<tr><th>Nr.</th><th>Ved y</th><th>Lang side</th>"
                 "<th>Kort side</th><th>Udskaering</th></tr>\n")
     for i, y, lang, kort, ub, uh in raekker:
@@ -288,7 +289,7 @@ def alle(doc, udmappe):
                     '<td class="tal">%.1f</td><td class="tal">%.1f</td>'
                     '<td class="tal">%.0f x %.0f</td></tr>\n'
                     % (i, y, lang, kort, ub, uh))
-    dele.append("</table>\n")
+    dele.append("</table>\n</div>\n")
     return "".join(dele)
 
 

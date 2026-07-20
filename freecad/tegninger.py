@@ -31,23 +31,36 @@ ARK = [
 
 HTML_HOVED = """<!doctype html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>%(titel)s - konstruktionstegninger</title>
 <style>
- body{font-family:system-ui,sans-serif;margin:2rem;max-width:60rem}
+ :root{color-scheme:light dark}
+ body{font-family:system-ui,sans-serif;margin:2rem auto;max-width:60rem;
+      padding:0 1rem;background:#fff;color:#111}
  h1{font-size:1.4rem} h2{font-size:1.1rem;margin-top:2rem}
- .ark{border:1px solid #ccc;padding:1rem;background:#fff}
- .ark svg{width:100%%;height:auto;display:block}
+ /* Arkene har hvid bund og sorte streger og skal blive ved med det ogsaa
+    i moerkt tema - en konstruktionstegning laeses som paa papir. */
+ .ark{border:1px solid #ccc;padding:1rem;background:#fff;overflow-x:auto}
+ .ark svg{width:100%%;max-width:100%%;height:auto;display:block}
+ .tabel{overflow-x:auto}
  table{border-collapse:collapse;font-size:.9rem;margin-top:.5rem}
- th,td{border:1px solid #ddd;padding:.25rem .6rem;text-align:left}
+ th,td{border:1px solid #ddd;padding:.25rem .6rem;text-align:left;
+       white-space:nowrap}
  td.tal{text-align:right;font-variant-numeric:tabular-nums}
  tr.udregnet{color:#666}
  a{color:inherit}
+ @media (prefers-color-scheme:dark){
+   body{background:#16181c;color:#e6e6e6}
+   h1,h2{color:#f2f2f2}
+   .ark{border-color:#333}
+   th,td{border-color:#3a3a3a}
+   tr.udregnet{color:#9a9a9a}
+ }
 </style>
 <p><a href="../index.html">&larr; Alle huse</a></p>
 <h1>%(titel)s</h1>
 <p>Genereret ud fra den parametriske model. Maal i mm.</p>
 """
-
 
 def projicer(form, retning, drej):
     """Projicerer formen og regner udsnittet ud af de faktiske koordinater.
@@ -78,7 +91,7 @@ def projicer(form, retning, drej):
 
 
 def skema_html(doc):
-    raekker = ['<h2>Maal</h2>\n<table>\n'
+    raekker = ['<h2>Maal</h2>\n<div class="tabel">\n<table>\n'
                '<tr><th>Maal</th><th>Vaerdi</th><th>Beskrivelse</th></tr>\n']
     for alias, vaerdi, beskrivelse, slags in skelet.maalskema(doc):
         try:
@@ -90,7 +103,7 @@ def skema_html(doc):
             '<tr class="%s"><td>%s</td><td class="tal">%s</td><td>%s</td></tr>\n'
             % (slags, alias, tekst, beskrivelse)
         )
-    raekker.append("</table>\n")
+    raekker.append("</table>\n</div>\n")
     return "".join(raekker)
 
 
