@@ -95,15 +95,30 @@ UDREGNET = [
     ("B27", "=vaeg_bag + regel_b", "oplaeg_bag", "Overkant topskinne, bagvaeg"),
 ]
 
-# De to laegter i bundremmens front og bag faar hver sin traefarve, saa
-# limfugen er tydelig i 3D-viewet. Rent visuelt - geometrien er uaendret.
+# Emner der bestaar af to stykker trae faar hver sit stykke sin egen farve,
+# saa samlingen er tydelig i 3D-viewet. Rent visuelt - geometrien er uaendret.
+#
+# Bundremmens front og bag er to laegter limet sammen. Hjoernet er ogsaa to
+# stykker: hjoernestolpen yderst og hjoerne-/endestolpen ved siden af. De
+# to hjoernefarver ligger i en anden tone end bundremmens, saa man kan se
+# forskel paa gulvets samling og hjoernets.
 FARVER = {
+    # bundrem: lys ydre laegte, moerk indre
     "Bundrem_front_ydre": (0.87, 0.74, 0.55),
     "Bundrem_bag_ydre": (0.87, 0.74, 0.55),
     "Bundrem_front_indre": (0.62, 0.46, 0.30),
     "Bundrem_bag_indre": (0.62, 0.46, 0.30),
     "Bundrem_venstre": (0.75, 0.60, 0.42),
     "Bundrem_hoejre": (0.75, 0.60, 0.42),
+    # hjoerne: lys yderste stolpe, moerk regel ved siden af
+    "Hjoernestolpe_front_venstre": (0.78, 0.72, 0.52),
+    "Hjoernestolpe_front_hoejre": (0.78, 0.72, 0.52),
+    "Hjoernestolpe_bag_venstre": (0.78, 0.72, 0.52),
+    "Hjoernestolpe_bag_hoejre": (0.78, 0.72, 0.52),
+    "Regel_front_hjoerne": (0.47, 0.42, 0.26),
+    "Regel_bag_hjoerne": (0.47, 0.42, 0.26),
+    "Regel_front_ende": (0.47, 0.42, 0.26),
+    "Regel_bag_ende": (0.47, 0.42, 0.26),
 }
 
 # Byggetrin. Raekkefoelgen er den huset faktisk rejses i: hvert trin hviler
