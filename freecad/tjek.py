@@ -27,9 +27,9 @@ for hus in huse.HUSE:
         xs += [bb.XMin, bb.XMax]; ys += [bb.YMin, bb.YMax]; zs += [bb.ZMin, bb.ZMax]
     print("bbox X %.0f..%.0f  Y %.0f..%.0f  Z %.0f..%.0f  (%d emner)"
           % (min(xs), max(xs), min(ys), max(ys), min(zs), max(zs), len(top)))
-    # Nagleraekken ligger uden paa hjoernespaeret og rager derfor nagle_b ud
+    # Gavllaegten ligger uden paa hjoernespaeret og rager derfor gavllaegte_b ud
     # over konstruktionsmaalet i begge gavle. Alt andet skal ligge indenfor.
-    N = float(s.nagle_b)
+    N = float(s.gavllaegte_b)
     if abs(min(xs) + N) > .1 or abs(max(xs) - (L + N)) > .1 or abs(min(ys)) > .1:
         print("  !! bbox er ikke -%.0f..%.0f i x og 0.. i y" % (N, L + N))
         fejl += 1

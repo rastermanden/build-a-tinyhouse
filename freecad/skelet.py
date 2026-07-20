@@ -52,7 +52,7 @@ STANDARD = {
     "udhug": 30,
     "bundrem_h": 195,
     "udskaering_h": 190,
-    "nagle_b": 45,
+    "gavllaegte_b": 45,
 }
 
 PARAMETRE = [
@@ -67,7 +67,7 @@ PARAMETRE = [
     ("B21", "udhug", "Udhuggets dybde i spaeret ved oplaeg"),
     ("B8", "bundrem_h", "Bundremmens hoejde (paa hoejkant)"),
     ("B9", "udskaering_h", "Udskaeringens hoejde i reglen"),
-    ("B29", "nagle_b", "Nagleraekkens tykkelse uden paa hjoernespaeret"),
+    ("B29", "gavllaegte_b", "Gavllaegtens tykkelse uden paa hjoernespaeret"),
 ]
 
 # Udregnede maal. antal_* er totalen inkl. endestolpen; array_* er det antal
@@ -456,25 +456,25 @@ def byg(navn, **afvigelser):
     array(sp, "x", S + "array_x", S + "modul")
     spaer("Spaer_ende", S + "laengde - " + S + "regel_b")
 
-    # -------------------------------------------------------- nagleraekke
+    # -------------------------------------------------------- gavllaegte
     # Gavlbeklaedningen loeber lodret op ad gavlen og fastgoeres i
     # gavlreglerne, men de staar c/c modul - mellem dem har beklaedningens
-    # oeverste kant intet at sidde fast i. Nagleraekken er en gennemgaaende
+    # oeverste kant intet at sidde fast i. Gavllaegten er en gennemgaaende
     # laegte paa hjoernespaerets YDERSIDE, der foelger taghaeldningen hele
     # gavlens laengde og giver den kant fastgoerelse.
     #
-    # Den ligger uden paa spaeret og rager derfor nagle_b ud over husets
+    # Den ligger uden paa spaeret og rager derfor gavllaegte_b ud over husets
     # konstruktionsmaal i begge gavle. Det er med vilje: beklaedningen
     # sidder alligevel uden paa, og konstruktionsmaalet er stadig laengde.
 
-    def nagleraekke(navn, x):
-        o = bjaelke(navn, S + "nagle_b", S + "spaer_l", S + "spaer_h",
+    def gavllaegte(navn, x):
+        o = bjaelke(navn, S + "gavllaegte_b", S + "spaer_l", S + "spaer_h",
                     x=x, y="0", z=S + "oplaeg_front - " + S + "udhug")
         vip(o)
         return o
 
-    nagleraekke("Nagleraekke_venstre", "-" + S + "nagle_b")
-    nagleraekke("Nagleraekke_hoejre", S + "laengde")
+    gavllaegte("Gavllaegte_venstre", "-" + S + "gavllaegte_b")
+    gavllaegte("Gavllaegte_hoejre", S + "laengde")
 
     doc.recompute()
 
