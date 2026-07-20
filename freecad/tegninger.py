@@ -16,6 +16,7 @@ import re
 import FreeCAD as App
 import TechDraw
 
+import ark
 import skelet
 
 MARGEN = 150  # mm luft omkring tegningen
@@ -121,6 +122,7 @@ def tegn(doc, udmappe, titel):
                kasse[0], kasse[1], kasse[2], kasse[3], indhold)
         )
 
+    dele.append(ark.alle(doc, udmappe))
     dele.append(skema_html(doc))
 
     with open(os.path.join(udmappe, "tegninger.html"), "w") as f:

@@ -130,10 +130,24 @@ class Tegning:
 
     # -------------------------------------------------------------- ud
 
+    def udsnit(self, x0, z0, bredde, hoejde):
+        """Laaser viewBox til et bestemt omraade i stedet for hele indholdet.
+
+        Bruges naar der tegnes et hjoerne af noget stort: konturerne er hele
+        emner, men arket skal kun vise samlingen.
+        """
+        self._laast = (x0, -(z0 + hoejde), bredde, hoejde)
+        return self
+
     def svg(self):
-        m = self.e * 1.5
-        x0, x1 = min(self.xs) - m, max(self.xs) + m
-        y0, y1 = min(self.ys) - m, max(self.ys) + m
+        laast = getattr(self, "_laast", None)
+        if laast:
+            x0, y0, b, h = laast
+            x1, y1 = x0 + b, y0 + h
+        else:
+            m = self.e * 1.5
+            x0, x1 = min(self.xs) - m, max(self.xs) + m
+            y0, y1 = min(self.ys) - m, max(self.ys) + m
         stil = STIL % {
             "tyk": self.e * .07, "tynd": self.e * .04,
             "tekst": self.e,
@@ -182,6 +196,45 @@ def flyt_til_nul(pts):
     x0 = min(p[0] for p in pts)
     z0 = min(p[1] for p in pts)
     return [(round(x - x0, 2), round(z - z0, 2)) for x, z in pts]
+
+
+def hjoerner(pts, mindste_vinkel=8.0):
+    """De punkter hvor konturen faktisk knaekker.
+
+    discretize() kan lægge punkter midt paa en ret linje. Til maalsaetning
+    skal der bruges hjoernerne, ikke stoettepunkterne, saa her frasorteres
+    alt der ligger naesten lige ud.
+    """
+    ud = []
+    n = len(pts)
+    for i in range(n):
+        a, b, c = pts[i - 1], pts[i], pts[(i + 1) % n]
+        v1 = math.atan2(b[1] - a[1], b[0] - a[0])
+        v2 = math.atan2(c[1] - b[1], c[0] - b[0])
+        d = abs(math.degrees(v2 - v1)) % 360
+        if min(d, 360 - d) >= mindste_vinkel:
+            ud.append(b)
+    return ud
+
+
+def naermeste(pts, x=None, z=None, blandt=None):
+    """Det konturpunkt der ligger taettest paa en given x og/eller z.
+
+    Bruges til at haenge maal op paa geometrien i stedet for paa tal jeg
+    har skrevet ind - saa kan et maal ikke komme til at vise noget andet
+    end emnet faktisk er.
+    """
+    kandidater = blandt if blandt is not None else pts
+
+    def afstand(p):
+        d = 0.0
+        if x is not None:
+            d += (p[0] - x) ** 2
+        if z is not None:
+            d += (p[1] - z) ** 2
+        return d
+
+    return min(kandidater, key=afstand)
 
 
 def spaer_fladt(doc, navn="Spaer"):
