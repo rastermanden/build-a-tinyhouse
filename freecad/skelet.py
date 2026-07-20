@@ -47,8 +47,8 @@ STANDARD = {
     "regel_b": 45,
     "regel_h": 145,
     "spaer_h": 120,
-    "vaeg_front": 3150,
-    "vaeg_bag": 2850,
+    "regel_l_front": 3150,
+    "regel_l_bag": 2850,
     "udhug": 30,
     "bundrem_h": 195,
     "udskaering_h": 190,
@@ -61,8 +61,8 @@ PARAMETRE = [
     ("B4", "regel_b", "Regelbredde / tykkelse paa skinner"),
     ("B5", "regel_h", "Regeldybde = vaegtykkelse"),
     ("B6", "spaer_h", "Spaerhoejde"),
-    ("B7", "vaeg_front", "Overkant regel, forvaeg (over terraen)"),
-    ("B20", "vaeg_bag", "Overkant regel, bagvaeg (over terraen)"),
+    ("B7", "regel_l_front", "Regel i forvaeg - saadan som den saves"),
+    ("B20", "regel_l_bag", "Regel i bagvaeg - saadan som den saves"),
     ("B21", "udhug", "Udhuggets dybde i spaeret ved oplaeg"),
     ("B8", "bundrem_h", "Bundremmens hoejde (paa hoejkant)"),
     ("B9", "udskaering_h", "Udskaeringens hoejde i reglen"),
@@ -83,8 +83,14 @@ UDREGNET = [
     ("B12", "=antal_regler - 1", "array_x", "Heraf i array"),
     ("B13", "=round(bredde / modul) + 1", "antal_gavl", "Regler i gavl"),
     ("B14", "=antal_gavl - 1", "array_y", "Heraf i array"),
-    ("B15", "=vaeg_front - regel_z", "regel_l_front", "Regel i forvaeg"),
-    ("B16", "=vaeg_bag - regel_z", "regel_l_bag", "Regel i bagvaeg"),
+    # Reglens laengde er inputtet, ikke vaeghoejden. Reglen staar i en
+    # udskaering i bundremmen, saa dens fod ligger regel_z over terraen -
+    # udledes vaeghoejden ikke af laengden, bliver den savede laengde skaev
+    # (3145 i stedet for 3150). Vaeggen bliver til gengaeld regel_z hoejere.
+    ("B15", "=regel_l_front + regel_z", "vaeg_front",
+     "Overkant regel, forvaeg (over terraen)"),
+    ("B16", "=regel_l_bag + regel_z", "vaeg_bag",
+     "Overkant regel, bagvaeg (over terraen)"),
     ("B19", "=laengde + 2 * regel_b", "vaeg_l",
      "Vaegrammens fulde laengde - flugter med gavlremmene"),
     ("B18", "=laengde", "bundrem_l", "Front/bag i fuld laengde; gavlremmene ligger uden paa"),
@@ -224,11 +230,13 @@ def kontrollér(maal):
                    (maal[navn] // modul + 1) * modul)
             )
 
-    if maal["vaeg_bag"] >= maal["vaeg_front"]:
+    # Begge regler staar paa samme kote, saa laengderne kan sammenlignes
+    # direkte i stedet for vaeghoejderne.
+    if maal["regel_l_bag"] >= maal["regel_l_front"]:
         raise ValueError(
-            "vaeg_bag (%s) skal vaere lavere end vaeg_front (%s), "
+            "regel_l_bag (%s) skal vaere kortere end regel_l_front (%s), "
             "ellers falder taget den forkerte vej eller slet ikke"
-            % (maal["vaeg_bag"], maal["vaeg_front"])
+            % (maal["regel_l_bag"], maal["regel_l_front"])
         )
 
     if maal["udskaering_h"] >= maal["bundrem_h"]:

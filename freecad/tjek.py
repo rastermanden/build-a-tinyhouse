@@ -86,7 +86,7 @@ for hus in huse.HUSE:
 print("\n=== validering ===")
 for navn, maal in (("6300 ikke modul", {"laengde": 6300}),
                    ("bredde 3500", {"bredde": 3500}),
-                   ("fladt tag", {"vaeg_bag": 3150}),
+                   ("fladt tag", {"regel_l_bag": 3150}),
                    ("ukendt maal", {"hoejde": 2000})):
     try:
         skelet.kontrollér(dict(skelet.STANDARD, **maal))
