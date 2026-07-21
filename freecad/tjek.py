@@ -77,6 +77,18 @@ for hus in huse.HUSE:
             if top[i].Shape.common(top[j].Shape).Volume > 1.0:
                 print("  !! KLASK %s <-> %s" % (top[i].Name, top[j].Name))
                 klask += 1
+    # ingen braet maa vaere laengere end det man kan koebe - det er hele
+    # grunden til at raekkerne stoedes over en stroe
+    maks = float(s.braet_l_max)
+    for o in top:
+        if not skelet.logisk_navn(o).startswith("Gulvbraet"):
+            continue
+        for so in (o.Shape.Solids or [o.Shape]):
+            if so.BoundBox.XLength > maks + .1:
+                print("  !! %s er %.0f mm - laengere end braet_l_max %.0f"
+                      % (skelet.logisk_navn(o), so.BoundBox.XLength, maks))
+                fejl += 1
+
     print("sammenstoed: %s" % ("ingen" if not klask else klask))
     fejl += klask
     App.closeDocument(doc.Name)

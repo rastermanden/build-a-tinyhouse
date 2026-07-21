@@ -55,6 +55,7 @@ STANDARD = {
     "udskaering_h": 190,
     "braet_b": 121,
     "braet_t": 23,
+    "braet_l_max": 3600,
 }
 
 PARAMETRE = [
@@ -71,6 +72,7 @@ PARAMETRE = [
     ("B9", "udskaering_h", "Udskaeringens hoejde i reglen"),
     ("B30", "braet_b", "Gulvbraet bredde"),
     ("B31", "braet_t", "Gulvbraet tykkelse"),
+    ("B34", "braet_l_max", "Laengste braet man kan koebe"),
 ]
 
 # Udregnede maal. antal_* er totalen inkl. endestolpen; array_* er det antal
@@ -119,9 +121,21 @@ UDREGNET = [
     # Gulvbraedderne gaar paa tvaers under hele bundremmen. Laengden gaar
     # sjaeldent op i braetbredden, saa det sidste braet skaeres til - derfor
     # baade et antal hele og en rest.
-    ("B32", "=floor(laengde / braet_b)", "antal_braet", "Hele gulvbraedder"),
-    ("B33", "=laengde - antal_braet * braet_b", "braet_rest",
+    # Braedderne ligger nu paa TVAERS AF STROEENE, altsaa langs X. Hver
+    # raekke er for lang til ét braet og stoedes over en stroe. Stoedet
+    # laegges paa den stroe der ligger naermest husets midte; hver anden
+    # raekke rykker en stroe tilbage, saa samlingerne ikke danner én
+    # gennemgaaende soem tvaers over gulvet.
+    ("B32", "=floor(bredde / braet_b)", "antal_braet", "Hele gulvbraedder"),
+    ("B33", "=bredde - antal_braet * braet_b", "braet_rest",
      "Sidste braet skaeres til denne bredde"),
+    ("B35", "=round((laengde / 2 - modul - 1.5 * regel_b) / modul)", "stoed_n",
+     "Stroe-nummer som stoedet lander paa"),
+    ("B36", "=modul + regel_b + stoed_n * modul + regel_b / 2", "stoed_a",
+     "Stoed i lige raekker - midt paa stroeen"),
+    ("B37", "=stoed_a - modul", "stoed_b", "Stoed i ulige raekker - en stroe tilbage"),
+    ("B38", "=ceil(antal_braet / 2)", "antal_raekke_a", "Lige braeddaekker"),
+    ("B39", "=floor(antal_braet / 2)", "antal_raekke_b", "Ulige braeddaekker"),
 ]
 
 # Alt i huset er trae, saa alt skal ogsaa se ud som trae. Uden dette stod
@@ -635,24 +649,45 @@ def byg(navn, **afvigelser):
     # hver gavl bliver derfor ikke modul bredt - det er prisen for at
     # gavlvaeggen flugter med gavlremmen.
     # ------------------------------------------------------- gulvbraedder
-    # 23 x 121 paa tvaers under HELE bundremmen, monteret paa undersiden og
-    # ned mod jorden. De fylder derfor z = -braet_t..0, saa modellen naar nu
-    # under kote 0 - z = 0 er stadig bundremmens underside, ikke terraen.
+    # 23 x 121 under HELE bundremmen, monteret paa undersiden og ned mod
+    # jorden. De fylder z = -braet_t..0, saa modellen naar under kote 0 -
+    # z = 0 er stadig bundremmens underside, ikke terraen.
     #
-    # Braedderne spaender vinkelret paa stroeene, saa hvert braet har fat i
-    # flere baeringer. Laengden gaar ikke op i braetbredden, saa det sidste
-    # braet saves til braet_rest og saettes for sig - samme greb som ved
-    # gavlspaerene.
+    # Braedderne loeber LANGS X, altsaa paa tvaers af stroeene, som selv
+    # loeber i Y. Saadan krydser hvert braet samtlige stroe og kan soemmes
+    # hele vejen hen. Laa de langs Y, ville de ligge parallelt med stroeene
+    # og hvert braet ramme hoejst én.
+    #
+    # En raekke er laengere end det laengste braet man kan koebe, saa hver
+    # raekke er to stykker stoedt over en stroe. Lige raekker stoedes ved
+    # stoed_a, ulige ved stoed_b en stroe tilbage - ellers ville alle
+    # samlinger ligge paa linje tvaers over gulvet.
+    #
+    # Sidste raekke er smallere end et helt braet og saves til braet_rest.
+    # antal_braet er ulige, saa den raekke er en ulig raekke og stoedes som
+    # dem: ved stoed_b.
 
-    braet = bjaelke(
-        "Gulvbraet", S + "braet_b", S + "bredde", S + "braet_t",
-        z="-" + S + "braet_t",
-    )
-    array(braet, "x", S + "antal_braet", S + "braet_b")
-    bjaelke(
-        "Gulvbraet_sidste", S + "braet_rest", S + "bredde", S + "braet_t",
-        x=S + "antal_braet * " + S + "braet_b", z="-" + S + "braet_t",
-    )
+    def braetraekke(navn, x0, x1, y, ydim):
+        return bjaelke(navn, x1 + " - " + x0 if x0 != "0" else x1,
+                       ydim, S + "braet_t", x=x0, y=y, z="-" + S + "braet_t")
+
+    for suffiks, stoed, y0, antal in (
+        ("a", S + "stoed_a", "0", S + "antal_raekke_a"),
+        ("b", S + "stoed_b", S + "braet_b", S + "antal_raekke_b"),
+    ):
+        v = braetraekke("Gulvbraet_%s_venstre" % suffiks, "0", stoed,
+                        y0, S + "braet_b")
+        h = braetraekke("Gulvbraet_%s_hoejre" % suffiks, stoed, S + "laengde",
+                        y0, S + "braet_b")
+        array(v, "y", antal, "2 * " + S + "braet_b")
+        array(h, "y", antal, "2 * " + S + "braet_b")
+
+    # den tilskaarne sidste raekke
+    REST_Y = S + "antal_braet * " + S + "braet_b"
+    braetraekke("Gulvbraet_rest_venstre", "0", S + "stoed_b",
+                REST_Y, S + "braet_rest")
+    braetraekke("Gulvbraet_rest_hoejre", S + "stoed_b", S + "laengde",
+                REST_Y, S + "braet_rest")
 
     spaer("Spaer_gavl_venstre", GAVL_V)
     sp = spaer("Spaer", S + "modul")
