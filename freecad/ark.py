@@ -96,7 +96,7 @@ def spaer(doc):
 
 # ------------------------------------------------------------------ regler
 
-def regel_lang(doc, navn="Regel_front", titel="REGEL, FOR- OG BAGVAEG"):
+def regel_lang(doc, navn="Regel_front", titel="REGEL, FORVAEG"):
     """Regel i for-/bagvaeg set fra siden, med udskaeringen i bunden."""
     s = doc.Spreadsheet
     sh = doc.getObject(navn).Shape
@@ -146,9 +146,14 @@ def _gavlregel_kontur(doc, solid, s):
     har en flad top set fra denne side. Haeldningen viser sig dels som
     forskel MELLEM reglerne, dels som et lille fald hen over reglens egen
     tykkelse - se _gavlregel_top().
+
+    Snittet ligger taet paa YMin-fladen og ikke midt i tykkelsen. Taget
+    falder med voksende Y, saa YMin er emnets lange kant. Et snit midt i
+    tykkelsen gav gennemsnittet af lang og kort side - 3113 hvor emnet er
+    3115.0 og 3111.2 - og det maal svarer ikke til nogen kant man kan save
+    efter. Saver man efter den lange kant, kan resten hoevles af.
     """
-    pts = kontur(solid, (0, 1, 0), solid.BoundBox.YMin + float(s.regel_b) / 2,
-                 ("x", "z"))
+    pts = kontur(solid, (0, 1, 0), solid.BoundBox.YMin + 0.5, ("x", "z"))
     return flyt_til_nul(pts)
 
 

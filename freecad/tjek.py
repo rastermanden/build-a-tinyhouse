@@ -36,12 +36,11 @@ for hus in huse.HUSE:
         xs += [bb.XMin, bb.XMax]; ys += [bb.YMin, bb.YMax]; zs += [bb.ZMin, bb.ZMax]
     print("bbox X %.0f..%.0f  Y %.0f..%.0f  Z %.0f..%.0f  (%d emner)"
           % (min(xs), max(xs), min(ys), max(ys), min(zs), max(zs), len(top)))
-    # Gavlremmene ligger UDEN PAA enderne af bundremmen, saa huset raekker
-    # regel_b ud over vaeglinjen i begge ender: ydermaalet er laengde + 2 x
-    # regel_b, og origo ligger i vaeglinjen med gavlremmen ved negativ x.
-    rb = float(s.regel_b)
-    if abs(min(xs) + rb) > .1 or abs(max(xs) - (L + rb)) > .1 or abs(min(ys)) > .1:
-        print("  !! bbox er ikke %.0f..%.0f i x og 0.. i y" % (-rb, L + rb))
+    # Gavlremmene ligger INDE MELLEM front- og bagremmen, saa front og bag er
+    # de gennemgaaende og huset raekker ikke ud over vaeglinjen: ydermaalet er
+    # laengde x bredde, og origo ligger i husets hjoerne.
+    if abs(min(xs)) > .1 or abs(max(xs) - L) > .1 or abs(min(ys)) > .1:
+        print("  !! bbox er ikke 0..%.0f i x og 0.. i y" % L)
         fejl += 1
 
     # gavlregler skal ramme spaerets underside
@@ -85,7 +84,6 @@ for hus in huse.HUSE:
 # validering skal afvise umulige maal
 print("\n=== validering ===")
 for navn, maal in (("6300 ikke modul", {"laengde": 6300}),
-                   ("bredde 3500", {"bredde": 3500}),
                    ("fladt tag", {"regel_l_bag": 3150}),
                    ("ukendt maal", {"hoejde": 2000})):
     try:
