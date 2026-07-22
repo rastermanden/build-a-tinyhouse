@@ -225,6 +225,18 @@ def farve(o):
 # kun paa det der allerede staar. Gavlreglerne kommer foer spaerene, fordi
 # hjoernespaeret hviler paa deres toppe.
 #
+# Et trin kan have undergrupper. Trin 1 er hele gulvkassetten: rammen,
+# stroeene og braedderne paa undersiden. Den bygges under ét - ramme, stroe,
+# vend den om, braedder paa - saa den ikke kan deles i trin uden at et af
+# dem hviler paa noget der endnu ikke staar. Stroe og braedder er stadig
+# hver sin arbejdsgang og faar derfor hver sin undergruppe, saa de kan
+# taendes og slukkes for sig.
+#
+# Fjerde felt er undergrupper: (navn, titel, praefikser). Et emne maa kun
+# ligge ét sted, saa traeets praefikser og undergruppens maa ikke overlappe.
+# Titlen maa heller ikke vaere den samme som et emnes - FreeCAD holder
+# Labels unikke og ville doebe gruppen "Stroe001" bag om ryggen paa os.
+#
 # Emnerne samles i FreeCAD-grupper med samme navne, saa et helt trin kan
 # taendes og slukkes under ét i modeltraeet - og saa websitet kan vise huset
 # rejse sig trin for trin.
@@ -232,14 +244,15 @@ def farve(o):
 # og doc.getObject() finder det ikke igen. Nummeret staar derfor i Label,
 # som ogsaa er det traeet viser.
 BYGGETRIN = [
-    ("Trin1_bundrem", "1. Bundrem", ("Bundrem_",)),
-    ("Trin2_stroe", "2. Stroe", ("Stroe",)),
-    ("Trin3_vaegregler", "3. Vaegregler",
-     ("Regel_front", "Regel_bag", "Hjoernestolpe_")),
-    ("Trin4_topskinner", "4. Topskinner", ("Topskinne_",)),
-    ("Trin5_gavlregler", "5. Gavlregler", ("Regel_gavl_",)),
-    ("Trin6_spaer", "6. Spaer", ("Spaer",)),
-    ("Trin7_gulvbraedder", "7. Gulvbraedder (underside)", ("Gulvbraet",)),
+    ("Trin1_bundrem", "1. Bundrem", ("Bundrem_",), (
+        ("Trin1_stroe", "Stroe (gulvbjaelker)", ("Stroe",)),
+        ("Trin1_gulvbraedder", "Gulvbraedder (underside)", ("Gulvbraet",)),
+    )),
+    ("Trin2_vaegregler", "2. Vaegregler",
+     ("Regel_front", "Regel_bag", "Hjoernestolpe_"), ()),
+    ("Trin3_topskinner", "3. Topskinner", ("Topskinne_",), ()),
+    ("Trin4_gavlregler", "4. Gavlregler", ("Regel_gavl_",), ()),
+    ("Trin5_spaer", "5. Spaer", ("Spaer",), ()),
 ]
 
 S = "Spreadsheet."
@@ -701,12 +714,20 @@ def byg(navn, **afvigelser):
     for o in emner(doc):
         efter_navn.setdefault(logisk_navn(o), []).append(o)
 
-    for gruppenavn, titel, praefikser in BYGGETRIN:
-        gruppe = doc.addObject("App::DocumentObjectGroup", gruppenavn)
-        gruppe.Label = titel
+    def fyld(gruppe, praefikser):
         for navn, objekter in efter_navn.items():
             if navn.startswith(praefikser):
                 gruppe.Group = gruppe.Group + objekter
+
+    for gruppenavn, titel, praefikser, undergrupper in BYGGETRIN:
+        gruppe = doc.addObject("App::DocumentObjectGroup", gruppenavn)
+        gruppe.Label = titel
+        fyld(gruppe, praefikser)
+        for ugnavn, ugtitel, ugpraefikser in undergrupper:
+            ug = doc.addObject("App::DocumentObjectGroup", ugnavn)
+            ug.Label = ugtitel
+            fyld(ug, ugpraefikser)
+            gruppe.Group = gruppe.Group + [ug]
 
     doc.recompute()
 
@@ -748,13 +769,27 @@ def logisk_navn(o):
 
 
 def byggetrin(doc):
-    """[(gruppenavn, titel, [objekter], antal emner)] i byggerækkefølge."""
+    """[(gruppenavn, titel, [objekter], antal emner)] i byggerækkefølge.
+
+    Undergrupper foldes ud: et trins emner er baade dets egne og dem der
+    ligger i undergrupperne. Ellers ville gulvbraedderne falde ud af trin 1,
+    fordi de ligger et niveau nede.
+    """
+    def emnerne(gruppe):
+        ud = []
+        for o in gruppe.Group:
+            if o.isDerivedFrom("App::DocumentObjectGroup"):
+                ud += emnerne(o)
+            else:
+                ud.append(o)
+        return ud
+
     ud = []
-    for gruppenavn, titel, _ in BYGGETRIN:
+    for gruppenavn, titel, _, _ in BYGGETRIN:
         gruppe = doc.getObject(gruppenavn)
         if gruppe is None:
             continue
-        objekter = list(gruppe.Group)
+        objekter = emnerne(gruppe)
         stk = sum(len(o.Shape.Solids) for o in objekter if hasattr(o, "Shape"))
         ud.append((gruppenavn, titel, objekter, stk))
     return ud
