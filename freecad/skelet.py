@@ -56,6 +56,9 @@ STANDARD = {
     "braet_b": 121,
     "braet_t": 23,
     "braet_l_max": 3600,
+    "gulv_b": 180,
+    "gulv_t": 32,
+    "gulv_luft": 2,
 }
 
 PARAMETRE = [
@@ -73,6 +76,9 @@ PARAMETRE = [
     ("B30", "braet_b", "Gulvbraet bredde"),
     ("B31", "braet_t", "Gulvbraet tykkelse"),
     ("B34", "braet_l_max", "Laengste braet man kan koebe"),
+    ("B40", "gulv_b", "Stigma massivt gulv - braetbredde"),
+    ("B41", "gulv_t", "Stigma massivt gulv - braettykkelse"),
+    ("B42", "gulv_luft", "Udvidelsesluft mellem gulv og regler"),
 ]
 
 # Udregnede maal. antal_* er totalen inkl. endestolpen; array_* er det antal
@@ -136,6 +142,17 @@ UDREGNET = [
     ("B37", "=stoed_a - modul", "stoed_b", "Stoed i ulige raekker - en stroe tilbage"),
     ("B38", "=ceil(antal_braet / 2)", "antal_raekke_a", "Lige braeddaekker"),
     ("B39", "=floor(antal_braet / 2)", "antal_raekke_b", "Ulige braeddaekker"),
+    # Stigma massivt gulv oven paa stroeene, indvendigt mellem vaeggene.
+    # Massivt trae arbejder, saa der laegges gulv_luft fri hele vejen rundt
+    # mod reglerne - ellers buler gulvet op naar det udvider sig. Fladen er
+    # derfor husets indermaal minus en vaegtykkelse OG en luft i hver ende.
+    # Bredden gaar sjaeldent op i braetbredden, saa sidste raekke skaeres
+    # til - derfor baade et antal hele og en rest.
+    ("B44", "=bredde - 2 * regel_h - 2 * gulv_luft", "gulv_bredde",
+     "Fri gulvbredde til braedder - indermaal minus luft"),
+    ("B45", "=floor(gulv_bredde / gulv_b)", "antal_gulv", "Hele gulvbraedder"),
+    ("B46", "=gulv_bredde - antal_gulv * gulv_b", "gulv_rest",
+     "Sidste raekke skaeres til denne bredde"),
 ]
 
 # Alt i huset er trae, saa alt skal ogsaa se ud som trae. Uden dette stod
@@ -162,6 +179,7 @@ TVAERSNIT_FARVER = {
     (45, 145): (0.76, 0.61, 0.41),  # regler, hjoernestolper, topskinner
     (45, 120): (0.63, 0.48, 0.31),  # ubrugt - spaerene var 120 hoeje
     (23, 121): (0.70, 0.57, 0.40),  # gulvbraedder under bundremmen
+    (32, 180): (0.90, 0.79, 0.60),  # Stigma massivt gulv oven paa stroe
 }
 
 
@@ -253,6 +271,7 @@ BYGGETRIN = [
     ("Trin3_topskinner", "3. Topskinner", ("Topskinne_",), ()),
     ("Trin4_gavlregler", "4. Gavlregler", ("Regel_gavl_",), ()),
     ("Trin5_spaer", "5. Spaer", ("Spaer",), ()),
+    ("Trin6_gulv", "6. Gulv (Stigma)", ("Gulvdaek",), ()),
 ]
 
 S = "Spreadsheet."
@@ -701,6 +720,31 @@ def byg(navn, **afvigelser):
                 REST_Y, S + "braet_rest")
     braetraekke("Gulvbraet_rest_hoejre", S + "stoed_b", S + "laengde",
                 REST_Y, S + "braet_rest")
+
+    # ------------------------------------------------------- Stigma gulv
+    # Massivt gulv 32 x 180 mm oven paa stroeene, indvendigt mellem
+    # vaeggene. Braedderne loeber langs huset (X) og krydser dermed alle
+    # stroeene, saa hver planke soemmes ned i hver stroe. Gulvfladen er
+    # husets indermaal - laengde og bredde minus en vaegtykkelse (regel_h)
+    # i hver ende. Sidste raekke skaeres til, hvis bredden ikke gaar op i
+    # braetbredden. Braedderne vises i fuld laengde; laengdesamlinger
+    # (stoed over en stroe) tilfoejes, hvis der skal regnes med en bestemt
+    # plankelaengde.
+    GULV_Y0 = S + "regel_h + " + S + "gulv_luft"
+
+    def gulvdaek(navn, y, ydim):
+        return bjaelke(
+            navn,
+            S + "laengde - 2 * " + S + "regel_h - 2 * " + S + "gulv_luft",
+            ydim, S + "gulv_t",
+            x=S + "regel_h + " + S + "gulv_luft", y=y, z=S + "bundrem_h")
+
+    raekke = gulvdaek("Gulvdaek", GULV_Y0, S + "gulv_b")
+    array(raekke, "y", S + "antal_gulv", S + "gulv_b")
+    if float(doc.Spreadsheet.gulv_rest) > 0.5:
+        gulvdaek("Gulvdaek_rest",
+                 GULV_Y0 + " + " + S + "antal_gulv * " + S + "gulv_b",
+                 S + "gulv_rest")
 
     spaer("Spaer_gavl_venstre", GAVL_V)
     sp = spaer("Spaer", S + "modul")
