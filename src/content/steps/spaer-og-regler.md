@@ -12,13 +12,13 @@ vaerktoj:
   - Målebånd og blyant
 materialer:
   - navn: Regler til vægge (stolper)
-    dimension: 45×95 mm
+    dimension: 45×145 mm
     note: Placeres pr. 60 cm, så isolering og plader passer
-  - navn: Top- og bundskinne
-    dimension: 45×95 mm
-    note: Binder reglerne sammen foroven og forneden
+  - navn: Topskinne
+    dimension: 45×145 mm
+    note: Binder reglerne sammen foroven; reglerne står direkte på bundremmen, så der er ingen bundskinne
   - navn: Spær til tag
-    dimension: 45×120 mm
+    dimension: 45×195 mm
     note: Dimension afhænger af spændvidde og snelast
   - navn: Vinkelbeslag og spærbeslag
     note: Til samlinger mellem regler, skinner og spær
@@ -35,8 +35,8 @@ centrene, så træfiberisolering og plader senere passer uden alt for meget tils
 
 ## Sådan gør du
 
-1. **Byg vægrammerne** liggende på et plant underlag: bund- og topskinne med regler pr.
-   60 cm imellem.
+1. **Byg vægrammerne** liggende på et plant underlag: topskinne med regler pr.
+   60 cm imellem, og reglerne stående direkte på bundremmen.
 2. **Rejs væggene** én ad gangen, lod dem op, og afstiv dem midlertidigt med skråstivere.
 3. **Bind væggene sammen** i hjørnerne, og kontrollér at alt er i lod og vinkel.
 4. **Rejs spærene** oven på væggene i den ønskede taghældning, og fastgør dem med

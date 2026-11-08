@@ -14,8 +14,11 @@ Hele huset bygges op omkring et **modul på 60 cm**. De bærende trædimensioner
 
 | Element | Dimension |
 |---|---|
-| Bundrem, vægregler, top-/bundskinne | 45 × 95 mm |
-| Tagspær | 45 × 120 mm |
+| Bundrem front/bag (to 45×195-lag limet sammen) | 90×195 mm |
+| Gavlrem i gavlene | 45×195 mm |
+| Strø (gulvbjælker) | 45×195 mm |
+| Tagspær | 45×195 mm |
+| Vægregler, hjørnestolper, topskinne | 45×145 mm |
 | Modul (c/c mellem regler og spær) | 600 mm |
 | Reference-størrelse | 600 × 335 cm |
 
@@ -48,8 +51,8 @@ celle et **alias** (højreklik på cellen → *Alias*), så du kan referere til 
 | B2 | 3170 | `gavlrem_l` (gavlrem/stro – det man bestiller efter) |
 | B3 | 600 | `modul` |
 | B4 | 45 | `regel_b` |
-| B5 | 95 | `regel_h` |
-| B6 | 120 | `spaer_h` |
+| B5 | 145 | `regel_h` |
+| B6 | 195 | `spaer_h` |
 
 Læg gerne en udregnet celle ind for antal regler:
 
@@ -92,7 +95,7 @@ Draft Array: <https://wiki.freecad.org/Draft_OrthoArray>
 
 ### 4. Definér profilerne én gang
 
-Tegn 45 × 95- og 45 × 120-profilerne som **Sketcher**-rektangler (eller brug BIM' indbyggede
+Tegn 45×145- og 45×195-profilerne som **Sketcher**-rektangler (eller brug BIM' indbyggede
 profil-bibliotek) og genbrug dem. Ændrer du profilet, opdaterer alle bjælker der bruger det.
 
 Sketcher: <https://wiki.freecad.org/Sketcher_Workbench>
@@ -152,8 +155,8 @@ Sådan kommer du i gang:
 
 1. Installér serveren (kopiér addon'et til FreeCADs `Mod`-mappe og konfigurér Claude – se
    serverens README).
-2. Giv Claude **denne guide** som kontekst, så den kender vores dimensioner (45×95, 45×120)
-   og 60 cm-modulet.
+2. Giv Claude **denne guide** som kontekst, så den kender vores dimensioner (45×145, 45×195 og
+   bundrem 90×195) og 60 cm-modulet.
 3. Bed den bygge det parametriske skelet – f.eks. *"opret et Spreadsheet med laengde/bredde/
    modul som aliaser og byg bundrem + regler c/c 600 med udtryk"*.
 

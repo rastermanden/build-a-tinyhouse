@@ -36,14 +36,14 @@
       "beskrivelse": "Et lille, transportvenligt tiny house på 7,2 m². Perfekt som første byg.",
       "materialerPrStep": {
         "bundrem": [
-          { "materiale": "Konstruktionstræ 45×95 mm (ramme + tværregler)", "maengde": 28, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
+          { "materiale": "Konstruktionstræ 45×195 mm (bundrem og strø)", "maengde": 28, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
           { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 1, "enhed": "pk", "note": "ca. 100 stk." },
           { "materiale": "Underlagspap / fugtspærre", "maengde": 8, "enhed": "lbm" },
           { "materiale": "Vinkelbeslag", "maengde": 16, "enhed": "stk" }
         ],
         "spaer-og-regler": [
-          { "materiale": "Regler 45×95 mm (vægstolper + skinner)", "maengde": 60, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
-          { "materiale": "Spær 45×120 mm", "maengde": 30, "enhed": "lbm" },
+          { "materiale": "Regler 45×145 mm (vægstolper og topskinne)", "maengde": 60, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
+          { "materiale": "Spær 45×195 mm", "maengde": 30, "enhed": "lbm" },
           { "materiale": "Spær- og vinkelbeslag", "maengde": 24, "enhed": "stk" },
           { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 1, "enhed": "pk" }
         ],
@@ -102,14 +102,14 @@
       "beskrivelse": "Lidt mere plads på 8,6 m² – stadig let at flytte. God balance mellem plads og transport.",
       "materialerPrStep": {
         "bundrem": [
-          { "materiale": "Konstruktionstræ 45×95 mm (ramme + tværregler)", "maengde": 34, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
+          { "materiale": "Konstruktionstræ 45×195 mm (bundrem og strø)", "maengde": 34, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
           { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 1, "enhed": "pk", "note": "ca. 120 stk." },
           { "materiale": "Underlagspap / fugtspærre", "maengde": 9, "enhed": "lbm" },
           { "materiale": "Vinkelbeslag", "maengde": 18, "enhed": "stk" }
         ],
         "spaer-og-regler": [
-          { "materiale": "Regler 45×95 mm (vægstolper + skinner)", "maengde": 68, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
-          { "materiale": "Spær 45×120 mm", "maengde": 34, "enhed": "lbm" },
+          { "materiale": "Regler 45×145 mm (vægstolper og topskinne)", "maengde": 68, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
+          { "materiale": "Spær 45×195 mm", "maengde": 34, "enhed": "lbm" },
           { "materiale": "Spær- og vinkelbeslag", "maengde": 26, "enhed": "stk" },
           { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 1, "enhed": "pk" }
         ],
@@ -168,14 +168,14 @@
       "beskrivelse": "Et større tiny house på 12,6 m² med plads til mere. Tæt på max-bredden for nem transport.",
       "materialerPrStep": {
         "bundrem": [
-          { "materiale": "Konstruktionstræ 45×95 mm (ramme + tværregler)", "maengde": 46, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
+          { "materiale": "Konstruktionstræ 45×195 mm (bundrem og strø)", "maengde": 46, "enhed": "lbm", "note": "Ramme pr. 60 cm modul" },
           { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 2, "enhed": "pk", "note": "ca. 160 stk." },
           { "materiale": "Underlagspap / fugtspærre", "maengde": 14, "enhed": "lbm" },
           { "materiale": "Vinkelbeslag", "maengde": 22, "enhed": "stk" }
         ],
         "spaer-og-regler": [
-          { "materiale": "Regler 45×95 mm (vægstolper + skinner)", "maengde": 92, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
-          { "materiale": "Spær 45×120 mm", "maengde": 44, "enhed": "lbm" },
+          { "materiale": "Regler 45×145 mm (vægstolper og topskinne)", "maengde": 92, "enhed": "lbm", "note": "Stolper pr. 60 cm" },
+          { "materiale": "Spær 45×195 mm", "maengde": 44, "enhed": "lbm" },
           { "materiale": "Spær- og vinkelbeslag", "maengde": 32, "enhed": "stk" },
           { "materiale": "Konstruktionsskruer 5×90 mm", "maengde": 2, "enhed": "pk" }
         ],
