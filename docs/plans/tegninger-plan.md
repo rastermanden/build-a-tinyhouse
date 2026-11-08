@@ -26,7 +26,7 @@ De viste målte udskæringer er i den nuværende model: sæde/notch i spær, fod
 
 Plan skrevet efter gennemgang af `freecad/skelet.py`, `tegninger.py`, `detaljer.py`, `huse.py`, `byg_alle.py`, `ark.py` samt Astro-trinsiderne.
 
-- [x] Kumulative trinvisninger og målsatte detalje-SVG'er genereret for 6000x3600; vist på bundrem, spær/regler, loft og gulv.
+- [x] Kumulative trinvisninger og målsatte detalje-SVG'er genereret for 6000x3350; vist på bundrem, spær/regler, loft og gulv.
 - [x] `npm run build` (15 sider bygget). Første forsøg viste at `sharp` manglede efter `npm install`; installeret som projekt-afhængighed og låsefil opdateret, hvorefter build lykkedes.
 - [x] `freecadcmd --console freecad/tjek.py` (`ALT OK`, alle tre huse)
 - [x] Git commit på `loom/tinyhouse-drawings` (ingen push)
@@ -39,7 +39,7 @@ Genopbyg og synkronisér assets fra repo-roden med:
 freecadcmd --console freecad/byg_alle.py
 ```
 
-Kommandoen genererer også modellerne 7200x4200 og 4800x3000 under `ud/`, men website-assets synkroniseres bevidst kun fra standardhuset 6000x3600. SVG-filerne er source-controlled under `public/tegninger/6000x3600/`, så almindeligt Astro-build ikke kræver FreeCAD.
+Kommandoen genererer også modellerne 7200x4200 og 4800x3000 under `ud/`, men website-assets synkroniseres bevidst kun fra standardhuset 6000x3350. SVG-filerne er source-controlled under `public/tegninger/6000x3350/`, så almindeligt Astro-build ikke kræver FreeCAD.
 
 ## Åbne spørgsmål til Martin
 
