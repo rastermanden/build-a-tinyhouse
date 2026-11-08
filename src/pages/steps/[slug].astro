@@ -72,19 +72,21 @@ const naboNaeste = naeste
 
 // Bestillings-mail til savværk – kun på yderbeklædning. Yderbeklædning
 // (typisk Douglasgran) kan bestilles direkte hos savværket og skære et
-// mellemled væk. Mængderne er vejledende template-tal fra estimatet – ikke
-// rigtige tal fra et konkret byg.
+// mellemled væk. Mængderne er vejledende tal for standardhuset – ikke
+// rigtige tal fra et konkret byg. Husets mål kommer fra modellen
+// (freecad/skelet.py STANDARD), se info.standardHus i materialelister.json.
 const erYderbeklaedning = entry.id === 'yderbeklaedning';
 let savvaerkEmail: { emne: string; tekst: string } | null = null;
-let templateMaal = '';
+let standardMaal = '';
 if (erYderbeklaedning) {
-  const maal = [...materialelister.praedefineredeMaal].sort(
-    (a, b) => b.laengde_cm * b.bredde_cm - a.laengde_cm * a.bredde_cm,
-  )[0];
-  templateMaal = `${maal.laengde_cm / 100} × ${maal.bredde_cm / 100} m`.replace(/\./g, ',');
+  const standard = materialelister.info.standardHus;
+  const meter = (cm: number): string =>
+    (cm / 100).toLocaleString('da-DK', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+  standardMaal = `${meter(standard.laengde_cm)} × ${meter(standard.bredde_cm)} m`;
+  const standardAreal = standard.areal_m2.toLocaleString('da-DK');
   const talFmt = new Intl.NumberFormat('da-DK', { maximumFractionDigits: 2 });
-  const varer = ((maal.materialerPrStep as Record<string, Array<{ materiale: string; maengde: number; enhed: string; note?: string }>>).yderbeklaedning ?? []).map(
-    (m) => `- ${m.materiale}: ${talFmt.format(m.maengde)} ${m.enhed}${m.note ? ` (${m.note})` : ''}`,
+  const varer = (standard.yderbeklaedning as Array<{ tekst: string; maengde: number; enhed: string; note?: string }>).map(
+    (m) => `- ${m.tekst}: ${talFmt.format(m.maengde)} ${m.enhed}${m.note ? ` (${m.note})` : ''}`,
   );
   const linjer = [
     'Hej',
@@ -93,7 +95,9 @@ if (erYderbeklaedning) {
     '',
     'Jeg tænker Douglasgran, ubehandlet (gerne kernetræ), som facadebeklædning.',
     '',
-    `VEJLEDENDE MÆNGDER (template-tal for et hus på ${templateMaal} – se OBS nedenfor):`,
+    `Huset er standardhuset på ${standardMaal} (${standardAreal} m²).`,
+    '',
+    `VEJLEDENDE MÆNGDER for ${standardMaal} (se OBS nedenfor):`,
     ...varer,
     '',
     'Ønsker:',
@@ -102,7 +106,7 @@ if (erYderbeklaedning) {
     '- Tørhed: [lufttørret / ovntørret]',
     '- Længder: gerne faste længder, der passer til facaden',
     '',
-    'OBS: Mængderne ovenfor er vejledende template-tal – ikke rigtige tal fra et konkret byg. Tilpas til dit eget hus.',
+    'OBS: Mængderne ovenfor er vejledende tal for standardhuset – ikke rigtige tal fra et konkret byg. Tilpas til dit eget hus.',
     '',
     'Giv gerne jeres pris pr. m² (og pr. lbm) direkte fra savværk, samt leveringstid og fragt. Jeg indhenter tilbud fra flere savværker (se cc), så jeg kan sammenligne.',
     '',
@@ -190,9 +194,8 @@ if (erYderbeklaedning) {
           </div>
 
           <p class="mt-4 rounded-lg border border-ler-300 bg-ler-100 px-4 py-3 text-sm text-ler-700">
-            ⚠️ Mængderne i e-mailen er <strong>vejledende template-tal</strong> (fra estimatet for
-            et hus på {templateMaal}) – <strong>ikke rigtige tal</strong> fra et konkret byg.
-            Tilpas altid til dit eget hus.
+            ⚠️ Mængderne i e-mailen er <strong>vejledende tal for standardhuset på {standardMaal}</strong>
+            – <strong>ikke rigtige tal</strong> fra et konkret byg. Tilpas altid til dit eget hus.
           </p>
 
           <BestillingsMail
