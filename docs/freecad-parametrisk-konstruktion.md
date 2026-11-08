@@ -14,7 +14,7 @@ Hele huset bygges op omkring et **modul på 60 cm**. De bærende trædimensioner
 
 | Element | Dimension |
 |---|---|
-| Bundrem front/bag (to 45×195-lag limet sammen) | 90×195 mm |
+| Bundrem front/bag (to lag 45×195 limet sammen) | 90×195 mm |
 | Gavlrem i gavlene | 45×195 mm |
 | Strø (gulvbjælker) | 45×195 mm |
 | Tagspær | 45×195 mm |
