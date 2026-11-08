@@ -7,7 +7,7 @@ import faktisk from '../data/faktisk-materialeliste.json';
 const MODUL = data.info.modul_cm; // 60
 
 // Der er p.t. kun én færdig, statisk materialeliste: mit faktiske byg på
-// 600 × 360 cm. Vælgerne indeholder derfor kun det mål. Kommer der flere
+// 600 × 335 cm. Vælgerne indeholder derfor kun det mål. Kommer der flere
 // størrelser til senere, kan de tilføjes her.
 const laengder = [faktisk.info.husLaengde_cm];
 const bredder = [faktisk.info.husBredde_cm];
@@ -38,8 +38,8 @@ const faktiskJson = JSON.stringify(faktiskInfo);
     </p>
 
     <div class="mt-6 rounded-xl border border-ler-200 bg-ler-100 p-4 text-sm text-ler-700">
-      📋 Lige nu er der <strong>én færdig liste</strong>: mit faktiske byg på 6,0 × 3,6 m
-      (21,6 m²). Der kommer flere størrelser til, efterhånden som jeg bygger dem. Metoden er
+      📋 Lige nu er der <strong>én færdig liste</strong>: mit faktiske byg på 6,0 × 3,35 m
+      (20,1 m²). Der kommer flere størrelser til, efterhånden som jeg bygger dem. Metoden er
       inspireret af
       <a href="https://smaabyg.nu/" target="_blank" rel="noopener" class="font-medium text-skov-600 underline">småBYG</a>.
     </div>
@@ -129,7 +129,7 @@ const faktiskJson = JSON.stringify(faktiskInfo);
     );
 
     // Kald-ud til den faktiske indkøbsliste, når det valgte mål matcher det,
-    // listen dækker (fx 600 × 360 cm).
+    // listen dækker (fx 600 × 335 cm).
     function faktiskKaldud(l: number, b: number): string {
       if (l !== faktisk.laengde_cm || b !== faktisk.bredde_cm) return '';
       return `

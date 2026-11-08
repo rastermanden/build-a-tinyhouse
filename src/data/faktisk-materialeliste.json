@@ -1,15 +1,15 @@
 {
   "info": {
-    "id": "faktisk-600x360",
-    "navn": "Faktisk liste – 6,0 × 3,6 m",
+    "id": "faktisk-600x335",
+    "navn": "Faktisk liste – 6,0 × 3,35 m",
     "titel": "Min faktiske indkøbsliste",
     "leverandoer": "Lokalt byggecenter / tømmerhandel (minigrusgrav, vognmandskørsel med kran og grab, brænde og træpiller)",
     "leveringsdato": "02.07.26",
     "husLaengde_cm": 600,
-    "husBredde_cm": 360,
-    "husAreal_m2": 21.6,
-    "beskrivelse": "Det her er de materialer, jeg faktisk købte hjem til mit tiny house – renskrevet fra fakturaen. Huset er 600 × 360 cm (21,6 m²). Det er ikke et vejledende estimat, men de konkrete varer og mængder, der blev leveret. Listen er delt op pr. byggetrin, så du kan følge den trin for trin.",
-    "bemaerkning": "Mængder og varenumre er afskrevet fra fakturaen. De passer til netop mit hus på 600 × 360 cm – dit forbrug bliver anderledes, hvis du bygger i andre mål. Fordelingen på byggetrin er min bedste faglige opdeling; nogle varer (fx skruer og tape) bruges på flere trin. Varenumre er leverandørens egne og kan ændre sig."
+    "husBredde_cm": 335,
+    "husAreal_m2": 20.1,
+    "beskrivelse": "Det her er de materialer, jeg faktisk købte hjem til mit tiny house – renskrevet fra fakturaen. Huset er 600 × 335 cm (20,1 m²). Det er ikke et vejledende estimat, men de konkrete varer og mængder, der blev leveret. Listen er delt op pr. byggetrin, så du kan følge den trin for trin.",
+    "bemaerkning": "Mængder og varenumre er afskrevet fra fakturaen. De passer til netop mit hus på 600 × 335 cm – dit forbrug bliver anderledes, hvis du bygger i andre mål. Fordelingen på byggetrin er min bedste faglige opdeling; nogle varer (fx skruer og tape) bruges på flere trin. Varenumre er leverandørens egne og kan ændre sig."
   },
   "stepRaekkefolge": [
     "bundrem",

@@ -17,7 +17,7 @@ Hele huset bygges op omkring et **modul på 60 cm**. De bærende trædimensioner
 | Bundrem, vægregler, top-/bundskinne | 45 × 95 mm |
 | Tagspær | 45 × 120 mm |
 | Modul (c/c mellem regler og spær) | 600 mm |
-| Reference-størrelse | 600 × 360 cm |
+| Reference-størrelse | 600 × 335 cm |
 
 ## Hvilke workbenches
 
@@ -45,7 +45,7 @@ celle et **alias** (højreklik på cellen → *Alias*), så du kan referere til 
 | Celle | Værdi | Alias |
 |---|---|---|
 | B1 | 6000 | `laengde` |
-| B2 | 3600 | `bredde` |
+| B2 | 3170 | `gavlrem_l` (gavlrem/stro – det man bestiller efter) |
 | B3 | 600 | `modul` |
 | B4 | 45 | `regel_b` |
 | B5 | 95 | `regel_h` |
@@ -56,9 +56,11 @@ Læg gerne en udregnet celle ind for antal regler:
 | Celle | Formel | Alias |
 |---|---|---|
 | B7 | `=laengde / modul + 1` | `antal_regler` |
+| B29 | `=gavlrem_l + 2 * bundrem_b` | `bredde` (udledt: 3350) |
 
-> **Hold dig til hele moduler.** `laengde` og `bredde` bør altid være et multiplum af 600,
-> så konstruktionen går op i 60 cm-rasteret ligesom det færdige byg.
+> **Hold dig til hele moduler.** `laengde` skal altid være et multiplum af 600, så
+> konstruktionen går op i 60 cm-rasteret ligesom det færdige byg. `bredde` er ikke et
+> input – den udledes af `gavlrem_l` plus en front- og en bagrem og er derfor fri.
 
 ### 2. Byg med udtryk i stedet for tal
 

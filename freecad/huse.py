@@ -11,7 +11,7 @@ fri - se kontrollér() i skelet.py.
 
 HUSE = [
     {
-        "navn": "6000x3600",
+        "navn": "6000x3350",
         "titel": "Standardhuset",
         "maal": {},
     },
