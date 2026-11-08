@@ -71,7 +71,7 @@ INDEX_HOVED = """<!doctype html>
 
 def kopiér_webtegninger(navn, udmappe):
     """Opdaterer statiske tegninger kun ved udtrykkelig synkronisering."""
-    if navn != "6000x3600":
+    if navn != "6000x3350":
         return
     webmappe = os.path.join(HER, "..", "public", "tegninger", navn)
     if os.path.isdir(webmappe):

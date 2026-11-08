@@ -95,7 +95,7 @@ const tegningForTrin: Record<string, { trin: string; noter: string; detaljer: st
   },
 };
 const tegninger = tegningForTrin[entry.id];
-const tegningRod = href('tegninger/6000x3600');
+const tegningRod = href('tegninger/6000x3350');
 const trinSvg = tegninger ? `${tegningRod}/trin/${tegninger.trin}.svg` : '';
 const detaljeSvg = (navn: string) => `${tegningRod}/detaljer/${navn}.svg`;
 

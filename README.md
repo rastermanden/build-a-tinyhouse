@@ -138,7 +138,7 @@ trin. For at regenerere både `ud/`-outputtet og standardhusets website-assets:
 freecadcmd --console freecad/byg_alle.py
 ```
 
-`public/tegninger/6000x3600/` indeholder SVG-kilderne til sitet, så Astro-build ikke kræver FreeCAD.
+`public/tegninger/6000x3350/` indeholder SVG-kilderne til sitet, så Astro-build ikke kræver FreeCAD.
 Kun bundrem, skelettets dele og gulv er modelleret – ikke loftets lag, vinduer, tagdækning,
 isolering, facade eller lerpuds. Tegningerne er vejledende håndværksillustrationer, ikke
 byggedimensionering eller godkendte konstruktionstegninger; kontrollér mål og samlinger før savning.
