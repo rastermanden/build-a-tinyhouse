@@ -4,6 +4,7 @@ titel: Yderbeklædning
 resume: Husets ansigt udadtil. En ventileret træbeklædning beskytter mod vejr og giver huset karakter.
 beregnerNoegle: yderbeklaedning
 tid: 2-4 dage
+materialerKlar: true
 vaerktoj:
   - Kap-/geringssav og håndrundsav
   - Akku-boremaskine og slagskruemaskine (eller dykkerpistol)

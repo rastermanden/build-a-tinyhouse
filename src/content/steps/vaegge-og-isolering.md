@@ -4,6 +4,7 @@ titel: Vægge og isolering
 resume: Væggene fyldes med træfiberisolering og lukkes med plader – husets varme, tætte klimaskærm.
 beregnerNoegle: vaegge-og-isolering
 tid: 3-5 dage
+materialerKlar: true
 vaerktoj:
   - Hobbykniv / isoleringssav
   - Hæftepistol og tape til dampbremse

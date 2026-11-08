@@ -4,6 +4,7 @@ titel: Loft
 resume: Loftkonstruktionen lukker huset opadtil, bærer isolering og giver den indvendige overflade.
 beregnerNoegle: loft
 tid: 1-2 dage
+materialerKlar: true
 vaerktoj:
   - Kap-/geringssav og stiksav
   - Akku-boremaskine og slagskruemaskine

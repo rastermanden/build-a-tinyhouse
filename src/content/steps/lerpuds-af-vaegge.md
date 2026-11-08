@@ -4,6 +4,7 @@ titel: Lerpuds af vægge
 resume: Den sidste, indvendige finish. Lerpuds giver et smukt, diffusionsåbent og fugtregulerende hjem.
 beregnerNoegle: lerpuds-af-vaegge
 tid: 2-4 dage (plus tørretid)
+materialerKlar: true
 vaerktoj:
   - Murerbræt og murske
   - Stålglittebræt og filtsvamp
