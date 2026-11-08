@@ -6,7 +6,8 @@ byg() laver et regneark og bygger bundrem, stroe, vaegregler, topskinne og
 spaer oven paa det, hvor hvert eneste maal er bundet til regnearket med
 udtryk. Skift et tal i regnearket, tryk F5, og hele skelettet foelger med.
 
-Standardhuset er 6000 x 3600 mm. Ethvert input-maal kan overskrives pr. hus:
+Standardhuset er 6000 x 3350 mm (bredden udledes af gavlrem_l). Ethvert
+input-maal kan overskrives pr. hus:
 
     byg("Hus_7200x4200", laengde=7200, gavlrem_l=4020)
 

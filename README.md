@@ -57,13 +57,13 @@ alt-tekst. Ingen kodeændring nødvendig.
 
 Siden `src/pages/beregner.astro` (rute `/beregner`, vist som **Materialelister**) er ikke en
 live-beregner, men viser færdige, statiske lister. Længde/bredde-vælgeren indeholder p.t. kun
-den ene færdige størrelse, **600 × 360 cm** (mit faktiske byg), som henviser til den faktiske
+den ene færdige størrelse, **600 × 335 cm** (mit faktiske byg), som henviser til den faktiske
 liste. Vil du tilføje en ny størrelse, så udvid `laengder`/`bredder` i frontmatter og læg et
 objekt under `praedefineredeMaal` i `src/data/materialelister.json` med `laengde_cm`,
 `bredde_cm` og en `materialerPrStep` for hvert af de 9 trin (mål i **60 cm**-trin).
 
 > Mængderne i `materialelister.json` er **vejledende estimater** – den faktiske liste
-> (600 × 360 cm) er derimod konkrete indkøb fra fakturaen.
+> (600 × 335 cm) er derimod konkrete indkøb fra fakturaen.
 
 ## Faktisk materialeliste (fakturaen)
 
