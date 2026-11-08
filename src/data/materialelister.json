@@ -12,7 +12,7 @@
       "vaeg_front_cm": 315.5,
       "vaeg_bag_cm": 285.5,
       "kilde": "Modellens standardhus, freecad/skelet.py STANDARD: laengde 6000 mm, gavlrem_l 3170 mm, regel_b 45 mm. Bredden er udledt: gavlrem_l + 2 x bundrem (2 x 45 mm) = 3170 + 180 = 3350 mm. Væghøjder: regel_l_front 3150 + regel_z 5 mm = 3155 mm foran, regel_l_bag 2850 + 5 mm = 2855 mm bag.",
-      "bemaerkning": "Sitet har hidtil kaldt standardhuset 600 x 360 cm (21,6 m²). Modellen siger 6000 x 3350 mm (20,1 m²). Her bruges modellens tal.",
+      "bemaerkning": "Standardhuset er 6000 x 3350 mm = 6,0 x 3,35 m (20,1 m²) og dermed det samme hus som den faktiske materialeliste (id faktisk-600x335). Mængderne nedenfor er vejledende tal for det hus.",
       "yderbeklaedning": [
         { "tekst": "Facadebrædder (Douglasgran, ubehandlet)", "maengde": 62, "enhed": "m²", "note": "Facadeareal ca. 56,2 m² (front 6,0 x 3,16 m, bag 6,0 x 2,86 m, to gavle 3,35 m brede) + ca. 10 % spild" },
         { "tekst": "Afstandslister 25×50 mm (ventilering)", "maengde": 100, "enhed": "lbm", "note": "Lodrette lægter med c/c ca. 60 cm på alle fire vægge" },

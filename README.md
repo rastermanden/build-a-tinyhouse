@@ -78,8 +78,8 @@ siden bygges automatisk ud fra listen.
 
 `info.standardHus` i samme fil er standardhuset, sådan som **modellen** måler det
 (`freecad/skelet.py` STANDARD): 6000 × 3350 mm = 6,0 × 3,35 m (20,1 m²), udledt som
-`gavlrem_l 3170 + 2 × bundrem 90`. Det er de tal, savværks-e-mailen bruger. Sitet har
-tidligere kaldt standardhuset 600 × 360 cm (21,6 m²) – det er derfor, begge tal findes.
+`gavlrem_l 3170 + 2 × bundrem 90`. Det er de tal, savværks-e-mailen bruger, og det er det
+samme hus som den faktiske liste (`faktisk-600x335`).
 
 ## Faktisk materialeliste (fakturaen)
 
