@@ -1,0 +1,11 @@
+<svg viewBox="-1155.8 -559.7 4834.1 1239.8" xmlns="http://www.w3.org/2000/svg"><style>
+ .kontur{fill:#f4f1ea;stroke:#222;stroke-width:4.28;stroke-linejoin:round}
+ .maal{stroke:#b23;stroke-width:2.45;fill:none}
+ .hjaelp{stroke:#b23;stroke-width:2.45;fill:none;stroke-dasharray:18.3 15.3}
+ .pil{fill:#b23}
+ .tal{fill:#b23;font-family:system-ui,sans-serif;font-size:61.2px;
+      text-anchor:middle;dominant-baseline:auto}
+ .note{fill:#036;font-family:system-ui,sans-serif;font-size:61.2px}
+ .notelinje{stroke:#036;stroke-width:2.45;fill:none}
+ .midte{stroke:#888;stroke-width:2.45;fill:none;stroke-dasharray:55.0 18.3 12.2 18.3}
+</style><path class="kontur" d="M 3363.41 -195.00 L 0.00 -195.00 L 0.00 -30.12 L 141.75 -42.81 L 145.58 -0.00 L 3217.83 -0.00 L 3216.31 -16.95 L 3360.73 -29.88 L 3363.41 -0.00 Z"/><path class="hjaelp" d="M 0.00 0.00 L 0.00 355.96"/><path class="hjaelp" d="M 3363.41 0.00 L 3363.41 355.96"/><path class="maal" d="M 0.00 331.50 L 3363.41 331.50"/><path class="pil" d="M 0.00 331.50 L 55.04 314.38 L 55.04 348.62 Z"/><path class="pil" d="M 3363.41 331.50 L 3308.37 348.62 L 3308.37 314.38 Z"/><text class="tal" x="1681.70" y="307.04">3363</text><path class="hjaelp" d="M 3363.41 0.00 L 3556.04 0.00"/><path class="hjaelp" d="M 3363.41 -195.00 L 3556.04 -195.00"/><path class="maal" d="M 3531.58 0.00 L 3531.58 -195.00"/><path class="pil" d="M 3531.58 0.00 L 3514.46 -55.04 L 3548.70 -55.04 Z"/><path class="pil" d="M 3531.58 -195.00 L 3548.70 -139.96 L 3514.46 -139.96 Z"/><text class="tal" x="3531.58" y="-97.50" transform="rotate(-90 3531.58 -97.50)">195</text><path class="notelinje" d="M 141.75 -42.81 L 1009.02 -468.00"/><text class="note" x="1027.37" y="-486.35" style="text-anchor:start">Saede front</text><path class="notelinje" d="M 3216.31 -16.95 L 2354.39 -468.00"/><text class="note" x="2336.04" y="-486.35" style="text-anchor:end">Saede bag</text><text class="note" x="0.00" y="490.50">SPAER  -  45 x 195 mm</text><text class="note" x="0.00" y="588.34">Laengde langs taget 3363.4 mm  -  taghaeldning 5.12 grader</text></svg>
