@@ -1,0 +1,28 @@
+---
+import { feedbackUrl } from '../lib/feedback';
+
+interface Props {
+  // Synlig tekst på linket.
+  tekst: string;
+  // Emne der forudfyldes i formularen (fx trinnets titel).
+  emne: string;
+  // Vis den korte linje om, at man kan skrive sin e-mail for at få svar.
+  visEmailHint?: boolean;
+}
+
+const { tekst, emne, visEmailHint = false } = Astro.props;
+---
+
+<span class="inline-flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
+  <a
+    href={feedbackUrl(emne)}
+    target="_blank"
+    rel="noopener"
+    class="font-medium text-skov-600 underline underline-offset-2 hover:text-skov-700">{tekst}</a
+  >
+  {
+    visEmailHint && (
+      <span class="text-ler-600">Skriv din e-mail i formularen, hvis du vil have svar.</span>
+    )
+  }
+</span>

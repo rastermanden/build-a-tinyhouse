@@ -5,6 +5,7 @@ import VaerktojsListe from '../../components/VaerktojsListe.astro';
 import Galleri from '../../components/Galleri.astro';
 import StepNav from '../../components/StepNav.astro';
 import BestillingsMail from '../../components/BestillingsMail.astro';
+import FeedbackLink from '../../components/FeedbackLink.astro';
 import materialelister from '../../data/materialelister.json';
 import { lister, STORAGE_KEY } from '../../lib/lister';
 import { href } from '../../lib/url';
@@ -176,6 +177,10 @@ if (erYderbeklaedning) {
         )
       }
     </header>
+
+    <div class="mt-4">
+      <FeedbackLink tekst="Forslag eller fejl i dette trin? Giv feedback" emne={entry.data.titel} />
+    </div>
 
     <section class="prose-tiny mt-8">
       <Content />

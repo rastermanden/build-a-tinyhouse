@@ -1,5 +1,7 @@
 ---
 import { href } from '../lib/url';
+import { HELE_SIDEN } from '../lib/feedback';
+import FeedbackLink from './FeedbackLink.astro';
 ---
 
 <footer class="mt-16 border-t border-ler-200 bg-ler-100">
@@ -39,9 +41,12 @@ import { href } from '../lib/url';
       </div>
     </div>
 
-    <p class="mt-8 border-t border-ler-200 pt-6 text-xs text-ler-600">
-      Dette er et personligt dokumentationsprojekt og er ikke tilknyttet småBYG. Materialemængder
-      og mål er vejledende – tjek altid selv efter, og følg gældende regler og vejledninger.
-    </p>
+    <div class="mt-8 border-t border-ler-200 pt-6">
+      <FeedbackLink tekst="Feedback om siden" emne={HELE_SIDEN} visEmailHint />
+      <p class="mt-3 text-xs text-ler-600">
+        Dette er et personligt dokumentationsprojekt og er ikke tilknyttet småBYG. Materialemængder
+        og mål er vejledende – tjek altid selv efter, og følg gældende regler og vejledninger.
+      </p>
+    </div>
   </div>
 </footer>
