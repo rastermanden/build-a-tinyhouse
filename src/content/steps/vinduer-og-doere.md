@@ -4,7 +4,7 @@ titel: Vinduer og døre
 resume: Lys og adgang. Vinduer og døre monteres tæt i klimaskærmen, så der hverken trækker eller siver fugt ind.
 beregnerNoegle: vinduer-og-doere
 tid: 1-3 dage
-materialerKlar: true
+materialerKlar: false
 vaerktoj:
   - Akku-boremaskine og slagskruemaskine
   - Vaterpas og kiler
