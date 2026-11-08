@@ -32,7 +32,7 @@ src/
   assets/steps/<slug>/  # billeder for hvert byggetrin (organiseret i mapper)
   assets/faktisk-materialeliste/  # billeder til den faktiske materialeliste (fx skrueæsker)
   components/           # Header, Footer, Galleri, MaterialTabel, m.fl.
-  pages/                # forside, planlægning, beregner, faktisk-materialeliste, om-og-credits, steps/[slug]
+  pages/                # forside, planlægning, materialeliste (faktisk-materialeliste), om-og-credits, steps/[slug]
 public/                 # favicon m.m.
 ```
 
@@ -53,22 +53,37 @@ Understøttede formater: `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`. Billederne v
 automatisk i galleriet på trinnets side, optimeres ved build, og filnavnet bruges som
 alt-tekst. Ingen kodeændring nødvendig.
 
-## Materialelister (statiske lister)
+## Materialeliste (én side)
 
-Siden `src/pages/beregner.astro` (rute `/beregner`, vist som **Materialelister**) er ikke en
-live-beregner, men viser færdige, statiske lister. Længde/bredde-vælgeren indeholder p.t. kun
-den ene færdige størrelse, **600 × 335 cm** (mit faktiske byg), som henviser til den faktiske
-liste. Vil du tilføje en ny størrelse, så udvid `laengder`/`bredder` i frontmatter og læg et
-objekt under `praedefineredeMaal` i `src/data/materialelister.json` med `laengde_cm`,
-`bredde_cm` og en `materialerPrStep` for hvert af de 9 trin (mål i **60 cm**-trin).
+Siden `src/pages/faktisk-materialeliste.astro` (rute `/faktisk-materialeliste`, vist som
+**Materialeliste**) er den ene side for materialelister. Den indeholder to ting:
+
+1. **Min faktiske indkøbsliste** fra fakturaen, delt op pr. byggetrin (se nedenfor).
+2. **Vejledende estimater** for andre størrelser – en størrelsesvælger, der tegner
+   estimatet for det valgte mål klient-side, med print/kopi.
+
+Siden er ikke en live-beregner, men færdige, statiske lister.
+
+> `/beregner` er slået sammen med denne side og findes ikke længere som selvstændig side.
+> `src/pages/beregner.astro` er nu kun en viderestilling (meta refresh + JS) til
+> `/faktisk-materialeliste`, så gamle links og bogmærker stadig virker.
+
+Estimatmålene ligger under `praedefineredeMaal` i `src/data/materialelister.json` med
+`laengde_cm`, `bredde_cm` og en `materialerPrStep` for hvert af de 9 trin (mål i **60 cm**-trin).
+Vil du tilføje en ny størrelse, så læg et objekt mere i `praedefineredeMaal` – vælgeren på
+siden bygges automatisk ud fra listen.
 
 > Mængderne i `materialelister.json` er **vejledende estimater** – den faktiske liste
 > (600 × 335 cm) er derimod konkrete indkøb fra fakturaen.
 
+`info.standardHus` i samme fil er standardhuset, sådan som **modellen** måler det
+(`freecad/skelet.py` STANDARD): 6000 × 3350 mm = 6,0 × 3,35 m (20,1 m²), udledt som
+`gavlrem_l 3170 + 2 × bundrem 90`. Det er de tal, savværks-e-mailen bruger. Sitet har
+tidligere kaldt standardhuset 600 × 360 cm (21,6 m²) – det er derfor, begge tal findes.
+
 ## Faktisk materialeliste (fakturaen)
 
-Ud over de vejledende estimater findes en side med den **rigtige indkøbsliste** fra et
-konkret byg: `src/pages/faktisk-materialeliste.astro`, der læser
+Ud over de vejledende estimater viser siden den **rigtige indkøbsliste** fra et konkret byg:
 `src/data/faktisk-materialeliste.json`. Fakturaens varer er delt op **pr. byggetrin** i
 `materialerPrTrin` (samme trin-nøgler som estimatet), plus en `oevrigt`-liste til varer, der
 ikke er trinspecifikke (bits, tape, afgift m.m.). Hver vare har `tekst`, `maengde`, `enhed` og
