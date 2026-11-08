@@ -13,6 +13,8 @@ tegninger kan ikke komme til at vise andre maal end huset er bygget af.
 import os
 import re
 
+import Part
+
 import FreeCAD as App
 import TechDraw
 
@@ -88,6 +90,36 @@ def projicer(form, retning, drej):
         max(ys) - min(ys) + 2 * MARGEN,
     )
     return fragment, kasse, (max(xs) - min(xs), max(ys) - min(ys))
+
+
+def byggetrin_svg(doc, udmappe):
+    """Skriver kumulative opstalter for hvert byggetrin.
+
+    Hvert ark indeholder kun emner fra trin der allerede er rejst, taget fra
+    FreeCAD-grupperne; geometrien og projiceringen er derfor den faktiske model.
+    """
+    mappe = os.path.join(udmappe, "trin")
+    if not os.path.isdir(mappe):
+        os.makedirs(mappe)
+
+    hidtil = []
+    resultat = []
+    for gruppenavn, titel, objekter, antal in skelet.byggetrin(doc):
+        hidtil += [o.Shape for o in objekter]
+        if not hidtil:
+            continue
+        samlet = Part.makeCompound(hidtil)
+        fragment, kasse, (bred, hoej) = projicer(samlet, (1, -1, 0), True)
+        filnavn = gruppenavn.replace("Trin", "trin", 1).lower() + ".svg"
+        svg = ('<svg viewBox="%.0f %.0f %.0f %.0f" '
+               'xmlns="http://www.w3.org/2000/svg">'
+               '<style>path{fill:none;stroke:#26352b;stroke-width:2;'
+               'stroke-linejoin:round}</style><g transform="rotate(90)">%s</g></svg>'
+               % (kasse[0], kasse[1], kasse[2], kasse[3], fragment))
+        with open(os.path.join(mappe, filnavn), "w") as f:
+            f.write(svg)
+        resultat.append((gruppenavn, filnavn, titel, antal))
+    return resultat
 
 
 def skema_html(doc):
