@@ -15,7 +15,7 @@ vaerktoj:
 materialer:
   - navn: Konstruktionstræ til rammen
     dimension: 90×195 mm
-    note: Bundrem front/bag er to 45×195-lag limet sammen; strø er 45×195 mm
+    note: Bundrem front/bag er to lag 45×195 limet sammen; strø er 45×195 mm pr. 60 cm
   - navn: Skruer til konstruktion
     dimension: 5×90-100 mm
     note: Rustfrie eller varmforzinkede
