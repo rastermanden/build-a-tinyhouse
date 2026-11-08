@@ -4,6 +4,7 @@ titel: Tag
 resume: Husets vandtætte skal. Undertag, lægter og tagdækning holder regn og sne ude – og luft ind til konstruktionen.
 beregnerNoegle: tag
 tid: 2-3 dage
+materialerKlar: true
 vaerktoj:
   - Håndrundsav og stiksav
   - Akku-boremaskine og slagskruemaskine

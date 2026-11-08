@@ -4,6 +4,7 @@ titel: Spær og regler
 resume: Husets skelet. Lodrette regler og tagspær sætter formen og bærer isolering, beklædning og tag.
 beregnerNoegle: spaer-og-regler
 tid: 2-4 dage
+materialerKlar: true
 vaerktoj:
   - Kap-/geringssav
   - Akku-boremaskine og slagskruemaskine

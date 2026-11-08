@@ -4,6 +4,7 @@ titel: Gulv
 resume: Isoleret gulv oven på bundremmen – med træfiberisolering mellem reglerne og gulvbrædder ovenpå.
 beregnerNoegle: gulv
 tid: 1-2 dage
+materialerKlar: true
 vaerktoj:
   - Håndrundsav og stiksav
   - Akku-boremaskine og slagskruemaskine
