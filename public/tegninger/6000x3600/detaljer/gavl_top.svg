@@ -1,0 +1,11 @@
+<svg viewBox="-159.5 -3472.4 580.0 580.0" xmlns="http://www.w3.org/2000/svg"><style>
+ .kontur{fill:#f4f1ea;stroke:#222;stroke-width:1.35;stroke-linejoin:round}
+ .maal{stroke:#b23;stroke-width:0.77;fill:none}
+ .hjaelp{stroke:#b23;stroke-width:0.77;fill:none;stroke-dasharray:5.8 4.8}
+ .pil{fill:#b23}
+ .tal{fill:#b23;font-family:system-ui,sans-serif;font-size:19.3px;
+      text-anchor:middle;dominant-baseline:auto}
+ .note{fill:#036;font-family:system-ui,sans-serif;font-size:19.3px}
+ .notelinje{stroke:#036;stroke-width:0.77;fill:none}
+ .midte{stroke:#888;stroke-width:0.77;fill:none;stroke-dasharray:17.4 5.8 3.9 5.8}
+</style><path class="kontur" d="M 45.00 -195.00 L 0.00 -195.00 L 0.00 -3114.25 L 145.00 -3114.25 L 145.00 -5.00 L 45.00 -5.00 Z"/><path class="kontur" d="M 45.00 -3114.25 L 0.00 -3114.25 L 0.00 -3310.03 L 45.00 -3310.03 Z"/><path class="hjaelp" d="M 0.00 -3310.03 L 0.00 -3397.52"/><path class="hjaelp" d="M 45.00 -3310.03 L 45.00 -3397.52"/><path class="maal" d="M 0.00 -3389.78 L 45.00 -3389.78"/><path class="pil" d="M 0.00 -3389.78 L 17.40 -3395.20 L 17.40 -3384.37 Z"/><path class="pil" d="M 45.00 -3389.78 L 27.60 -3384.37 L 27.60 -3395.20 Z"/><text class="tal" x="87.53" y="-3397.52">45</text><path class="hjaelp" d="M 0.00 -3034.53 L 0.00 -2983.30"/><path class="hjaelp" d="M 145.00 -3034.53 L 145.00 -2983.30"/><path class="maal" d="M 0.00 -2991.03 L 145.00 -2991.03"/><path class="pil" d="M 0.00 -2991.03 L 17.40 -2996.45 L 17.40 -2985.62 Z"/><path class="pil" d="M 145.00 -2991.03 L 127.60 -2985.62 L 127.60 -2996.45 Z"/><text class="tal" x="72.50" y="-2998.77">145</text><path class="notelinje" d="M 22.50 -3265.03 L 275.50 -3230.28"/><text class="note" x="281.30" y="-3236.08" style="text-anchor:start">Hjoernespaer</text><path class="notelinje" d="M 108.75 -3092.53 L 275.50 -3114.28"/><text class="note" x="281.30" y="-3120.08" style="text-anchor:start">Gavlregel, skaaret i tagets plan</text><text class="note" x="0.00" y="37.53">DETALJE: gavltop</text><text class="note" x="0.00" y="68.47">Hjoernespaer 45 x 195 mm oven paa gavlreglerne</text></svg>

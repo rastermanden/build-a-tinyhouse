@@ -69,6 +69,20 @@ INDEX_HOVED = """<!doctype html>
 """
 
 
+def kopiér_webtegninger(navn, udmappe):
+    """Opdaterer statiske tegninger kun ved udtrykkelig synkronisering."""
+    if navn != "6000x3600":
+        return
+    webmappe = os.path.join(HER, "..", "public", "tegninger", navn)
+    if os.path.isdir(webmappe):
+        shutil.rmtree(webmappe)
+    os.makedirs(webmappe)
+    for undermappe in ("trin", "detaljer"):
+        kilde = os.path.join(udmappe, undermappe)
+        if os.path.isdir(kilde):
+            shutil.copytree(kilde, os.path.join(webmappe, undermappe))
+
+
 def byg_et(hus):
     """Bygger og tegner ét hus. Returnerer en raekke til oversigten."""
     navn = hus["navn"]
@@ -84,6 +98,8 @@ def byg_et(hus):
     doc = skelet.byg("Hus_" + navn, **hus["maal"])
     try:
         tegninger.tegn(doc, udmappe, titel)
+        tegninger.byggetrin_svg(doc, udmappe)
+        kopiér_webtegninger(navn, udmappe)
         doc.saveAs(os.path.join(udmappe, "skelet.FCStd"))
 
         sheet = doc.Spreadsheet

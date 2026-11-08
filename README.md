@@ -131,6 +131,18 @@ Den viser, hvordan du bygger træskelettet parametrisk i FreeCAD med vores dimen
 ét sted og få både 3D-model og tegninger til at følge med. Med links til de relevante
 FreeCAD-workbenches.
 
+Byggevejledningen viser kumulative model-SVG'er og målsatte samlingsdetaljer på de modellerede
+trin. For at regenerere både `ud/`-outputtet og standardhusets website-assets:
+
+```bash
+freecadcmd --console freecad/byg_alle.py
+```
+
+`public/tegninger/6000x3600/` indeholder SVG-kilderne til sitet, så Astro-build ikke kræver FreeCAD.
+Kun bundrem, skelettets dele og gulv er modelleret – ikke loftets lag, vinduer, tagdækning,
+isolering, facade eller lerpuds. Tegningerne er vejledende håndværksillustrationer, ikke
+byggedimensionering eller godkendte konstruktionstegninger; kontrollér mål og samlinger før savning.
+
 ## Ansvarsfraskrivelse
 
 Dette er et personligt hobbyprojekt og er ikke officielt tilknyttet småBYG. Materialemængder

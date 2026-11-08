@@ -1,0 +1,11 @@
+<svg viewBox="-1663.4 -469.0 4867.5 1204.7" xmlns="http://www.w3.org/2000/svg"><style>
+ .kontur{fill:#f4f1ea;stroke:#222;stroke-width:3.97;stroke-linejoin:round}
+ .maal{stroke:#b23;stroke-width:2.27;fill:none}
+ .hjaelp{stroke:#b23;stroke-width:2.27;fill:none;stroke-dasharray:17.0 14.2}
+ .pil{fill:#b23}
+ .tal{fill:#b23;font-family:system-ui,sans-serif;font-size:56.7px;
+      text-anchor:middle;dominant-baseline:auto}
+ .note{fill:#036;font-family:system-ui,sans-serif;font-size:56.7px}
+ .notelinje{stroke:#036;stroke-width:2.27;fill:none}
+ .midte{stroke:#888;stroke-width:2.27;fill:none;stroke-dasharray:51.1 17.0 11.3 17.0}
+</style><path class="kontur" d="M 190.00 -45.00 L 190.00 -0.00 L 2950.03 -0.00 L 2950.03 -145.00 L 0.00 -145.00 L 0.00 -45.00 Z"/><path class="hjaelp" d="M 0.00 0.00 L 0.00 240.19"/><path class="hjaelp" d="M 2950.03 0.00 L 2950.03 240.19"/><path class="maal" d="M 0.00 217.50 L 2950.03 217.50"/><path class="pil" d="M 0.00 217.50 L 51.06 201.62 L 51.06 233.38 Z"/><path class="pil" d="M 2950.03 217.50 L 2898.97 233.38 L 2898.97 201.62 Z"/><text class="tal" x="1475.02" y="194.81">2950</text><path class="hjaelp" d="M 2950.03 0.00 L 3090.72 0.00"/><path class="hjaelp" d="M 2950.03 -145.00 L 3090.72 -145.00"/><path class="maal" d="M 3068.03 0.00 L 3068.03 -145.00"/><path class="pil" d="M 3068.03 0.00 L 3052.15 -51.06 L 3083.92 -51.06 Z"/><path class="pil" d="M 3068.03 -145.00 L 3083.92 -93.94 L 3052.15 -93.94 Z"/><text class="tal" x="3068.03" y="-72.50" transform="rotate(-90 3068.03 -72.50)">145</text><path class="hjaelp" d="M 0.00 -45.00 L 0.00 -327.19"/><path class="hjaelp" d="M 190.00 -45.00 L 190.00 -327.19"/><path class="maal" d="M 0.00 -304.50 L 190.00 -304.50"/><path class="pil" d="M 0.00 -304.50 L 51.06 -320.38 L 51.06 -288.62 Z"/><path class="pil" d="M 190.00 -304.50 L 138.94 -288.62 L 138.94 -320.38 Z"/><text class="tal" x="95.00" y="-327.19">190</text><path class="notelinje" d="M 2950.03 -72.50 L 1003.01 435.00"/><text class="note" x="985.99" y="417.98" style="text-anchor:end">Top falder 4.0 mm hen over tykkelsen (5.12 grader)</text><text class="note" x="-557.10" y="559.81">GAVLREGEL NR. 4  -  45 x 145 mm</text><text class="note" x="-557.10" y="650.58">Ved y = 2400 mm  -  lang side 2950.1 mm, kort side 2946.0 mm</text></svg>
