@@ -14,8 +14,8 @@ vaerktoj:
   - Blyant og kridtsnor
 materialer:
   - navn: Konstruktionstræ til rammen
-    dimension: 45×95 mm
-    note: Den bærende ramme og strøer (moduldelt pr. 60 cm)
+    dimension: 90×195 mm
+    note: Bundrem front/bag er to 45×195-lag limet sammen; strø er 45×195 mm
   - navn: Skruer til konstruktion
     dimension: 5×90-100 mm
     note: Rustfrie eller varmforzinkede

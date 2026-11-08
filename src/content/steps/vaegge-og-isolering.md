@@ -12,7 +12,7 @@ vaerktoj:
   - Målebånd, vinkel og blyant
 materialer:
   - navn: Træfiberisolering
-    dimension: 45-95 mm tykkelse
+    dimension: 145 mm tykkelse
     note: Passer i modulet mellem reglerne (60 cm)
   - navn: Vindspærre / vindtæt plade
     note: På ydersiden af reglerne
